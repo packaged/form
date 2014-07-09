@@ -4,9 +4,17 @@ include('vendor/autoload.php');
 class MyForm extends \Packaged\Form\Form
 {
   public $name = 'Davide';
+  /**
+   * @placeholder Please enter your email address
+   * @multiple
+   */
   public $email;
   public $age;
   public $dob;
+  /**
+   * @rows 6
+   * @cols 230
+   */
   public $about = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.';
   public $colour;
   /**

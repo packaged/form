@@ -135,16 +135,46 @@ class Form
 
       $element = new FormElement($this, $property, $type, $label);
 
-      if($docblock->hasTag('values'))
-      {
-        $element->setOption(
-          'values',
-          ValueAs::arr($docblock->getTag('values'))
-        );
-      }
-
-      $this->_elements[$property] = $element;
+      $this->_elements[$property] = $this->_processDocBlock(
+        $docblock,
+        $element
+      );
     }
+  }
+
+  protected function _processDocBlock(DocBlockParser $doc, FormElement $element)
+  {
+    foreach($doc->getTags() as $tag => $values)
+    {
+      foreach($values as $value)
+      {
+        switch($tag)
+        {
+          case 'label':
+          case 'inputType':
+          case 'type':
+          case 'input':
+            break;
+          case 'values':
+            $element->setOption('values', ValueAs::arr($value));
+            break;
+          case 'novalidate':
+          case 'multiple':
+          case 'autofocus':
+          case 'required':
+            $element->appendOption('attributes', $tag, null);
+            break;
+          case 'disabled':
+            $element->appendOption('attributes', 'disabled', true);
+            break;
+          default:
+            $element->appendOption('attributes', $tag, $value);
+            break;
+        }
+      }
+    }
+
+    return $element;
   }
 
   public function getDataObject()

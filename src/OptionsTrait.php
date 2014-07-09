@@ -26,6 +26,12 @@ trait OptionsTrait
     return $this;
   }
 
+  public function appendOption($key, $arrayKey, $value)
+  {
+    $this->_options[$key][$arrayKey] = $value;
+    return $this;
+  }
+
   public function deleteOption($key)
   {
     unset($this->_options[$key]);
