@@ -7,6 +7,9 @@ class FormElementRenderer implements IFormElementRenderer
 {
   protected $_template;
 
+  /**
+   * @param null|string|callable $template
+   */
   public function __construct($template = null)
   {
     $this->_template = $template;
@@ -52,6 +55,12 @@ class FormElementRenderer implements IFormElementRenderer
   public function render(FormElement $element)
   {
     $template = $this->_template;
+
+    if(is_callable($template))
+    {
+      $template = $template($element);
+    }
+
     if($template === null)
     {
       $template = $this->defaultTemplate($element);
