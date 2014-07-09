@@ -73,8 +73,11 @@ class FormElement
     $labelPosition = self::LABEL_BEFORE
   )
   {
-    $this->_name          = $name;
-    $this->_id            = $form->getId() . '-' . Strings::urlize($name);
+    $this->_name = $name;
+    $this->_id   = $form->getId() . '-' . Strings::urlize($name);
+    $this->setOption('name', $name);
+    $this->setOption('id', $this->_id);
+
     $this->_type          = $type;
     $this->_label         = $label === null ? Strings::humanize($name) : $label;
     $this->_labelPosition = $labelPosition;

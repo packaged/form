@@ -17,6 +17,7 @@ class Form
 
   protected $_id;
   protected $_dataHolder;
+  protected $_aliases;
 
   /**
    * @var IFormRenderer
@@ -148,7 +149,14 @@ class Form
           case 'input':
             break;
           case 'values':
-            $element->setOption('values', ValueAs::arr($value));
+            $element->setOption($tag, ValueAs::arr($value));
+            break;
+          case 'name':
+            $this->_aliases[$value] = $element->getName();
+            $element->setOption($tag, $value);
+            break;
+          case 'id':
+            $element->setOption($tag, $value);
             break;
           case 'novalidate':
           case 'multiple':
@@ -157,7 +165,7 @@ class Form
             $element->setAttribute($tag, null);
             break;
           case 'disabled':
-            $element->setAttribute('disabled', true);
+            $element->setAttribute($tag, true);
             break;
           default:
             $element->setAttribute($tag, $value);
@@ -224,6 +232,11 @@ class Form
    */
   public function setValue($property, $value)
   {
+    if(isset($this->_aliases[$property]))
+    {
+      $property = $this->_aliases[$property];
+    }
+
     //Only set values for available public properties
     if(in_array($property, static::$_properties[$this->_calledClass]))
     {

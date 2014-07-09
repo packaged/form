@@ -7,6 +7,7 @@ class MyForm extends \Packaged\Form\Form
   /**
    * @placeholder Please enter your email address
    * @multiple
+   * @name emailaddress
    */
   public $email;
   public $age;

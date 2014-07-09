@@ -96,8 +96,8 @@ class FormElementRenderer implements IFormElementRenderer
       return '';
     }
 
-    $out = '<label for="' . $element->getId() . '"';
-    $out .= 'id="' . $element->getId() . '-label">';
+    $out = '<label for="' . $element->getOption('id') . '"';
+    $out .= 'id="' . $element->getOption('id') . '-label">';
     $out .= $element->getLabel();
     if($element->getOption('required', false))
     {
@@ -112,8 +112,8 @@ class FormElementRenderer implements IFormElementRenderer
   )
   {
     $attributes = [
-      "name" => $element->getName(),
-      "id"   => $element->getId()
+      "name" => $element->getOption('name'),
+      "id"   => $element->getOption('id')
     ];
 
     $attributes = array_merge(
