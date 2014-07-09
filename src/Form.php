@@ -55,7 +55,7 @@ class Form
     //Configure the form
     $this->_configure();
 
-    $this->_getPublicProperties();
+    $this->_processPublicProperties();
   }
 
   public static function fromClass(
@@ -70,11 +70,11 @@ class Form
   }
 
   /**
-   * Retrieve the public properties
+   * Process the data object
    *
    * @return array
    */
-  protected function _getPublicProperties()
+  protected function _processPublicProperties()
   {
     if(!isset(self::$_properties[$this->_calledClass]))
     {
@@ -91,15 +91,7 @@ class Form
       }
     }
 
-    $return = [];
-    if(!empty(self::$_properties[$this->_calledClass]))
-    {
-      foreach(self::$_properties[$this->_calledClass] as $name)
-      {
-        $return[$name] = $this->getValue($name);
-      }
-    }
-    return $return;
+    return static::$_properties[$this->_calledClass];
   }
 
   /**
@@ -107,7 +99,7 @@ class Form
    */
   protected function _boot()
   {
-    foreach($this->_getPublicProperties() as $property => $value)
+    foreach($this->_processPublicProperties() as $property)
     {
       if(isset($this->_elements[$property]))
       {
@@ -195,6 +187,22 @@ class Form
   }
 
   /**
+   * Set the value of multiple properties
+   *
+   * @param array $data
+   *
+   * @return $this
+   */
+  public function hydrate(array $data)
+  {
+    foreach($data as $key => $value)
+    {
+      $this->setValue($key, $value);
+    }
+    return $this;
+  }
+
+  /**
    * Get the value of a property
    *
    * @param $property
@@ -204,6 +212,24 @@ class Form
   public function getValue($property)
   {
     return $this->getDataObject()->$property;
+  }
+
+  /**
+   * Set the value of a property
+   *
+   * @param $property
+   * @param $value
+   *
+   * @return $this
+   */
+  public function setValue($property, $value)
+  {
+    //Only set values for available public properties
+    if(in_array($property, static::$_properties[$this->_calledClass]))
+    {
+      $this->getDataObject()->$property = $value;
+    }
+    return $this;
   }
 
   /**

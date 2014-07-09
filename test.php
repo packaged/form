@@ -40,5 +40,5 @@ echo $form;
 echo '<hr/>';
 
 $form = new MyForm();
-$form->getElement('country')->setOption('values', ['FW', 'Tom', 'Davide']);
+$form->hydrate($_POST);
 echo $form;
