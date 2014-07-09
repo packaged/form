@@ -23,18 +23,25 @@ class FormElementRenderer implements IFormElementRenderer
     return $this->_template;
   }
 
-  protected function _buildTemplate(FormElement $element)
+  public function defaultTemplate(FormElement $element)
   {
-    $template = '<dd>{{input}}</dd>';
-    $type     = $element->getType();
-
-    if(in_array($type, [FormElement::RADIO, FormElement::CHECKBOX]))
-    {
-      return $template;
-    }
-
     switch($element->getLabelPosition())
     {
+      case FormElement::LABEL_NONE:
+        return '{{input}}';
+      case FormElement::LABEL_BEFORE:
+        return '{{label}} {{input}}';
+      case FormElement::LABEL_AFTER:
+        return '{{input}} {{label}}';
+    }
+  }
+
+  public function definitionListTemplate(FormElement $element)
+  {
+    switch($element->getLabelPosition())
+    {
+      case FormElement::LABEL_NONE:
+        return '<dd>{{input}}</dd>';
       case FormElement::LABEL_BEFORE:
         return '<dt>{{label}}</dt><dd>{{input}}</dd>';
       case FormElement::LABEL_AFTER:
@@ -47,7 +54,7 @@ class FormElementRenderer implements IFormElementRenderer
     $template = $this->_template;
     if($template === null)
     {
-      $template = $this->_buildTemplate($element);
+      $template = $this->defaultTemplate($element);
     }
 
     switch($element->getType())
