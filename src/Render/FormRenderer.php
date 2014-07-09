@@ -5,22 +5,22 @@ use Packaged\Form\Form;
 
 class FormRenderer implements IFormRenderer
 {
-  protected $_groupType;
+  protected $_elementGroupType;
 
-  public function __construct($groupType = 'dl')
+  public function __construct($elementGroupType = null)
   {
-    $this->_groupType = $groupType;
+    $this->_elementGroupType = $elementGroupType;
   }
 
-  public function setGroupType($groupType = 'dl')
+  public function setElementGroupType($elementGroupType = 'dl')
   {
-    $this->_groupType = $groupType;
+    $this->_elementGroupType = $elementGroupType;
     return $this;
   }
 
-  public function getGroupType()
+  public function getElementGroupType()
   {
-    return $this->_groupType;
+    return $this->_elementGroupType;
   }
 
   public function renderOpening(Form $form)
@@ -42,13 +42,21 @@ class FormRenderer implements IFormRenderer
 
   public function renderElements(Form $form)
   {
-    $return = '<' . $this->_groupType . '>';
+    $return = '';
+    if($this->_elementGroupType !== null)
+    {
+      $return = '<' . $this->_elementGroupType . '>';
+    }
 
     foreach($form->getElements() as $element)
     {
       $return .= $element->render();
     }
-    $return .= '</' . $this->_groupType . '>';
+
+    if($this->_elementGroupType !== null)
+    {
+      $return .= '</' . $this->_elementGroupType . '>';
+    }
     return $return;
   }
 
