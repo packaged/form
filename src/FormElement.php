@@ -84,12 +84,6 @@ class FormElement
     $this->_form          = $form;
   }
 
-  public function setType($type)
-  {
-    $this->_type = $type;
-    return $this;
-  }
-
   public static function calculateType($name)
   {
     switch(Strings::urlize($name))
@@ -163,14 +157,32 @@ class FormElement
     return $this->_id;
   }
 
+  public function setType($type)
+  {
+    $this->_type = $type;
+    return $this;
+  }
+
   public function getType()
   {
     return $this->_type;
   }
 
+  public function setLabel($label)
+  {
+    $this->_label = $label;
+    return $this;
+  }
+
   public function getLabel()
   {
     return $this->_label;
+  }
+
+  public function setLabelPosition($position)
+  {
+    $this->_labelPosition = $position;
+    return $this;
   }
 
   public function getLabelPosition()
