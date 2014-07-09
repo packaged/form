@@ -119,7 +119,7 @@ class FormElementRenderer implements IFormElementRenderer
     $attributes = array_merge(
       $attributes,
       (array)$custom,
-      (array)$element->getOption('attributes', [])
+      (array)$element->getAttributes()
     );
 
     $return = '';

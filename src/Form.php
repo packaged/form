@@ -162,13 +162,13 @@ class Form
           case 'multiple':
           case 'autofocus':
           case 'required':
-            $element->appendOption('attributes', $tag, null);
+            $element->setAttribute($tag, null);
             break;
           case 'disabled':
-            $element->appendOption('attributes', 'disabled', true);
+            $element->setAttribute('disabled', true);
             break;
           default:
-            $element->appendOption('attributes', $tag, $value);
+            $element->setAttribute($tag, $value);
             break;
         }
       }
