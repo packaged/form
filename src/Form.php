@@ -168,6 +168,20 @@ class Form
           case 'disabled':
             $element->setAttribute($tag, true);
             break;
+          case 'nolabel':
+            $element->setLabelPosition(FormElement::LABEL_NONE);
+            break;
+          case 'labelbefore':
+            $element->setLabelPosition(FormElement::LABEL_BEFORE);
+            break;
+          case 'labelafter':
+            $element->setLabelPosition(FormElement::LABEL_AFTER);
+            break;
+          case 'labelPosition':
+          case 'label_position':
+          case 'labelPos':
+            $element->setLabelPosition($value);
+            break;
           default:
             $element->setAttribute($tag, $value);
             break;
