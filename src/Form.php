@@ -278,6 +278,19 @@ class Form
     return $this;
   }
 
+  public function getValues()
+  {
+    $result = [];
+    foreach($this->_elements as $element)
+    {
+      /**
+       * @var $element FormElement
+       */
+      $result[$element->getName()] = $element->getValue();
+    }
+    return $result;
+  }
+
   public function render()
   {
     if($this->_renderer === null)
