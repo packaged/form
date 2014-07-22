@@ -126,8 +126,15 @@ class Form
         $label = Strings::humanize($property);
       }
 
-      $element = new FormElement($this, $property, $type, $label);
+      $element = new FormElement(
+        $this,
+        $property,
+        $type,
+        $label
+      );
+
       $element->setDataObject($this->getDataObject(), $property);
+      $this->_aliases[$element->getName()] = $property;
 
       $this->_elements[$property] = $this->_processDocBlock(
         $docblock,
@@ -153,7 +160,7 @@ class Form
             $element->setOption($tag, ValueAs::arr($value));
             break;
           case 'name':
-            $this->_aliases[$value] = $element->getName();
+            $this->_aliases[$value] = $element->getDOProperty();
             $element->setOption($tag, $value);
             break;
           case 'id':

@@ -166,7 +166,8 @@ class FormElementRenderer implements IFormElementRenderer
     $out .= $this->_renderAttributes($element);
     $out .= '>';
 
-    foreach($element->getOption('values', []) as $val)
+    $values = $element->getOption('values', []);
+    foreach($values as $key => $val)
     {
       if(is_array($val))
       {
@@ -206,7 +207,8 @@ class FormElementRenderer implements IFormElementRenderer
       }
       else
       {
-        $text = $value = $val;
+        $text  = $val;
+        $value = $key;
       }
       $out .= '<option value="' . $value . '"';
       if((string)($element->getValue()) === (string)$value)

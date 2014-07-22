@@ -71,6 +71,7 @@ class FormElement
     $labelPosition = self::LABEL_BEFORE
   )
   {
+    $name        = Strings::stringToUnderScore($name);
     $this->_name = $name;
     $this->_id   = $form->getId() . '-' . Strings::urlize($name);
     $this->setOption('name', $name);
@@ -87,6 +88,11 @@ class FormElement
     $this->_dataObject = $object;
     $this->_property   = $property;
     return $this;
+  }
+
+  public function getDOProperty()
+  {
+    return $this->_property;
   }
 
   public static function calculateType($name)
