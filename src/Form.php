@@ -127,6 +127,7 @@ class Form
       }
 
       $element = new FormElement($this, $property, $type, $label);
+      $element->setDataObject($this->getDataObject(), $property);
 
       $this->_elements[$property] = $this->_processDocBlock(
         $docblock,

@@ -36,10 +36,56 @@ class Rubbish
   public $country = 'GB';
 }
 
-$form = \Packaged\Form\Form::fromClass(new Rubbish());
-echo $form;
-echo '<hr/>';
+class User
+{
+  public $username = 'fwefw';
+  public $password;
 
-$form = new MyForm();
+  /**
+   * @var Website[]
+   */
+  public $urls;
+
+  /**
+   * @var Contact
+   */
+  public $billing;
+  /**
+   * @var Contact
+   */
+  public $delivery;
+}
+
+class Website
+{
+  public $name;
+  public $url;
+}
+
+class Contact
+{
+  public $name = 'Davide';
+  public $email;
+  public $phone;
+  /**
+   * @inputType textarea
+   */
+  public $address;
+}
+
+$user = new User();
+
+$form = \Packaged\Form\Form::fromClass($user);
 $form->hydrate($_POST);
 echo $form;
+
+if(false)
+{
+  $form = \Packaged\Form\Form::fromClass(new Rubbish());
+  echo $form;
+  echo '<hr/>';
+
+  $form = new MyForm();
+  $form->hydrate($_POST);
+  echo $form;
+}

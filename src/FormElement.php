@@ -53,10 +53,8 @@ class FormElement
   const LABEL_SURROUND_LEFT = 'surround.left';
   const LABEL_SURROUND_RIGHT = 'surround.right';
 
-  /**
-   * @var Form
-   */
-  protected $_form;
+  protected $_dataObject;
+  protected $_property;
   /**
    * @var IFormElementRenderer
    */
@@ -82,6 +80,13 @@ class FormElement
     $this->_label         = $label === null ? Strings::humanize($name) : $label;
     $this->_labelPosition = $labelPosition;
     $this->_form          = $form;
+  }
+
+  public function setDataObject($object, $property)
+  {
+    $this->_dataObject = $object;
+    $this->_property   = $property;
+    return $this;
   }
 
   public static function calculateType($name)
@@ -144,7 +149,7 @@ class FormElement
 
   public function getValue()
   {
-    return $this->_form->getValue($this->_name);
+    return $this->_dataObject->{$this->_property};
   }
 
   public function getName()

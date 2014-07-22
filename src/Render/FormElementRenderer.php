@@ -33,7 +33,7 @@ class FormElementRenderer implements IFormElementRenderer
       case FormElement::LABEL_NONE:
         return '{{input}}';
       case FormElement::LABEL_BEFORE:
-        return '{{label}} {{input}}';
+        return '{{label}} {{input}}<hr/>';
       case FormElement::LABEL_AFTER:
         return '{{input}} {{label}}';
     }
