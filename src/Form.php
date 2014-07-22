@@ -272,6 +272,18 @@ class Form
     return $this->_elements[$element];
   }
 
+  /**
+   * Check to see if an element exists
+   *
+   * @param $element
+   *
+   * @return bool
+   */
+  public function hasElement($element)
+  {
+    return isset($this->_elements[$element]);
+  }
+
   public function setRenderer(IFormRenderer $renderer)
   {
     $this->_renderer = $renderer;
