@@ -215,9 +215,14 @@ class Form
    *
    * @return mixed
    */
-  public function getValue($property)
+  public function getValue($property, $default = null)
   {
-    return $this->getDataObject()->$property;
+    $ret = $this->getDataObject()->$property;
+    if($ret === null)
+    {
+      return $default;
+    }
+    return $ret;
   }
 
   /**
