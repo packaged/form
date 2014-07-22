@@ -4,6 +4,7 @@ namespace Packaged\Form;
 use Packaged\Form\Render\FormElementRenderer;
 use Packaged\Form\Render\IFormElementRenderer;
 use Packaged\Helpers\Strings;
+use Packaged\Helpers\ValueAs;
 
 class FormElement
 {
@@ -93,6 +94,54 @@ class FormElement
   public function getDOProperty()
   {
     return $this->_property;
+  }
+
+  public function processDocBlockTag($tag, $value)
+  {
+    switch(strtolower($tag))
+    {
+      case 'label':
+      case 'inputtype':
+      case 'type':
+      case 'input':
+        break;
+      case 'values':
+        $this->setOption($tag, ValueAs::arr($value));
+        break;
+      case 'name':
+        $this->_form->addPropertyAlias($value, $this->_property);
+        $this->setOption($tag, $value);
+        break;
+      case 'id':
+        $this->setOption($tag, $value);
+        break;
+      case 'novalidate':
+      case 'multiple':
+      case 'autofocus':
+      case 'required':
+        $this->setAttribute($tag, null);
+        break;
+      case 'disabled':
+        $this->setAttribute($tag, true);
+        break;
+      case 'nolabel':
+        $this->setLabelPosition(FormElement::LABEL_NONE);
+        break;
+      case 'labelbefore':
+        $this->setLabelPosition(FormElement::LABEL_BEFORE);
+        break;
+      case 'labelafter':
+        $this->setLabelPosition(FormElement::LABEL_AFTER);
+        break;
+      case 'labelposition':
+      case 'label_position':
+      case 'labelpos':
+        $this->setLabelPosition($value);
+        break;
+      default:
+        $this->setAttribute($tag, $value);
+        break;
+    }
   }
 
   public static function calculateType($name)

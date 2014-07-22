@@ -100,6 +100,21 @@ class Form
    */
   protected function _boot()
   {
+    $formDoc       = DocBlockParser::fromObject($this->getDataObject());
+    $labelPosition = FormElement::LABEL_BEFORE;
+    $defaultTags   = [];
+
+    foreach($formDoc->getTags() as $tag => $values)
+    {
+      foreach($values as $value)
+      {
+        if(starts_with($tag, 'element'))
+        {
+          $defaultTags[substr($tag, 7)] = $value;
+        }
+      }
+    }
+
     foreach($this->_processPublicProperties() as $property)
     {
       if(isset($this->_elements[$property]))
@@ -130,71 +145,32 @@ class Form
         $this,
         $property,
         $type,
-        $label
+        $label,
+        $labelPosition
       );
+
+      foreach($defaultTags as $tag => $value)
+      {
+        $element->processDocBlockTag($tag, $value);
+      }
 
       $element->setDataObject($this->getDataObject(), $property);
       $this->_aliases[$element->getName()] = $property;
 
-      $this->_elements[$property] = $this->_processDocBlock(
-        $docblock,
-        $element
-      );
+      foreach($docblock->getTags() as $tag => $values)
+      {
+        foreach($values as $value)
+        {
+          $element->processDocBlockTag($tag, $value);
+        }
+      }
+
+      $this->_elements[$property] = $element;
     }
   }
 
   protected function _processDocBlock(DocBlockParser $doc, FormElement $element)
   {
-    foreach($doc->getTags() as $tag => $values)
-    {
-      foreach($values as $value)
-      {
-        switch($tag)
-        {
-          case 'label':
-          case 'inputType':
-          case 'type':
-          case 'input':
-            break;
-          case 'values':
-            $element->setOption($tag, ValueAs::arr($value));
-            break;
-          case 'name':
-            $this->_aliases[$value] = $element->getDOProperty();
-            $element->setOption($tag, $value);
-            break;
-          case 'id':
-            $element->setOption($tag, $value);
-            break;
-          case 'novalidate':
-          case 'multiple':
-          case 'autofocus':
-          case 'required':
-            $element->setAttribute($tag, null);
-            break;
-          case 'disabled':
-            $element->setAttribute($tag, true);
-            break;
-          case 'nolabel':
-            $element->setLabelPosition(FormElement::LABEL_NONE);
-            break;
-          case 'labelbefore':
-            $element->setLabelPosition(FormElement::LABEL_BEFORE);
-            break;
-          case 'labelafter':
-            $element->setLabelPosition(FormElement::LABEL_AFTER);
-            break;
-          case 'labelPosition':
-          case 'label_position':
-          case 'labelPos':
-            $element->setLabelPosition($value);
-            break;
-          default:
-            $element->setAttribute($tag, $value);
-            break;
-        }
-      }
-    }
 
     return $element;
   }
@@ -264,6 +240,12 @@ class Form
     {
       $this->getDataObject()->$property = $value;
     }
+    return $this;
+  }
+
+  public function addPropertyAlias($alias, $property)
+  {
+    $this->_aliases[$alias] = $property;
     return $this;
   }
 
