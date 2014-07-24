@@ -108,7 +108,7 @@ class Form
     {
       foreach($values as $value)
       {
-        if(starts_with($tag, 'element'))
+        if(starts_with($tag, 'element', false))
         {
           $defaultTags[substr($tag, 7)] = $value;
         }
