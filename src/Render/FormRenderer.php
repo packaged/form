@@ -27,7 +27,7 @@ class FormRenderer implements IFormRenderer
   {
     $return = '<form class="packaged-form"';
     $return .= ' method="' . $form->getOption('method', 'post') . '"';
-    $return .= ' action="' . $form->getOption('action', '/') . '"';
+    $return .= ' action="' . $form->getOption('action', '') . '"';
     $return .= ' name="' . $form->getOption('name') . '"';
     $return .= ' id="' . $form->getId() . '"';
     $return .= '>';
