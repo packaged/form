@@ -169,10 +169,12 @@ class FormElementRenderer implements IFormElementRenderer
     $values = $element->getOption('values', []);
     foreach($values as $key => $val)
     {
+      $disabled = false;
       if(is_array($val))
       {
         if(is_assoc($val))
         {
+          $disabled = isset($val['disabled']);
           if(isset($val['id']))
           {
             $value = $val['id'];
@@ -214,6 +216,10 @@ class FormElementRenderer implements IFormElementRenderer
       if((string)($element->getValue()) === (string)$value)
       {
         $out .= ' selected="selected"';
+      }
+      if($disabled)
+      {
+        $out .= ' disabled';
       }
       $out .= '>';
       $out .= $text;
