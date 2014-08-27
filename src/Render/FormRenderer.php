@@ -23,14 +23,35 @@ class FormRenderer implements IFormRenderer
     return $this->_elementGroupType;
   }
 
+  protected function _renderAttributes(
+    Form $form, array $custom = null
+  )
+  {
+    $attributes = [
+      "class"  => "packaged-form",
+      "method" => $form->getOption('method', 'post'),
+      "action" => $form->getOption('action', ''),
+      "name"   => $form->getOption('name'),
+      "id"     => $form->getId(),
+    ];
+
+    $attributes = array_merge(
+      $attributes,
+      (array)$custom,
+      (array)$form->getAttributes()
+    );
+
+    $return = '';
+    foreach($attributes as $k => $v)
+    {
+      $return .= $v === null ? " $k" : " $k=\"$v\"";
+    }
+    return $return;
+  }
+
   public function renderOpening(Form $form)
   {
-    $return = '<form class="packaged-form"';
-    $return .= ' method="' . $form->getOption('method', 'post') . '"';
-    $return .= ' action="' . $form->getOption('action', '') . '"';
-    $return .= ' name="' . $form->getOption('name') . '"';
-    $return .= ' id="' . $form->getId() . '"';
-    $return .= '>';
+    $return = '<form'.$this->_renderAttributes($form).'>';
     return $return;
   }
 
