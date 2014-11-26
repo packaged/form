@@ -6,10 +6,14 @@ use Packaged\Form\Form;
 class FormRenderer implements IFormRenderer
 {
   protected $_elementGroupType;
+  protected $_showAutoSubmitButton;
 
-  public function __construct($elementGroupType = null)
+  public function __construct(
+    $elementGroupType = null, $showAutoSubmitButton = true
+  )
   {
     $this->_elementGroupType = $elementGroupType;
+    $this->_showAutoSubmitButton = $showAutoSubmitButton;
   }
 
   public function setElementGroupType($elementGroupType = 'dl')
@@ -32,7 +36,7 @@ class FormRenderer implements IFormRenderer
       "method" => $form->getOption('method', 'post'),
       "action" => $form->getOption('action', ''),
       "name"   => $form->getOption('name'),
-      "id"     => $form->getId(),
+      "id"     => $form->getId()
     ];
 
     $attributes = array_merge(
@@ -89,9 +93,15 @@ class FormRenderer implements IFormRenderer
 
   public function render(Form $form)
   {
-    return $this->renderOpening($form)
-    . $this->renderElements($form)
-    . $this->renderActions($form)
-    . $this->renderClosing($form);
+    $return = $this->renderOpening($form) . $this->renderElements($form);
+
+    if ($this->_showAutoSubmitButton)
+    {
+      $return .= $this->renderActions($form);
+    }
+
+    $return .= $this->renderClosing($form);
+
+    return $return;
   }
 }

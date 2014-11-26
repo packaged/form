@@ -18,6 +18,7 @@ class Form
   protected $_id;
   protected $_dataHolder;
   protected $_aliases;
+  protected $_showAutoSubmitButton = true;
 
   /**
    * @var IFormRenderer
@@ -308,11 +309,22 @@ class Form
     return $result;
   }
 
+  /**
+   * @param bool $bool
+   *
+   * @return $this
+   */
+  public function showAutoSubmitButton($bool)
+  {
+    $this->_showAutoSubmitButton = ValueAs::bool($bool);
+    return $this;
+  }
+
   public function render()
   {
     if($this->_renderer === null)
     {
-      $this->_renderer = new FormRenderer();
+      $this->_renderer = new FormRenderer(null, $this->_showAutoSubmitButton);
     }
 
     return $this->_renderer->render($this);
