@@ -225,7 +225,7 @@ class FormElement
 
   public function getType()
   {
-    return $this->_type;
+    return trim($this->_type);
   }
 
   public function setLabel($label)
