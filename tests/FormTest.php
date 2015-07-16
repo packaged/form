@@ -15,13 +15,13 @@ class FormTest extends \PHPUnit_Framework_TestCase
       [
         'username'   => 'myuser',
         'password'   => 'test',
-        'nullValue'  => '',
+        'null_value' => '',
         'emptyValue' => ''
       ]
     );
     $this->assertEquals('myuser', $form->getValue('username'));
-    $this->assertEquals(null, $form->getValue('nullValue'));
-    $this->assertEquals('', $form->getValue('emptyValue'));
+    $this->assertSame(null, $form->getValue('nullValue'));
+    $this->assertSame('', $form->getValue('emptyValue'));
   }
 
   public function testForm()

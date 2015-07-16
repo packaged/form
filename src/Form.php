@@ -207,14 +207,6 @@ class Form
   {
     foreach($data as $key => $value)
     {
-      if(isset(static::$_propDocBlocks[$this->_calledClass][$key]))
-      {
-        $docblock = static::$_propDocBlocks[$this->_calledClass][$key];
-        if($docblock->hasTag('nullify') && $value === '')
-        {
-          $value = null;
-        }
-      }
       $this->setValue($key, $value);
     }
     return $this;
@@ -256,6 +248,14 @@ class Form
     //Only set values for available public properties
     if(in_array($property, static::$_properties[$this->_calledClass]))
     {
+      if(isset(static::$_propDocBlocks[$this->_calledClass][$property]))
+      {
+        $docblock = static::$_propDocBlocks[$this->_calledClass][$property];
+        if($docblock->hasTag('nullify') && $value === '')
+        {
+          $value = null;
+        }
+      }
       $this->getDataObject()->$property = $value;
     }
     return $this;
