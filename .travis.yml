@@ -7,7 +7,6 @@ php:
 
 before_script:
   - composer self-update
-  - sleep 20
   - bash -c 'composer install --no-interaction --prefer-source -o'
 
 script:
