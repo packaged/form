@@ -12,13 +12,18 @@ class Form
   use OptionsTrait;
 
   protected $_calledClass;
-  protected static $_properties;
   protected $_elements;
 
   protected $_id;
   protected $_dataHolder;
   protected $_aliases;
   protected $_showAutoSubmitButton = true;
+
+  /**
+   * @var DocBlockParser[][]
+   */
+  protected static $_propDocBlocks = [];
+  protected static $_properties = [];
 
   /**
    * @var IFormRenderer
@@ -123,10 +128,8 @@ class Form
         continue;
       }
 
-      $docblock = DocBlockParser::fromProperty(
-        $this->getDataObject(),
-        $property
-      );
+      static::$_propDocBlocks[$this->_calledClass][$property] = $docblock
+        = DocBlockParser::fromProperty($this->getDataObject(), $property);
 
       //Setup the type
       $type = $docblock->getTagFailover(["inputType", "type", "input"]);
@@ -197,19 +200,21 @@ class Form
    * Set the value of multiple properties
    *
    * @param array $data
-   * @param bool  $emptyStringToNull
    *
    * @return $this
    */
-  public function hydrate(array $data, $emptyStringToNull = false)
+  public function hydrate(array $data)
   {
     foreach($data as $key => $value)
     {
-      if($emptyStringToNull && $value === '')
+      if(isset(static::$_propDocBlocks[$this->_calledClass][$key]))
       {
-        $value = null;
+        $docblock = static::$_propDocBlocks[$this->_calledClass][$key];
+        if($docblock->hasTag('nullify') && $value === '')
+        {
+          $value = null;
+        }
       }
-
       $this->setValue($key, $value);
     }
     return $this;
