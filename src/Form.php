@@ -35,8 +35,8 @@ class Form
     }
     $this->_options['action'] = $action;
     $this->_options['method'] = $method;
-    $this->_options['name']   = $name;
-    $this->_id                = Strings::urlize($name);
+    $this->_options['name'] = $name;
+    $this->_id = Strings::urlize($name);
 
     if(!$disableStartup)
     {
@@ -64,8 +64,8 @@ class Form
     $class, $action = null, $method = 'post', $name = null
   )
   {
-    $form               = new self($action, $method, $name, true);
-    $form->_dataHolder  = $class;
+    $form = new self($action, $method, $name, true);
+    $form->_dataHolder = $class;
     $form->_calledClass = get_class($class);
     $form->_startup();
     return $form;
@@ -101,9 +101,9 @@ class Form
    */
   protected function _boot()
   {
-    $formDoc       = DocBlockParser::fromObject($this->getDataObject());
+    $formDoc = DocBlockParser::fromObject($this->getDataObject());
     $labelPosition = FormElement::LABEL_BEFORE;
-    $defaultTags   = [];
+    $defaultTags = [];
 
     foreach($formDoc->getTags() as $tag => $values)
     {
@@ -197,13 +197,19 @@ class Form
    * Set the value of multiple properties
    *
    * @param array $data
+   * @param bool  $emptyStringToNull
    *
    * @return $this
    */
-  public function hydrate(array $data)
+  public function hydrate(array $data, $emptyStringToNull = false)
   {
     foreach($data as $key => $value)
     {
+      if($emptyStringToNull && $value === '')
+      {
+        $value = null;
+      }
+
       $this->setValue($key, $value);
     }
     return $this;
@@ -213,6 +219,7 @@ class Form
    * Get the value of a property
    *
    * @param $property
+   * @param $default
    *
    * @return mixed
    */
