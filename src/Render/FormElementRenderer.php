@@ -2,6 +2,8 @@
 namespace Packaged\Form\Render;
 
 use Packaged\Form\FormElement;
+use Packaged\Helpers\Arrays;
+use Packaged\Helpers\Strings;
 
 class FormElementRenderer implements IFormElementRenderer
 {
@@ -30,12 +32,13 @@ class FormElementRenderer implements IFormElementRenderer
   {
     switch($element->getLabelPosition())
     {
-      case FormElement::LABEL_NONE:
-        return '{{input}}';
       case FormElement::LABEL_BEFORE:
         return '{{label}} {{input}}<hr/>';
       case FormElement::LABEL_AFTER:
         return '{{input}} {{label}}';
+      case FormElement::LABEL_NONE:
+      default:
+        return '{{input}}';
     }
   }
 
@@ -43,12 +46,13 @@ class FormElementRenderer implements IFormElementRenderer
   {
     switch($element->getLabelPosition())
     {
-      case FormElement::LABEL_NONE:
-        return '<dd>{{input}}</dd>';
       case FormElement::LABEL_BEFORE:
         return '<dt>{{label}}</dt><dd>{{input}}</dd>';
       case FormElement::LABEL_AFTER:
         return '<dd>{{input}}</dd><dt>{{label}}</dt>';
+      case FormElement::LABEL_NONE:
+      default:
+        return '<dd>{{input}}</dd>';
     }
   }
 
@@ -132,7 +136,7 @@ class FormElementRenderer implements IFormElementRenderer
 
   public function renderInput(FormElement $element)
   {
-    $value = esc($element->getValue());
+    $value = Strings::escape($element->getValue());
     if($element->getType() === FormElement::PASSWORD)
     {
       $value = "";
@@ -155,7 +159,7 @@ class FormElementRenderer implements IFormElementRenderer
     $out = '<textarea';
     $out .= $this->_renderAttributes($element);
     $out .= '>';
-    $out .= esc($element->getValue());
+    $out .= Strings::escape($element->getValue());
     $out .= '</textarea>';
     return $out;
   }
@@ -172,7 +176,7 @@ class FormElementRenderer implements IFormElementRenderer
       $disabled = false;
       if(is_array($val))
       {
-        if(is_assoc($val))
+        if(Arrays::isAssoc($val))
         {
           $disabled = isset($val['disabled']);
           if(isset($val['id']))
@@ -204,12 +208,12 @@ class FormElementRenderer implements IFormElementRenderer
         else
         {
           $value = current($val);
-          $text  = next($val);
+          $text = next($val);
         }
       }
       else
       {
-        $text  = $val;
+        $text = $val;
         $value = $key;
       }
       $out .= '<option value="' . $value . '"';

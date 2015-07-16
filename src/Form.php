@@ -109,7 +109,7 @@ class Form
     {
       foreach($values as $value)
       {
-        if(starts_with($tag, 'element', false))
+        if(Strings::startsWith($tag, 'element', false))
         {
           $defaultTags[substr($tag, 7)] = $value;
         }
