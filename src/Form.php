@@ -18,6 +18,9 @@ class Form
   protected $_dataHolder;
   protected $_aliases;
   protected $_showAutoSubmitButton = true;
+  private $_sessionId;
+  protected $_csrfField = 'frsctoken';
+  public $frsctoken;
 
   /**
    * @var DocBlockParser[][]
@@ -63,6 +66,83 @@ class Form
     $this->_configure();
 
     $this->_processPublicProperties();
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getSessionId()
+  {
+    return $this->_sessionId;
+  }
+
+  /**
+   * @param mixed $sessionId
+   */
+  public function setSessionId($sessionId)
+  {
+    $this->_sessionId = $sessionId;
+  }
+
+  protected function _buildCsrf()
+  {
+    if(empty($this->_sessionId))
+    {
+      $this->_sessionId = session_id();
+    }
+
+    $this->setValue($this->_csrfField, $this->getCsrfToken());
+    $element = new FormElement(
+      $this,
+      $this->_csrfField,
+      FormElement::HIDDEN,
+      null,
+      FormElement::LABEL_NONE
+    );
+    $element->setDataObject($this, $this->_csrfField);
+
+    $this->_elements[$this->_csrfField] = $element;
+  }
+
+  public function getCsrfToken()
+  {
+    return $this->_getCsrfKey() . password_hash(
+      $this->_getCsrfRaw($this->_getCsrfKey(), time()),
+      PASSWORD_DEFAULT
+    );
+  }
+
+  protected function _getCsrfKey()
+  {
+    return substr(md5($this->_id), 6, 6);
+  }
+
+  protected function _getCsrfRaw($key, $time = null)
+  {
+    if($time === null)
+    {
+      $time = time();
+    }
+    return $this->_sessionId . $key . date("YmdH", $time);
+  }
+
+  public function isValidCsrf()
+  {
+    return $this->verifyCsrfToken($this->getValue($this->_csrfField));
+  }
+
+  public function verifyCsrfToken($token)
+  {
+    $key = substr($token, 0, 6);
+    $token = substr($token, 6);
+    $pass = password_verify($this->_getCsrfRaw($key), $token);
+
+    if(!$pass)
+    {
+      $pass = password_verify($this->_getCsrfRaw($key, time() - 3600), $token);
+    }
+
+    return (bool)$pass;
   }
 
   public static function fromClass(
@@ -171,6 +251,8 @@ class Form
 
       $this->_elements[$property] = $element;
     }
+
+    $this->_buildCsrf();
   }
 
   protected function _processDocBlock(DocBlockParser $doc, FormElement $element)
