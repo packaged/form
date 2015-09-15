@@ -21,6 +21,7 @@ class Form
   private $_sessionId;
   protected $_csrfField = 'frsctoken';
   public $frsctoken;
+  protected $_newToken;
 
   /**
    * @var DocBlockParser[][]
@@ -91,7 +92,9 @@ class Form
       $this->_sessionId = session_id();
     }
 
-    $this->setValue($this->_csrfField, $this->getCsrfToken());
+    $token = $this->getCsrfToken();
+    $this->_newToken = $token;
+    $this->setValue($this->_csrfField, $token);
     $element = new FormElement(
       $this,
       $this->_csrfField,
@@ -133,6 +136,11 @@ class Form
 
   public function verifyCsrfToken($token)
   {
+    if(empty($token) || $token == $this->_newToken)
+    {
+      return false;
+    }
+
     $key = substr($token, 0, 6);
     $token = substr($token, 6);
     $pass = password_verify($this->_getCsrfRaw($key), $token);
