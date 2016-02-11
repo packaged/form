@@ -70,22 +70,31 @@ class FormElementRenderer implements IFormElementRenderer
       $template = $this->defaultTemplate($element);
     }
 
-    switch($element->getType())
+    if(strpos($template, '{{input}}') !== false)
     {
-      case FormElement::TEXTAREA;
-        $input = $this->renderTextarea($element);
-        break;
-      case FormElement::SELECT;
-        $input = $this->renderSelect($element);
-        break;
-      default:
-        $input = $this->renderInput($element);
+      switch($element->getType())
+      {
+        case FormElement::TEXTAREA;
+          $input = $this->renderTextarea($element);
+          break;
+        case FormElement::SELECT;
+          $input = $this->renderSelect($element);
+          break;
+        default:
+          $input = $this->renderInput($element);
+      }
+      $template = str_replace('{{input}}', $input, $template);
+    }
+    if(strpos($template, '{{label}}') !== false)
+    {
+      $template = str_replace(
+        '{{label}}',
+        $this->renderLabel($element),
+        $template
+      );
     }
 
-    $out = str_replace('{{input}}', $input, $template);
-    $out = str_replace('{{label}}', $this->renderLabel($element), $out);
-
-    return $out;
+    return $template;
   }
 
   public function renderRequiredField()
@@ -117,7 +126,7 @@ class FormElementRenderer implements IFormElementRenderer
   {
     $attributes = [
       "name" => $element->getOption('name'),
-      "id"   => $element->getOption('id')
+      "id"   => $element->getOption('id'),
     ];
 
     $attributes = array_merge(
