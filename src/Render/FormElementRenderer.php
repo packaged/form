@@ -226,10 +226,22 @@ class FormElementRenderer implements IFormElementRenderer
         $value = $key;
       }
       $out .= '<option value="' . $value . '"';
-      if((string)($element->getValue()) === (string)$value)
+
+      if(is_array($element->getValue()))
       {
-        $out .= ' selected="selected"';
+        if(in_array((string)$value, $element->getValue()))
+        {
+          $out .= ' selected="selected"';
+        }
       }
+      else
+      {
+        if((string)($element->getValue()) === (string)$value)
+        {
+          $out .= ' selected="selected"';
+        }
+      }
+      
       if($disabled)
       {
         $out .= ' disabled';
