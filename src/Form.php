@@ -2,6 +2,7 @@
 namespace Packaged\Form;
 
 use Packaged\DocBlock\DocBlockParser;
+use Packaged\Form\Render\FormElementRenderer;
 use Packaged\Form\Render\FormRenderer;
 use Packaged\Form\Render\IFormRenderer;
 use Packaged\Helpers\Strings;
@@ -19,6 +20,9 @@ class Form
   protected $_aliases;
   protected $_showAutoSubmitButton = true;
   private $_sessionId;
+
+  // CSRF
+  protected $_enableCsrf = true;
   protected $_csrfField = 'frsctoken';
   public $frsctoken;
   protected $_newToken;
@@ -34,18 +38,35 @@ class Form
    */
   protected $_renderer;
 
+  /**
+   * Form constructor.
+   *
+   * @param string $action
+   * @param string $method
+   * @param string $name
+   * @param bool   $disableStartup
+   * @param bool   $enableCsrf
+   */
   public function __construct(
-    $action = null, $method = 'post', $name = null, $disableStartup = false
+    $action = null,
+    $method = 'post',
+    $name = null,
+    $disableStartup = false,
+    $enableCsrf = true
   )
   {
     if($name === null)
     {
       $name = 'Form-' . Strings::randomString(4);
     }
+
     $this->_options['action'] = $action;
     $this->_options['method'] = $method;
     $this->_options['name'] = $name;
+
     $this->_id = Strings::urlize($name);
+
+    $this->_enableCsrf = $enableCsrf;
 
     if(!$disableStartup)
     {
@@ -260,12 +281,19 @@ class Form
       $this->_elements[$property] = $element;
     }
 
-    $this->_buildCsrf();
+    if($this->_enableCsrf)
+    {
+      $this->_buildCsrf();
+    }
+    else
+    {
+      $this->getElement($this->_csrfField)
+        ->setRenderer(new FormElementRenderer(''));
+    }
   }
 
   protected function _processDocBlock(DocBlockParser $doc, FormElement $element)
   {
-
     return $element;
   }
 
