@@ -124,10 +124,18 @@ class FormElementRenderer implements IFormElementRenderer
     FormElement $element, array $custom = null
   )
   {
-    $attributes = [
-      "name" => $element->getOption('name'),
-      "id"   => $element->getOption('id'),
-    ];
+    $attributes = [];
+
+    $name = $element->getOption('name');
+    if(!empty($name))
+    {
+      $attributes['name'] = $name;
+    }
+    $id = $element->getOption('id');
+    if(!empty($id))
+    {
+      $attributes['id'] = $id;
+    }
 
     $attributes = array_merge(
       $attributes,
@@ -241,7 +249,7 @@ class FormElementRenderer implements IFormElementRenderer
           $out .= ' selected="selected"';
         }
       }
-      
+
       if($disabled)
       {
         $out .= ' disabled';
