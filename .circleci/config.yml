@@ -8,7 +8,12 @@ defaults: &defaults
     - run: echo "date.timezone = UTC" >> $(php --ini |grep Scan |awk '{print $NF}')/timezone.ini
     - run: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
-    # custom steps here
+    # pre-checkout steps
+
+    # checkout
+    - checkout
+
+    # post-checkout steps
 
     # run tests
     - run: composer install -n --prefer-dist
