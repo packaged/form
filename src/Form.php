@@ -131,9 +131,9 @@ class Form
   public function getCsrfToken()
   {
     return $this->_getCsrfKey() . password_hash(
-      $this->_getCsrfRaw($this->_getCsrfKey(), time()),
-      PASSWORD_DEFAULT
-    );
+        $this->_getCsrfRaw($this->_getCsrfKey(), time()),
+        PASSWORD_DEFAULT
+      );
   }
 
   protected function _getCsrfKey()
@@ -157,7 +157,7 @@ class Form
 
   public function verifyCsrfToken($token)
   {
-    if(empty($token) || $token == $this->_newToken)
+    if(empty($token) || (!is_string($token)) || ($token == $this->_newToken))
     {
       return false;
     }
