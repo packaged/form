@@ -25,4 +25,8 @@ class MyForm extends Form
    * @values     UK,GB,CA,US,KDH
    */
   public $country = 'GB';
+  /**
+   * @data-test 123
+   */
+  public $dataTest;
 }

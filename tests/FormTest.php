@@ -4,8 +4,9 @@ namespace Packaged\Form\Tests;
 use Packaged\Form\Form;
 use Packaged\Form\Tests\Support\MyForm;
 use Packaged\Form\Tests\Support\User;
+use PHPUnit\Framework\TestCase;
 
-class FormTest extends \PHPUnit_Framework_TestCase
+class FormTest extends TestCase
 {
   public function testFromClass()
   {
@@ -16,7 +17,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
         'username'   => 'myuser',
         'password'   => 'test',
         'null_value' => '',
-        'emptyValue' => ''
+        'emptyValue' => '',
       ]
     );
     $this->assertEquals('myuser', $form->getValue('username'));
@@ -29,5 +30,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
     $form = new MyForm();
     $form->hydrate(['name' => 'myname']);
     $this->assertEquals('myname', $form->name);
+
+    $this->assertEquals('123', $form->getElement('dataTest')->getAttribute('data-test'));
   }
 }

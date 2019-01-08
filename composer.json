@@ -7,13 +7,18 @@
       "email": "brooke@bajb.net"
     }
   ],
+  "config": {
+    "platform": {
+      "php": "7.1"
+    }
+  },
   "require": {
-    "php": ">=5.4.0",
+    "php": ">=7.1",
     "packaged/helpers": "~1.9",
-    "packaged/docblock": "~0.1"
+    "packaged/docblock": "^1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "4.1"
+    "phpunit/phpunit": "^7.5"
   },
   "autoload": {
     "psr-4": {
