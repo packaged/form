@@ -16,6 +16,11 @@ class TestForm extends Form
    */
   public $number;
 
+  protected function _getAction()
+  {
+    return '/test';
+  }
+
   protected function _initDataHandlers()
   {
     $this->text = new TextFDH();

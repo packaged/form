@@ -55,14 +55,14 @@ class FormTest extends TestCase
   {
     $form = new TestForm();
     $this->assertEquals(
-      '<form method="POST"><input type="text" name="text" /><input type="number" name="number" /></form>',
+      '<form method="POST" action="/test"><input type="text" name="text" /><input type="number" name="number" /></form>',
       $form->produceSafeHTML()->getContent()
     );
 
     $form->number = 4;
     $form->text = 'abc';
     $this->assertEquals(
-      '<form method="POST"><input type="text" value="abc" name="text" /><input type="number" value="4" name="number" /></form>',
+      '<form method="POST" action="/test"><input type="text" value="abc" name="text" /><input type="number" value="4" name="number" /></form>',
       $form->produceSafeHTML()->getContent()
     );
   }
