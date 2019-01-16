@@ -1,6 +1,8 @@
 <?php
 namespace PackagedUi\Form;
 
+use Packaged\Glimpse\Core\HtmlTag;
+
 interface FormDataHandler
 {
   public function isValidValue($value): bool;
@@ -21,4 +23,6 @@ interface FormDataHandler
   public function setValue($vaue);
 
   public function getType(): string;
+
+  public function getElement(): HtmlTag;
 }

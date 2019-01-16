@@ -1,6 +1,7 @@
 <?php
 namespace PackagedUi\Form\FDH;
 
+use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Form\Input;
 use PackagedUi\Form\FormDataHandler;
 
@@ -68,5 +69,18 @@ abstract class AbstractFDH implements FormDataHandler
 
   public function validate($value)
   {
+  }
+
+  protected $_element;
+
+  public function getElement(): HtmlTag
+  {
+    $this->_element = new Input();
+    $this->_element->setType($this->getType());
+    if($this->getValue() !== null)
+    {
+      $this->_element->setValue($this->getValue());
+    }
+    return $this->_element;
   }
 }

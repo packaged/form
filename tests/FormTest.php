@@ -50,4 +50,20 @@ class FormTest extends TestCase
     $this->assertEquals('abc', $form->text->getValue());
     $this->assertNull($form->number->getValue());
   }
+
+  public function testRender()
+  {
+    $form = new TestForm();
+    $this->assertEquals(
+      '<form method="POST"><input type="text" name="text" /><input type="number" name="number" /></form>',
+      $form->produceSafeHTML()->getContent()
+    );
+
+    $form->number = 4;
+    $form->text = 'abc';
+    $this->assertEquals(
+      '<form method="POST"><input type="text" value="abc" name="text" /><input type="number" value="4" name="number" /></form>',
+      $form->produceSafeHTML()->getContent()
+    );
+  }
 }

@@ -2,6 +2,7 @@
 namespace PackagedUi\Form;
 
 use Packaged\Glimpse\Core\HtmlTag;
+use Packaged\Glimpse\Tags\Form\AbstractFormElementTag;
 use Packaged\Helpers\Arrays;
 use Packaged\Helpers\Objects;
 
@@ -19,7 +20,22 @@ abstract class Form extends HtmlTag
   {
     parent::__construct();
     $this->_initDataHandlers();
+    $this->setAttribute('method', $this->_getMethod());
+    if($this->_getAction())
+    {
+      $this->setAttribute('action', $this->_getAction());
+    }
     $this->_preparePublicProperties();
+  }
+
+  protected function _getMethod()
+  {
+    return 'POST';
+  }
+
+  protected function _getAction()
+  {
+    return '';
   }
 
   final protected function _preparePublicProperties()
@@ -109,5 +125,20 @@ abstract class Form extends HtmlTag
       }
     }
     return $errorKeys;
+  }
+
+  protected function _getContentForRender()
+  {
+    $result = [];
+    foreach($this->_dataHandlers as $name => $handler)
+    {
+      $ele = $handler->getElement();
+      if($ele instanceof AbstractFormElementTag)
+      {
+        $ele->setName($name);
+      }
+      $result[] = $ele;
+    }
+    return $result;
   }
 }
