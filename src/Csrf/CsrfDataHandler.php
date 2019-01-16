@@ -16,7 +16,12 @@ class CsrfDataHandler extends AbstractDataHandler
   {
     $this->setFormSecret($formSecret);
     $this->setSessionSecret($sessionSecret);
+  }
+
+  public function applyNewToken()
+  {
     $this->setValue(password_hash($this->_generatePassword(), PASSWORD_DEFAULT));
+    return $this;
   }
 
   protected function _generatePassword()
