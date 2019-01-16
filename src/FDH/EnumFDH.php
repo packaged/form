@@ -25,7 +25,7 @@ class EnumFDH extends AbstractFDH
     return $this->_options;
   }
 
-  public function getDefaultDecorator(): DataHandlerDecorator
+  protected function _defaultDecorator(): DataHandlerDecorator
   {
     return new SelectDecorator();
   }

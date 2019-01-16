@@ -72,7 +72,7 @@ class CsrfFDH extends AbstractFDH
     return password_verify($this->_generatePassword(), $value);
   }
 
-  public function getDefaultDecorator(): DataHandlerDecorator
+  protected function _defaultDecorator(): DataHandlerDecorator
   {
     $decorator = new InputDecorator();
     $decorator->setType(Input::TYPE_HIDDEN);

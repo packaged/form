@@ -20,5 +20,5 @@ interface FormDataHandler
 
   public function setValue($vaue);
 
-  public function getDefaultDecorator(): DataHandlerDecorator;
+  public function getDecorator(): DataHandlerDecorator;
 }

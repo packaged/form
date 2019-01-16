@@ -16,7 +16,7 @@ class AbstractFDHTest extends TestCase
     $this->assertTrue($fdh->isValid());
     $this->assertTrue($fdh->isValidValue(''));
 
-    $this->assertNotNull($fdh->getDefaultDecorator());
+    $this->assertNotNull($fdh->getDecorator());
   }
 
   public function testValidation()

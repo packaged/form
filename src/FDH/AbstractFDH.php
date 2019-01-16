@@ -9,6 +9,8 @@ use PackagedUi\Form\FormDataHandler;
 abstract class AbstractFDH implements FormDataHandler
 {
   protected $_value;
+  /** @var DataHandlerDecorator */
+  protected $_decorator;
 
   /**
    * @return mixed
@@ -63,9 +65,23 @@ abstract class AbstractFDH implements FormDataHandler
   {
   }
 
-  protected $_element;
+  /**
+   * @param DataHandlerDecorator $decorator
+   *
+   * @return $this
+   */
+  public function setDecorator(DataHandlerDecorator $decorator)
+  {
+    $this->_decorator = $decorator;
+    return $this;
+  }
 
-  public function getDefaultDecorator(): DataHandlerDecorator
+  public function getDecorator(): DataHandlerDecorator
+  {
+    return $this->_decorator ?? $this->_defaultDecorator();
+  }
+
+  protected function _defaultDecorator(): DataHandlerDecorator
   {
     return new InputDecorator();
   }
@@ -74,7 +90,7 @@ abstract class AbstractFDH implements FormDataHandler
   {
     if($decorator == null)
     {
-      $decorator = $this->getDefaultDecorator();
+      $decorator = $this->getDecorator();
     }
     return $decorator->buildElement($this, $options);
   }

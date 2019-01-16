@@ -18,7 +18,7 @@ class TestIntegerFDH extends AbstractFDH
     }
   }
 
-  public function getDefaultDecorator(): DataHandlerDecorator
+  protected function _defaultDecorator(): DataHandlerDecorator
   {
     $decorator = new InputDecorator();
     $decorator->setType(Input::TYPE_NUMBER);

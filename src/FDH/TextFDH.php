@@ -7,7 +7,7 @@ use PackagedUi\Form\Decorators\InputDecorator;
 
 class TextFDH extends AbstractFDH
 {
-  public function getDefaultDecorator(): DataHandlerDecorator
+  protected function _defaultDecorator(): DataHandlerDecorator
   {
     $decorator = new InputDecorator();
     $decorator->setType(Input::TYPE_TEXT);
