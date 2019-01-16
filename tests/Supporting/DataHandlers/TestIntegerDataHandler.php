@@ -1,12 +1,12 @@
 <?php
-namespace PackagedUi\Tests\Form\Supporting\FDH;
+namespace PackagedUi\Tests\Form\Supporting\DataHandlers;
 
 use Packaged\Glimpse\Tags\Form\Input;
 use PackagedUi\Form\DataHandlerDecorator;
+use PackagedUi\Form\DataHandlers\AbstractDataHandler;
 use PackagedUi\Form\Decorators\InputDecorator;
-use PackagedUi\Form\FormDataHandlers\AbstractFDH;
 
-class TestIntegerFDH extends AbstractFDH
+class TestIntegerDataHandler extends AbstractDataHandler
 {
   const ERR_INVALID_NUMBER = "Invalid numeric value";
 

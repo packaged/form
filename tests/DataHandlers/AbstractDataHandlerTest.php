@@ -1,17 +1,17 @@
 <?php
-namespace PackagedUi\Tests\Form\FDH;
+namespace PackagedUi\Tests\Form\DataHandlers;
 
 use Packaged\Glimpse\Tags\Form\Input;
 use PackagedUi\Form\Decorators\InputDecorator;
-use PackagedUi\Tests\Form\Supporting\FDH\TestAbstractFDH;
-use PackagedUi\Tests\Form\Supporting\FDH\TestIntegerFDH;
+use PackagedUi\Tests\Form\Supporting\DataHandlers\TestAbstractDataHandler;
+use PackagedUi\Tests\Form\Supporting\DataHandlers\TestIntegerDataHandler;
 use PHPUnit\Framework\TestCase;
 
-class AbstractFDHTest extends TestCase
+class AbstractDataHandlerTest extends TestCase
 {
   public function testAbstract()
   {
-    $fdh = new TestAbstractFDH();
+    $fdh = new TestAbstractDataHandler();
     $this->assertEmpty($fdh->getValue());
     $fdh->setValue('abc');
     $this->assertEquals('abc', $fdh->getValue());
@@ -23,7 +23,7 @@ class AbstractFDHTest extends TestCase
 
   public function testValidation()
   {
-    $fdh = new TestIntegerFDH();
+    $fdh = new TestIntegerDataHandler();
     $this->assertTrue($fdh->isValid());
     $fdh->setValue('1abc');
     $this->assertFalse($fdh->isValid());
@@ -33,7 +33,7 @@ class AbstractFDHTest extends TestCase
 
   public function testDecorator()
   {
-    $fdh = new TestAbstractFDH();
+    $fdh = new TestAbstractDataHandler();
     $defaultDecorator = $fdh->getDecorator();
     $newDecorator = new InputDecorator();
     $newDecorator->setType(Input::TYPE_DATE);

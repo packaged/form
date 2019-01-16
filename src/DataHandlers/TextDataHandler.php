@@ -1,5 +1,5 @@
 <?php
-namespace PackagedUi\Form\FormDataHandlers;
+namespace PackagedUi\Form\DataHandlers;
 
 use Packaged\Glimpse\Tags\Form\Input;
 use Packaged\Helpers\Strings;
@@ -7,7 +7,7 @@ use Packaged\Helpers\ValueAs;
 use PackagedUi\Form\DataHandlerDecorator;
 use PackagedUi\Form\Decorators\InputDecorator;
 
-class TextFDH extends AbstractFDH
+class TextDataHandler extends AbstractDataHandler
 {
   public function formatValue($value)
   {

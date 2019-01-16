@@ -2,8 +2,8 @@
 
 namespace PackagedUi\Tests\Form;
 
-use PackagedUi\Form\FormDataHandlers\TextFDH;
-use PackagedUi\Tests\Form\Supporting\FDH\TestIntegerFDH;
+use PackagedUi\Form\DataHandlers\TextDataHandler;
+use PackagedUi\Tests\Form\Supporting\DataHandlers\TestIntegerDataHandler;
 use PackagedUi\Tests\Form\Supporting\TestForm;
 use PHPUnit\Framework\TestCase;
 
@@ -15,7 +15,7 @@ class FormTest extends TestCase
     $this->assertTrue(isset($form->text));
     $this->assertNotTrue(isset($form->random));
 
-    $this->assertInstanceOf(TextFDH::class, $form->text);
+    $this->assertInstanceOf(TextDataHandler::class, $form->text);
     $this->assertEquals('', $form->text->getValue());
     $form->text->setValue('abc');
     $this->assertEquals('abc', $form->text->getValue());
@@ -30,7 +30,7 @@ class FormTest extends TestCase
     $this->assertIsArray($form->getErrors());
     $this->assertArrayHasKey('number', $form->getErrors());
 
-    $this->expectExceptionMessage(TestIntegerFDH::ERR_INVALID_NUMBER);
+    $this->expectExceptionMessage(TestIntegerDataHandler::ERR_INVALID_NUMBER);
     $form->validate();
   }
 
@@ -45,7 +45,7 @@ class FormTest extends TestCase
     $result = $form->hydrate(['text' => 'abc', 'number' => 'invalid']);
     $this->assertCount(1, $result);
     $this->assertArrayHasKey('number', $result);
-    $this->assertEquals(TestIntegerFDH::ERR_INVALID_NUMBER, $result['number']);
+    $this->assertEquals(TestIntegerDataHandler::ERR_INVALID_NUMBER, $result['number']);
 
     $this->assertEquals('abc', $form->text->getValue());
     $this->assertNull($form->number->getValue());

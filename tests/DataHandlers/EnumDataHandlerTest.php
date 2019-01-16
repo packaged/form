@@ -1,15 +1,15 @@
 <?php
 
-namespace PackagedUi\Tests\Form\FDH;
+namespace PackagedUi\Tests\Form\DataHandlers;
 
-use PackagedUi\Form\FormDataHandlers\EnumFDH;
+use PackagedUi\Form\DataHandlers\EnumDataHandler;
 use PHPUnit\Framework\TestCase;
 
-class EnumFDHTest extends TestCase
+class EnumDataHandlerTest extends TestCase
 {
   public function testGetElement()
   {
-    $ele = new EnumFDH();
+    $ele = new EnumDataHandler();
     $this->assertEquals('<select></select>', $ele->getElement()->produceSafeHTML()->getContent());
 
     $ele->setOptions(['a' => 'one', 'b' => 'two']);

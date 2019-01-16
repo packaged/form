@@ -5,5 +5,5 @@ use Packaged\Glimpse\Core\HtmlTag;
 
 interface DataHandlerDecorator
 {
-  public function buildElement(FormDataHandler $handler, array $options = null): HtmlTag;
+  public function buildElement(DataHandler $handler, array $options = null): HtmlTag;
 }

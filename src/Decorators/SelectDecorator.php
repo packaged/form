@@ -5,15 +5,15 @@ use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Form\Option;
 use Packaged\Glimpse\Tags\Form\Select;
 use PackagedUi\Form\DataHandlerDecorator;
-use PackagedUi\Form\FormDataHandlers\EnumFDH;
-use PackagedUi\Form\FormDataHandler;
+use PackagedUi\Form\DataHandlers\EnumDataHandler;
+use PackagedUi\Form\DataHandler;
 
 class SelectDecorator implements DataHandlerDecorator
 {
-  public function buildElement(FormDataHandler $handler, array $options = null): HtmlTag
+  public function buildElement(DataHandler $handler, array $options = null): HtmlTag
   {
     $element = new Select();
-    if($handler instanceof EnumFDH)
+    if($handler instanceof EnumDataHandler)
     {
       foreach($handler->getOptions() as $value => $key)
       {

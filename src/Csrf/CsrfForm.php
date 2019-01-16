@@ -6,7 +6,7 @@ use PackagedUi\Form\Form;
 class CsrfForm extends Form
 {
   /**
-   * @var CsrfFDH
+   * @var CsrfDataHandler
    */
   public $csrfToken;
 
@@ -25,6 +25,6 @@ class CsrfForm extends Form
 
   protected function _initDataHandlers()
   {
-    $this->csrfToken = new CsrfFDH($this->_getCsrfSecret(), $this->_sessionSecret);
+    $this->csrfToken = new CsrfDataHandler($this->_getCsrfSecret(), $this->_sessionSecret);
   }
 }

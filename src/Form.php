@@ -10,7 +10,7 @@ abstract class Form extends HtmlTag
 {
   protected $_tag = 'form';
   /**
-   * @var FormDataHandler[]
+   * @var DataHandler[]
    */
   protected $_dataHandlers = [];
 
@@ -111,7 +111,7 @@ abstract class Form extends HtmlTag
     foreach($data as $name => $value)
     {
       $ele = $this->__get($name);
-      if($ele instanceof FormDataHandler)
+      if($ele instanceof DataHandler)
       {
         try
         {

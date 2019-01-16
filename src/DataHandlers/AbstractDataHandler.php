@@ -1,12 +1,12 @@
 <?php
-namespace PackagedUi\Form\FormDataHandlers;
+namespace PackagedUi\Form\DataHandlers;
 
 use Packaged\Glimpse\Core\HtmlTag;
+use PackagedUi\Form\DataHandler;
 use PackagedUi\Form\DataHandlerDecorator;
 use PackagedUi\Form\Decorators\InputDecorator;
-use PackagedUi\Form\FormDataHandler;
 
-abstract class AbstractFDH implements FormDataHandler
+abstract class AbstractDataHandler implements DataHandler
 {
   protected $_value;
   /** @var DataHandlerDecorator */
@@ -23,7 +23,7 @@ abstract class AbstractFDH implements FormDataHandler
   /**
    * @param mixed $value
    *
-   * @return FormDataHandler
+   * @return DataHandler
    */
   public function setValue($value)
   {
@@ -34,7 +34,7 @@ abstract class AbstractFDH implements FormDataHandler
   /**
    * @param mixed $value
    *
-   * @return FormDataHandler
+   * @return DataHandler
    * @throws \Exception
    */
   public function setValueFormatted($value)

@@ -1,10 +1,10 @@
 <?php
-namespace PackagedUi\Form\FormDataHandlers;
+namespace PackagedUi\Form\DataHandlers;
 
 use PackagedUi\Form\DataHandlerDecorator;
 use PackagedUi\Form\Decorators\SelectDecorator;
 
-class EnumFDH extends AbstractFDH
+class EnumDataHandler extends AbstractDataHandler
 {
   protected $_options = [];
 

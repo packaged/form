@@ -1,18 +1,18 @@
 <?php
 namespace PackagedUi\Tests\Form\Supporting;
 
-use PackagedUi\Form\FormDataHandlers\TextFDH;
+use PackagedUi\Form\DataHandlers\TextDataHandler;
 use PackagedUi\Form\Form;
-use PackagedUi\Tests\Form\Supporting\FDH\TestIntegerFDH;
+use PackagedUi\Tests\Form\Supporting\DataHandlers\TestIntegerDataHandler;
 
 class TestForm extends Form
 {
   /**
-   * @var TextFDH
+   * @var TextDataHandler
    */
   public $text;
   /**
-   * @var TestIntegerFDH
+   * @var TestIntegerDataHandler
    */
   public $number;
 
@@ -23,7 +23,7 @@ class TestForm extends Form
 
   protected function _initDataHandlers()
   {
-    $this->text = new TextFDH();
-    $this->number = new TestIntegerFDH();
+    $this->text = new TextDataHandler();
+    $this->number = new TestIntegerDataHandler();
   }
 }

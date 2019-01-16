@@ -1,24 +1,24 @@
 <?php
 
-namespace PackagedUi\Tests\Form\FDH;
+namespace PackagedUi\Tests\Form\DataHandlers;
 
-use PackagedUi\Form\FormDataHandlers\TextFDH;
+use PackagedUi\Form\DataHandlers\TextDataHandler;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-class TextFDHTest extends TestCase
+class TextDataHandlerTest extends TestCase
 {
 
   public function testInvalidFormatValue()
   {
-    $text = new TextFDH();
+    $text = new TextDataHandler();
     $this->expectException(\InvalidArgumentException::class);
     $text->formatValue(new stdClass());
   }
 
   public function testFormatValue()
   {
-    $text = new TextFDH();
+    $text = new TextDataHandler();
     $text->setValueFormatted(true);
     $this->assertEquals('true', $text->getValue());
     $text->setValueFormatted(false);

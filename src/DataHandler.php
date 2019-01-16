@@ -1,7 +1,7 @@
 <?php
 namespace PackagedUi\Form;
 
-interface FormDataHandler
+interface DataHandler
 {
   public function isValidValue($value): bool;
 

@@ -4,7 +4,7 @@ namespace PackagedUi\Form\Decorators;
 use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Form\Input;
 use PackagedUi\Form\DataHandlerDecorator;
-use PackagedUi\Form\FormDataHandler;
+use PackagedUi\Form\DataHandler;
 
 class InputDecorator implements DataHandlerDecorator
 {
@@ -29,7 +29,7 @@ class InputDecorator implements DataHandlerDecorator
     return $this;
   }
 
-  public function buildElement(FormDataHandler $handler, array $options = null): HtmlTag
+  public function buildElement(DataHandler $handler, array $options = null): HtmlTag
   {
     $element = new Input();
     $element->setType($this->getType());

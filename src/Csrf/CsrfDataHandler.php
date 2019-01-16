@@ -3,10 +3,10 @@ namespace PackagedUi\Form\Csrf;
 
 use Packaged\Glimpse\Tags\Form\Input;
 use PackagedUi\Form\DataHandlerDecorator;
+use PackagedUi\Form\DataHandlers\AbstractDataHandler;
 use PackagedUi\Form\Decorators\InputDecorator;
-use PackagedUi\Form\FormDataHandlers\AbstractFDH;
 
-class CsrfFDH extends AbstractFDH
+class CsrfDataHandler extends AbstractDataHandler
 {
   protected $_sessionSecret;
   protected $_formSecret;
