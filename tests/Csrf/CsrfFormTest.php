@@ -1,7 +1,6 @@
 <?php
 namespace PackagedUi\Tests\Form\Csrf;
 
-use Packaged\Glimpse\Tags\Form\Input;
 use PackagedUi\Form\Csrf\CsrfForm;
 use PHPUnit\Framework\TestCase;
 
@@ -21,8 +20,6 @@ class CsrfFormTest extends TestCase
     $form = new CsrfForm($secret);
     $form->csrfToken->setValue($formValue);
     $this->assertTrue($form->csrfToken->isValid());
-
-    $this->assertEquals(Input::TYPE_HIDDEN, $form->csrfToken->getType());
 
     $form = new CsrfForm($secret);
     $form->csrfToken->setValue('invalidToken');

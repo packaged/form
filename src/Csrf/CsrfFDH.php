@@ -62,11 +62,6 @@ class CsrfFDH extends AbstractFDH
     return $this;
   }
 
-  public function getType(): string
-  {
-    return Input::TYPE_HIDDEN;
-  }
-
   public function isValidValue($value): bool
   {
     return password_verify($this->_generatePassword(), $value);
