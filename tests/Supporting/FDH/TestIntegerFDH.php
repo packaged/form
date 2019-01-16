@@ -2,6 +2,8 @@
 namespace PackagedUi\Tests\Form\Supporting\FDH;
 
 use Packaged\Glimpse\Tags\Form\Input;
+use PackagedUi\Form\DataHandlerDecorator;
+use PackagedUi\Form\Decorators\InputDecorator;
 use PackagedUi\Form\FDH\AbstractFDH;
 
 class TestIntegerFDH extends AbstractFDH
@@ -16,9 +18,10 @@ class TestIntegerFDH extends AbstractFDH
     }
   }
 
-  public function getType(): string
+  public function getDefaultDecorator(): DataHandlerDecorator
   {
-    return Input::TYPE_NUMBER;
+    $decorator = new InputDecorator();
+    $decorator->setType(Input::TYPE_NUMBER);
+    return $decorator;
   }
-
 }

@@ -2,6 +2,8 @@
 namespace PackagedUi\Form\Csrf;
 
 use Packaged\Glimpse\Tags\Form\Input;
+use PackagedUi\Form\DataHandlerDecorator;
+use PackagedUi\Form\Decorators\InputDecorator;
 use PackagedUi\Form\FDH\AbstractFDH;
 
 class CsrfFDH extends AbstractFDH
@@ -68,6 +70,13 @@ class CsrfFDH extends AbstractFDH
   public function isValidValue($value): bool
   {
     return password_verify($this->_generatePassword(), $value);
+  }
+
+  public function getDefaultDecorator(): DataHandlerDecorator
+  {
+    $decorator = new InputDecorator();
+    $decorator->setType(Input::TYPE_HIDDEN);
+    return $decorator;
   }
 
 }

@@ -132,7 +132,7 @@ abstract class Form extends HtmlTag
     $result = [];
     foreach($this->_dataHandlers as $name => $handler)
     {
-      $ele = $handler->getElement();
+      $ele = $handler->getDefaultDecorator()->buildElement($handler);
       if($ele instanceof AbstractFormElementTag)
       {
         $ele->setName($name);

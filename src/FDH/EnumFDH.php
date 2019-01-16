@@ -1,9 +1,8 @@
 <?php
 namespace PackagedUi\Form\FDH;
 
-use Packaged\Glimpse\Core\HtmlTag;
-use Packaged\Glimpse\Tags\Form\Option;
-use Packaged\Glimpse\Tags\Form\Select;
+use PackagedUi\Form\DataHandlerDecorator;
+use PackagedUi\Form\Decorators\SelectDecorator;
 
 class EnumFDH extends AbstractFDH
 {
@@ -26,19 +25,8 @@ class EnumFDH extends AbstractFDH
     return $this->_options;
   }
 
-  public function getElement(): HtmlTag
+  public function getDefaultDecorator(): DataHandlerDecorator
   {
-    $element = new Select();
-    foreach($this->getOptions() as $value => $key)
-    {
-      $option = new Option($key, $value);
-      if($value == $this->getValue())
-      {
-        $option->setAttribute('selected', 'selected');
-      }
-      $element->appendContent($option);
-    }
-    return $element;
+    return new SelectDecorator();
   }
-
 }
