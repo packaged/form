@@ -8,6 +8,17 @@ interface FormDataHandler
   public function isValid(): bool;
 
   /**
+   * Format a value into a safe value for the handler, throwing an exception if not compatible
+   *
+   * @param $value
+   *
+   * @return mixed
+   *
+   * @throws \Exception
+   */
+  public function formatValue($value);
+
+  /**
    * Validate the data, throwing an exception with the error
    *
    * @param $value

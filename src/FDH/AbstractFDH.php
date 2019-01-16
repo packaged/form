@@ -32,6 +32,18 @@ abstract class AbstractFDH implements FormDataHandler
   }
 
   /**
+   * @param mixed $value
+   *
+   * @return FormDataHandler
+   * @throws \Exception
+   */
+  public function setValueFormatted($value)
+  {
+    $this->_value = $this->formatValue($value);
+    return $this;
+  }
+
+  /**
    * Validate a value against the current data handler
    *
    * @param $value
@@ -65,6 +77,11 @@ abstract class AbstractFDH implements FormDataHandler
   {
   }
 
+  public function formatValue($value)
+  {
+    return $value;
+  }
+
   /**
    * @param DataHandlerDecorator $decorator
    *
@@ -78,7 +95,11 @@ abstract class AbstractFDH implements FormDataHandler
 
   public function getDecorator(): DataHandlerDecorator
   {
-    return $this->_decorator ?? $this->_defaultDecorator();
+    if(!$this->_decorator)
+    {
+      $this->_decorator = $this->_defaultDecorator();
+    }
+    return $this->_decorator;
   }
 
   protected function _defaultDecorator(): DataHandlerDecorator

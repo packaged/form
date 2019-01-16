@@ -115,6 +115,7 @@ abstract class Form extends HtmlTag
       {
         try
         {
+          $value = $ele->formatValue($value);
           $ele->validate($value);
           $ele->setValue($value);
         }

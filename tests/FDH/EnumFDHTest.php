@@ -24,10 +24,16 @@ class EnumFDHTest extends TestCase
       $ele->getElement()->produceSafeHTML()->getContent()
 
     );
+
+    $this->assertFalse($ele->isValidValue('c'));
     $ele->addOption('c', "three");
+    $this->assertTrue($ele->isValidValue('c'));
+
     $this->assertEquals(
       '<select><option value="a">one</option><option value="b" selected="selected">two</option><option value="c">three</option></select>',
       $ele->getElement()->produceSafeHTML()->getContent()
     );
+
+    $this->assertFalse($ele->isValidValue('d'));
   }
 }

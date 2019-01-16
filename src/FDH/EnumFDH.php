@@ -29,4 +29,15 @@ class EnumFDH extends AbstractFDH
   {
     return new SelectDecorator();
   }
+
+  public function validate($value)
+  {
+    parent::validate($value);
+
+    if(!array_key_exists($value, $this->_options))
+    {
+      throw new \UnexpectedValueException("'$value'' is not a valid value");
+    }
+  }
+
 }
