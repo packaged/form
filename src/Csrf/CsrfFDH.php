@@ -4,7 +4,7 @@ namespace PackagedUi\Form\Csrf;
 use Packaged\Glimpse\Tags\Form\Input;
 use PackagedUi\Form\DataHandlerDecorator;
 use PackagedUi\Form\Decorators\InputDecorator;
-use PackagedUi\Form\FDH\AbstractFDH;
+use PackagedUi\Form\FormDataHandlers\AbstractFDH;
 
 class CsrfFDH extends AbstractFDH
 {

@@ -1,5 +1,5 @@
 <?php
-namespace PackagedUi\Form\FDH;
+namespace PackagedUi\Form\FormDataHandlers;
 
 use Packaged\Glimpse\Tags\Form\Input;
 use Packaged\Helpers\Strings;

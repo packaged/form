@@ -1,5 +1,5 @@
 <?php
-namespace PackagedUi\Form\FDH;
+namespace PackagedUi\Form\FormDataHandlers;
 
 use PackagedUi\Form\DataHandlerDecorator;
 use PackagedUi\Form\Decorators\SelectDecorator;

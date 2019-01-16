@@ -2,7 +2,7 @@
 
 namespace PackagedUi\Tests\Form\FDH;
 
-use PackagedUi\Form\FDH\EnumFDH;
+use PackagedUi\Form\FormDataHandlers\EnumFDH;
 use PHPUnit\Framework\TestCase;
 
 class EnumFDHTest extends TestCase

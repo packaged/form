@@ -4,7 +4,7 @@ namespace PackagedUi\Tests\Form\Supporting\FDH;
 use Packaged\Glimpse\Tags\Form\Input;
 use PackagedUi\Form\DataHandlerDecorator;
 use PackagedUi\Form\Decorators\InputDecorator;
-use PackagedUi\Form\FDH\AbstractFDH;
+use PackagedUi\Form\FormDataHandlers\AbstractFDH;
 
 class TestIntegerFDH extends AbstractFDH
 {

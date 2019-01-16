@@ -1,7 +1,7 @@
 <?php
 namespace PackagedUi\Tests\Form\Supporting\FDH;
 
-use PackagedUi\Form\FDH\AbstractFDH;
+use PackagedUi\Form\FormDataHandlers\AbstractFDH;
 
 class TestAbstractFDH extends AbstractFDH
 {

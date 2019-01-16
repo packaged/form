@@ -5,7 +5,7 @@ use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Form\Option;
 use Packaged\Glimpse\Tags\Form\Select;
 use PackagedUi\Form\DataHandlerDecorator;
-use PackagedUi\Form\FDH\EnumFDH;
+use PackagedUi\Form\FormDataHandlers\EnumFDH;
 use PackagedUi\Form\FormDataHandler;
 
 class SelectDecorator implements DataHandlerDecorator

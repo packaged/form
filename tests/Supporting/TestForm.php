@@ -1,7 +1,7 @@
 <?php
 namespace PackagedUi\Tests\Form\Supporting;
 
-use PackagedUi\Form\FDH\TextFDH;
+use PackagedUi\Form\FormDataHandlers\TextFDH;
 use PackagedUi\Form\Form;
 use PackagedUi\Tests\Form\Supporting\FDH\TestIntegerFDH;
 

@@ -2,7 +2,7 @@
 
 namespace PackagedUi\Tests\Form;
 
-use PackagedUi\Form\FDH\TextFDH;
+use PackagedUi\Form\FormDataHandlers\TextFDH;
 use PackagedUi\Tests\Form\Supporting\FDH\TestIntegerFDH;
 use PackagedUi\Tests\Form\Supporting\TestForm;
 use PHPUnit\Framework\TestCase;
