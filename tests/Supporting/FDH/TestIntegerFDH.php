@@ -7,9 +7,9 @@ class TestIntegerFDH extends AbstractFDH
 {
   const ERR_INVALID_NUMBER = "Invalid numeric value";
 
-  public function validate()
+  public function validate($value)
   {
-    if($this->getValue() !== null && !is_int($this->getValue()))
+    if($value !== null && !is_int($value))
     {
       throw new \UnexpectedValueException(self::ERR_INVALID_NUMBER);
     }

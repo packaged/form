@@ -33,4 +33,21 @@ class FormTest extends TestCase
     $this->expectExceptionMessage(TestIntegerFDH::ERR_INVALID_NUMBER);
     $form->validate();
   }
+
+  public function testHydrate()
+  {
+    $form = new TestForm();
+    $this->assertEmpty($form->hydrate(['text' => 'abc', 'number' => 1]));
+    $this->assertEquals('abc', $form->text->getValue());
+    $this->assertEquals(1, $form->number->getValue());
+
+    $form = new TestForm();
+    $result = $form->hydrate(['text' => 'abc', 'number' => 'invalid']);
+    $this->assertCount(1, $result);
+    $this->assertArrayHasKey('number', $result);
+    $this->assertEquals(TestIntegerFDH::ERR_INVALID_NUMBER, $result['number']);
+
+    $this->assertEquals('abc', $form->text->getValue());
+    $this->assertNull($form->number->getValue());
+  }
 }

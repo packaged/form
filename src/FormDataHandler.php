@@ -10,9 +10,11 @@ interface FormDataHandler
   /**
    * Validate the data, throwing an exception with the error
    *
+   * @param $value
+   *
    * @throws \Exception
    */
-  public function validate();
+  public function validate($value);
 
   public function getValue();
 

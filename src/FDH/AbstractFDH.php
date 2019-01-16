@@ -47,7 +47,7 @@ abstract class AbstractFDH implements FormDataHandler
   {
     try
     {
-      $this->validate();
+      $this->validate($value);
     }
     catch(\Exception $e)
     {
@@ -66,7 +66,7 @@ abstract class AbstractFDH implements FormDataHandler
     return $this->isValidValue($this->getValue());
   }
 
-  public function validate()
+  public function validate($value)
   {
   }
 }
