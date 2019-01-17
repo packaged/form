@@ -123,7 +123,7 @@ abstract class Form extends HtmlTag
         try
         {
           $value = $ele->formatValue($value);
-          $ele->validate($value);
+          $ele->validateValue($value);
           $ele->setValue($value);
         }
         catch(\Exception $e)

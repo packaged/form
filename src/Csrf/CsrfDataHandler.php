@@ -74,9 +74,8 @@ class CsrfDataHandler extends AbstractDataHandler
     return $this;
   }
 
-  public function validate($value)
+  public function validateValue($value)
   {
-
     if(!password_verify($this->_generatePassword(), $value))
     {
       throw new \InvalidArgumentException(self::ERR_INVALID);

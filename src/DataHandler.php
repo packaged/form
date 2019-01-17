@@ -21,11 +21,18 @@ interface DataHandler
   /**
    * Validate the data, throwing an exception with the error
    *
+   * @throws \Exception
+   */
+  public function validate();
+
+  /**
+   * Validate the data, throwing an exception with the error
+   *
    * @param $value
    *
    * @throws \Exception
    */
-  public function validate($value);
+  public function validateValue($value);
 
   public function getValue();
 

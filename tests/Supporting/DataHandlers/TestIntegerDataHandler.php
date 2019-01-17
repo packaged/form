@@ -10,7 +10,7 @@ class TestIntegerDataHandler extends AbstractDataHandler
 {
   const ERR_INVALID_NUMBER = "Invalid numeric value";
 
-  public function validate($value)
+  public function validateValue($value)
   {
     if($value !== null && !is_int($value))
     {

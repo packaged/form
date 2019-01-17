@@ -58,7 +58,7 @@ abstract class AbstractDataHandler implements DataHandler
   {
     try
     {
-      $this->validate($value);
+      $this->validateValue($value);
     }
     catch(\Exception $e)
     {
@@ -77,7 +77,12 @@ abstract class AbstractDataHandler implements DataHandler
     return $this->isValidValue($this->getValue());
   }
 
-  public function validate($value)
+  public function validate()
+  {
+    $this->validateValue($this->getValue());
+  }
+
+  public function validateValue($value)
   {
   }
 

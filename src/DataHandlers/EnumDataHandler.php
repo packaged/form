@@ -30,9 +30,9 @@ class EnumDataHandler extends AbstractDataHandler
     return new SelectDecorator();
   }
 
-  public function validate($value)
+  public function validateValue($value)
   {
-    parent::validate($value);
+    parent::validateValue($value);
 
     if(!array_key_exists($value, $this->_options))
     {
