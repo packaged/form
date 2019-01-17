@@ -2,9 +2,13 @@
 namespace PackagedUi\Form;
 
 use Packaged\Glimpse\Core\HtmlTag;
+use Packaged\Glimpse\Tags\Div;
 use Packaged\Glimpse\Tags\Form\AbstractFormElementTag;
+use Packaged\Glimpse\Tags\Form\Input;
+use Packaged\Glimpse\Tags\Form\Label;
 use Packaged\Helpers\Arrays;
 use Packaged\Helpers\Objects;
+use Packaged\Helpers\Strings;
 
 abstract class Form extends HtmlTag
 {
@@ -15,6 +19,8 @@ abstract class Form extends HtmlTag
   protected $_dataHandlers = [];
 
   protected $_errors;
+
+  protected $_formId;
 
   public function __construct()
   {
@@ -128,17 +134,42 @@ abstract class Form extends HtmlTag
     return $errorKeys;
   }
 
+  public function getFormId()
+  {
+    if(!$this->_formId)
+    {
+      $this->_formId = Strings::randomString(3);
+    }
+    return $this->_formId;
+  }
+
+  public function setFormId($id)
+  {
+    $this->_formId = $id;
+    return $this;
+  }
+
   protected function _getContentForRender()
   {
     $result = [];
     foreach($this->_dataHandlers as $name => $handler)
     {
+      $splitName = Strings::splitOnCamelCase($name);
+      $for = strtolower(str_replace(' ', '-', $splitName) . '-' . $this->getFormId());
       $ele = $handler->getDecorator()->buildElement($handler);
       if($ele instanceof AbstractFormElementTag)
       {
         $ele->setName($name);
       }
-      $result[] = $ele;
+      if($ele instanceof Input && $ele->getType() == Input::TYPE_HIDDEN)
+      {
+        $result[] = $ele;
+      }
+      else
+      {
+        $label = Label::create($handler->getLabel() ?? Strings::titleize($splitName), $for);
+        $result[] = Div::create([$label, $ele])->addClass('form-group');
+      }
     }
     return $result;
   }

@@ -54,15 +54,17 @@ class FormTest extends TestCase
   public function testRender()
   {
     $form = new TestForm();
+    $this->assertNotEmpty($form->getFormId());
+    $form->setFormId('vbn');
     $this->assertEquals(
-      '<form method="POST" action="/test"><input type="text" name="text" /><input type="number" name="number" /></form>',
+      '<form method="POST" action="/test"><div class="form-group"><label for="text-vbn">Text</label><input type="text" name="text" /></div><div class="form-group"><label for="number-vbn">Number</label><input type="number" name="number" /></div></form>',
       $form->produceSafeHTML()->getContent()
     );
 
     $form->number = 4;
     $form->text = 'abc';
     $this->assertEquals(
-      '<form method="POST" action="/test"><input type="text" value="abc" name="text" /><input type="number" value="4" name="number" /></form>',
+      '<form method="POST" action="/test"><div class="form-group"><label for="text-vbn">Text</label><input type="text" value="abc" name="text" /></div><div class="form-group"><label for="number-vbn">Number</label><input type="number" value="4" name="number" /></div></form>',
       $form->produceSafeHTML()->getContent()
     );
   }
