@@ -110,9 +110,11 @@ abstract class Form extends HtmlTag
   /**
    * @param array $data
    *
+   * @param bool  $hydrateInvalidValues
+   *
    * @return array Keys in the data that do not have valid values
    */
-  public function hydrate(array $data)
+  public function hydrate(array $data, $hydrateInvalidValues = true)
   {
     $errorKeys = [];
     foreach($data as $name => $value)
@@ -129,6 +131,10 @@ abstract class Form extends HtmlTag
         catch(\Exception $e)
         {
           $errorKeys[$name] = $e->getMessage();
+          if($hydrateInvalidValues)
+          {
+            $ele->setValue($value);
+          }
         }
       }
     }
