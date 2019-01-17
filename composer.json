@@ -10,7 +10,7 @@
   ],
   "require": {
     "php": ">=7.1",
-    "packaged/glimpse": "2.0.0-alpha3",
+    "packaged/glimpse": "^2.0.0-alpha",
     "packaged/ui": "~0.0"
   },
   "require-dev": {
