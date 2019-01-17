@@ -3,8 +3,8 @@ namespace PackagedUi\Form\Decorators;
 
 use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Form\Input;
-use PackagedUi\Form\DataHandlerDecorator;
 use PackagedUi\Form\DataHandler;
+use PackagedUi\Form\DataHandlerDecorator;
 
 class InputDecorator implements DataHandlerDecorator
 {
@@ -36,6 +36,10 @@ class InputDecorator implements DataHandlerDecorator
     if($handler->getValue() !== null)
     {
       $element->setValue($handler->getValue());
+    }
+    else if($handler->getDefaultValue() !== null)
+    {
+      $element->setValue($handler->getDefaultValue());
     }
     return $element;
   }

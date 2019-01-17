@@ -12,6 +12,8 @@ class CsrfDataHandler extends AbstractDataHandler
   protected $_formSecret;
   protected $_value;
 
+  const ERR_INVALID = 'Invalid or missing CSRF token';
+
   public function __construct($formSecret, $sessionSecret)
   {
     $this->setFormSecret($formSecret);
@@ -20,8 +22,13 @@ class CsrfDataHandler extends AbstractDataHandler
 
   public function applyNewToken()
   {
-    $this->setValue(password_hash($this->_generatePassword(), PASSWORD_DEFAULT));
+    $this->setValue($this->getDefaultValue());
     return $this;
+  }
+
+  public function getDefaultValue()
+  {
+    return password_hash($this->_generatePassword(), PASSWORD_DEFAULT);
   }
 
   protected function _generatePassword()
@@ -67,9 +74,13 @@ class CsrfDataHandler extends AbstractDataHandler
     return $this;
   }
 
-  public function isValidValue($value): bool
+  public function validate($value)
   {
-    return password_verify($this->_generatePassword(), $value);
+
+    if(!password_verify($this->_generatePassword(), $value))
+    {
+      throw new \InvalidArgumentException(self::ERR_INVALID);
+    }
   }
 
   protected function _defaultDecorator(): DataHandlerDecorator

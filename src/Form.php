@@ -9,6 +9,7 @@ use Packaged\Glimpse\Tags\Form\Label;
 use Packaged\Helpers\Arrays;
 use Packaged\Helpers\Objects;
 use Packaged\Helpers\Strings;
+use Packaged\Helpers\ValueAs;
 
 abstract class Form extends HtmlTag
 {
@@ -171,6 +172,6 @@ abstract class Form extends HtmlTag
         $result[] = Div::create([$label, $ele])->addClass('form-group');
       }
     }
-    return $result;
+    return array_merge($result, ValueAs::arr($this->_content));
   }
 }
