@@ -135,6 +135,14 @@ abstract class Form extends HtmlTag
     return $errorKeys;
   }
 
+  public function getFormData()
+  {
+    foreach($this->_dataHandlers as $name => $handler)
+    {
+      yield $name => $handler->getValue();
+    }
+  }
+
   public function getFormId()
   {
     if(!$this->_formId)
