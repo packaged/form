@@ -137,10 +137,12 @@ abstract class Form extends HtmlTag
 
   public function getFormData()
   {
+    $data = [];
     foreach($this->_dataHandlers as $name => $handler)
     {
-      yield $name => $handler->getValue();
+      $data[$name] = $handler->getValue();
     }
+    return $data;
   }
 
   public function getFormId()

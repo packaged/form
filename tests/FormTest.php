@@ -41,8 +41,7 @@ class FormTest extends TestCase
     $this->assertEmpty($form->hydrate($data));
     $this->assertEquals('abc', $form->text->getValue());
     $this->assertEquals(1, $form->number->getValue());
-    $result = iterator_to_array($form->getFormData());
-    $this->assertSame($data, $result);
+    $this->assertSame($data, $form->getFormData());
 
     $form = new TestForm();
     $result = $form->hydrate(['text' => 'abc', 'number' => 'invalid']);
