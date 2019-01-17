@@ -41,4 +41,21 @@ class AbstractDataHandlerTest extends TestCase
     $fdh->setDecorator($newDecorator);
     $this->assertSame($newDecorator, $fdh->getDecorator());
   }
+
+  public function testAccessor()
+  {
+    $fdh = new TestAbstractDataHandler();
+
+    $this->assertEmpty($fdh->getLabel());
+    $fdh->setLabel('abc');
+    $this->assertEquals('abc', $fdh->getLabel());
+
+    $this->assertEmpty($fdh->getPlaceholder());
+    $fdh->setPlaceholder('abc');
+    $this->assertEquals('abc', $fdh->getPlaceholder());
+
+    $this->assertEmpty($fdh->getDefaultValue());
+    $fdh->setDefaultValue('abc');
+    $this->assertEquals('abc', $fdh->getDefaultValue());
+  }
 }

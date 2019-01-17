@@ -32,4 +32,10 @@ interface DataHandler
   public function setValue($vaue);
 
   public function getDecorator(): DataHandlerDecorator;
+
+  public function getDefaultValue();
+
+  public function getPlaceholder();
+
+  public function getLabel();
 }

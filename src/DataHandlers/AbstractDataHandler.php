@@ -12,6 +12,10 @@ abstract class AbstractDataHandler implements DataHandler
   /** @var DataHandlerDecorator */
   protected $_decorator;
 
+  protected $_label;
+  protected $_placeholder;
+  protected $_defaultValue;
+
   /**
    * @return mixed
    */
@@ -114,6 +118,63 @@ abstract class AbstractDataHandler implements DataHandler
       $decorator = $this->getDecorator();
     }
     return $decorator->buildElement($this, $options);
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getLabel()
+  {
+    return $this->_label;
+  }
+
+  /**
+   * @param mixed $label
+   *
+   * @return AbstractDataHandler
+   */
+  public function setLabel($label)
+  {
+    $this->_label = $label;
+    return $this;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getPlaceholder()
+  {
+    return $this->_placeholder;
+  }
+
+  /**
+   * @param mixed $placeholder
+   *
+   * @return AbstractDataHandler
+   */
+  public function setPlaceholder($placeholder)
+  {
+    $this->_placeholder = $placeholder;
+    return $this;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getDefaultValue()
+  {
+    return $this->_defaultValue;
+  }
+
+  /**
+   * @param mixed $defaultValue
+   *
+   * @return AbstractDataHandler
+   */
+  public function setDefaultValue($defaultValue)
+  {
+    $this->_defaultValue = $defaultValue;
+    return $this;
   }
 
 }
