@@ -28,7 +28,11 @@ class CsrfDataHandler extends AbstractDataHandler
 
   public function getDefaultValue()
   {
-    return password_hash($this->_generatePassword(), PASSWORD_DEFAULT);
+    if($this->_defaultValue === null)
+    {
+      $this->_defaultValue = password_hash($this->_generatePassword(), PASSWORD_DEFAULT);
+    }
+    return $this->_defaultValue;
   }
 
   protected function _generatePassword()

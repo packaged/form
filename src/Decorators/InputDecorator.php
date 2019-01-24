@@ -37,9 +37,13 @@ class InputDecorator implements DataHandlerDecorator
     {
       $element->setValue($handler->getValue());
     }
-    else if($handler->getDefaultValue() !== null)
+    else
     {
-      $element->setValue($handler->getDefaultValue());
+      $default = $handler->getDefaultValue();
+      if($default !== null)
+      {
+        $element->setValue($default);
+      }
     }
     return $element;
   }

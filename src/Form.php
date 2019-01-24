@@ -114,7 +114,7 @@ abstract class Form extends HtmlTag
    *
    * @return array Keys in the data that do not have valid values
    */
-  public function hydrate(array $data, $hydrateInvalidValues = true)
+  public function hydrate(array $data, $hydrateInvalidValues = false)
   {
     $errorKeys = [];
     foreach($data as $name => $value)
