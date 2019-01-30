@@ -36,7 +36,7 @@ interface DataHandler
    */
   public function validateValue($value);
 
-  public function getName(): string;
+  public function getName(): ?string;
 
   public function setName($name);
 

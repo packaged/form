@@ -1,13 +1,14 @@
 <?php
 namespace PackagedUi\Form\Decorators;
 
+use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Form\Option;
 use Packaged\Glimpse\Tags\Form\Select;
 use PackagedUi\Form\DataHandlers\EnumDataHandler;
 
 class SelectDecorator extends AbstractDataHandlerDecorator
 {
-  protected function _getElement()
+  protected function _getInput(): HtmlTag
   {
     $element = Select::create()
       ->setId($this->getId());

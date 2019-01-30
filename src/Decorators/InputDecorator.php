@@ -1,10 +1,8 @@
 <?php
 namespace PackagedUi\Form\Decorators;
 
-use Packaged\Glimpse\Tags\Div;
+use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Form\Input;
-use Packaged\Glimpse\Tags\Form\Label;
-use Packaged\Helpers\Strings;
 
 class InputDecorator extends AbstractDataHandlerDecorator
 {
@@ -29,7 +27,7 @@ class InputDecorator extends AbstractDataHandlerDecorator
     return $this;
   }
 
-  protected function _getElement()
+  protected function _getInput(): HtmlTag
   {
     $input = Input::create();
     $input->setId($this->getId());
@@ -47,23 +45,16 @@ class InputDecorator extends AbstractDataHandlerDecorator
         $input->setValue($default);
       }
     }
+    return $input;
+  }
 
+  protected function _getLabel(): ?HtmlTag
+  {
     if($this->getType() === Input::TYPE_HIDDEN)
     {
-      return $input;
+      return null;
     }
-
-    $splitName = Strings::splitOnCamelCase($input->getName());
-    $id = $input->getId();
-    if(empty($id))
-    {
-      $id = strtolower(str_replace(' ', '-', $splitName) . '-' . Strings::randomString(3));
-      $input->setId($id);
-    }
-
-    $label = Label::create();
-    $label->setAttribute('for', $id);
-    $label->setContent($this->_handler->getLabel() ?? Strings::titleize($splitName));
-    return Div::create([$label, $input])->addClass('form-group');
+    return parent::_getLabel();
   }
+
 }

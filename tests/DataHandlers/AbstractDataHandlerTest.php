@@ -58,4 +58,22 @@ class AbstractDataHandlerTest extends TestCase
     $fdh->setDefaultValue('abc');
     $this->assertEquals('abc', $fdh->getDefaultValue());
   }
+
+  public function testRender()
+  {
+    $fdh = new TestAbstractDataHandler();
+    $this->assertEquals('<input type="text" />', $fdh->getDecorator()->render());
+
+    $fdh->setName('myName');
+    $this->assertRegExp(
+      '/\<div class="form-group"\>\<label for="(my-name-...)"\>My Name\<\/label\>\<input type="text" name="myName" id="\1" \/\>\<\/div\>/',
+      $fdh->getDecorator()->render()
+    );
+
+    $fdh->setLabel('This is my input');
+    $this->assertRegExp(
+      '/\<div class="form-group"\>\<label for="(my-name-...)"\>This is my input\<\/label\>\<input type="text" name="myName" id="\1" \/\>\<\/div\>/',
+      $fdh->getDecorator()->render()
+    );
+  }
 }
