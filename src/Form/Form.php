@@ -4,6 +4,7 @@ namespace PackagedUi\Form\Form;
 use Packaged\Helpers\Arrays;
 use Packaged\Helpers\Objects;
 use Packaged\SafeHtml\ISafeHtmlProducer;
+use Packaged\SafeHtml\SafeHtml;
 use Packaged\Ui\Renderable;
 use PackagedUi\Form\DataHandlers\Interfaces\DataHandler;
 use PackagedUi\Form\Decorators\DefaultFormDecorator;
@@ -165,7 +166,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer
     return new DefaultFormDecorator();
   }
 
-  public function produceSafeHTML()
+  public function produceSafeHTML(): SafeHtml
   {
     return $this->getDecorator()->produceSafeHTML();
   }

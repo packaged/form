@@ -10,8 +10,8 @@
   ],
   "require": {
     "php": ">=7.1",
-    "packaged/glimpse": "^2.1",
-    "packaged/ui": "~0.0"
+    "packaged/glimpse": "^2.2",
+    "packaged/ui": "^0.1"
   },
   "require-dev": {
     "phpunit/phpunit": "7.5.*"

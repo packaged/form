@@ -3,6 +3,7 @@ namespace PackagedUi\Form\Decorators;
 
 use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Helpers\Arrays;
+use Packaged\SafeHtml\SafeHtml;
 use PackagedUi\Form\Decorators\Interfaces\Decorator;
 
 abstract class AbstractDecorator implements Decorator
@@ -75,10 +76,10 @@ abstract class AbstractDecorator implements Decorator
   }
 
   /**
-   * @return \Packaged\SafeHtml\SafeHtml
+   * @return SafeHtml
    * @throws \Exception
    */
-  public function produceSafeHTML()
+  public function produceSafeHTML(): SafeHtml
   {
     return $this->_getElement()->produceSafeHTML();
   }
