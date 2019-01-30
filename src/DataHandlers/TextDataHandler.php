@@ -4,8 +4,8 @@ namespace PackagedUi\Form\DataHandlers;
 use Packaged\Glimpse\Tags\Form\Input;
 use Packaged\Helpers\Strings;
 use Packaged\Helpers\ValueAs;
-use PackagedUi\Form\DataHandlerDecorator;
 use PackagedUi\Form\Decorators\InputDecorator;
+use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
 
 class TextDataHandler extends AbstractDataHandler
 {

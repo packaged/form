@@ -1,13 +1,13 @@
 <?php
 namespace PackagedUi\Form\DataHandlers;
 
-use Packaged\Glimpse\Core\HtmlTag;
-use PackagedUi\Form\DataHandler;
-use PackagedUi\Form\DataHandlerDecorator;
+use PackagedUi\Form\DataHandlers\Interfaces\DataHandler;
 use PackagedUi\Form\Decorators\InputDecorator;
+use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
 
 abstract class AbstractDataHandler implements DataHandler
 {
+  protected $_name;
   protected $_value;
   /** @var DataHandlerDecorator */
   protected $_decorator;
@@ -15,6 +15,25 @@ abstract class AbstractDataHandler implements DataHandler
   protected $_label;
   protected $_placeholder;
   protected $_defaultValue;
+
+  /**
+   * @return string
+   */
+  public function getName(): string
+  {
+    return $this->_name;
+  }
+
+  /**
+   * @param string $name
+   *
+   * @return $this
+   */
+  public function setName($name)
+  {
+    $this->_name = $name;
+    return $this;
+  }
 
   /**
    * @return mixed
@@ -108,21 +127,12 @@ abstract class AbstractDataHandler implements DataHandler
     {
       $this->_decorator = $this->_defaultDecorator();
     }
-    return $this->_decorator;
+    return $this->_decorator->setHandler($this);
   }
 
   protected function _defaultDecorator(): DataHandlerDecorator
   {
     return new InputDecorator();
-  }
-
-  public function getElement(DataHandlerDecorator $decorator = null, array $options = null): HtmlTag
-  {
-    if($decorator == null)
-    {
-      $decorator = $this->getDecorator();
-    }
-    return $decorator->buildElement($this, $options);
   }
 
   /**

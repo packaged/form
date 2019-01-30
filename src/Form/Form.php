@@ -1,19 +1,16 @@
 <?php
-namespace PackagedUi\Form;
+namespace PackagedUi\Form\Form;
 
-use Packaged\Glimpse\Core\HtmlTag;
-use Packaged\Glimpse\Tags\Div;
-use Packaged\Glimpse\Tags\Form\AbstractFormElementTag;
-use Packaged\Glimpse\Tags\Form\Input;
-use Packaged\Glimpse\Tags\Form\Label;
 use Packaged\Helpers\Arrays;
 use Packaged\Helpers\Objects;
-use Packaged\Helpers\Strings;
-use Packaged\Helpers\ValueAs;
+use Packaged\SafeHtml\ISafeHtmlProducer;
+use Packaged\Ui\Renderable;
+use PackagedUi\Form\DataHandlers\Interfaces\DataHandler;
+use PackagedUi\Form\Decorators\DefaultFormDecorator;
+use PackagedUi\Form\Form\Interfaces\FormDecorator;
 
-abstract class Form extends HtmlTag
+abstract class Form implements Renderable, ISafeHtmlProducer
 {
-  protected $_tag = 'form';
   /**
    * @var DataHandler[]
    */
@@ -21,26 +18,20 @@ abstract class Form extends HtmlTag
 
   protected $_errors;
 
-  protected $_formId;
+  protected $_decorator;
 
   public function __construct()
   {
-    parent::__construct();
     $this->_initDataHandlers();
-    $this->setAttribute('method', $this->_getMethod());
-    if($this->_getAction())
-    {
-      $this->setAttribute('action', $this->_getAction());
-    }
     $this->_preparePublicProperties();
   }
 
-  protected function _getMethod()
+  public function getMethod()
   {
     return 'POST';
   }
 
-  protected function _getAction()
+  public function getAction()
   {
     return '';
   }
@@ -50,6 +41,7 @@ abstract class Form extends HtmlTag
     foreach(Objects::propertyValues($this) as $property => $value)
     {
       $this->_dataHandlers[$property] = $value;
+      $this->_dataHandlers[$property]->setName($property);
       //Unset the public properties to avoid data handler modification
       unset($this->$property);
     }
@@ -151,43 +143,35 @@ abstract class Form extends HtmlTag
     return $data;
   }
 
-  public function getFormId()
+  /**
+   * @return DataHandler[]
+   */
+  public function getDataHandlers()
   {
-    if(!$this->_formId)
-    {
-      $this->_formId = Strings::randomString(3);
-    }
-    return $this->_formId;
+    return $this->_dataHandlers;
   }
 
-  public function setFormId($id)
+  public function getDecorator(): FormDecorator
   {
-    $this->_formId = $id;
-    return $this;
+    if(!$this->_decorator)
+    {
+      $this->_decorator = $this->_defaultDecorator();
+    }
+    return $this->_decorator->setForm($this);
   }
 
-  protected function _getContentForRender()
+  protected function _defaultDecorator(): FormDecorator
   {
-    $result = [];
-    foreach($this->_dataHandlers as $name => $handler)
-    {
-      $splitName = Strings::splitOnCamelCase($name);
-      $for = strtolower(str_replace(' ', '-', $splitName) . '-' . $this->getFormId());
-      $ele = $handler->getDecorator()->buildElement($handler);
-      if($ele instanceof AbstractFormElementTag)
-      {
-        $ele->setName($name);
-      }
-      if($ele instanceof Input && $ele->getType() == Input::TYPE_HIDDEN)
-      {
-        $result[] = $ele;
-      }
-      else
-      {
-        $label = Label::create($handler->getLabel() ?? Strings::titleize($splitName), $for);
-        $result[] = Div::create([$label, $ele])->addClass('form-group');
-      }
-    }
-    return array_merge($result, ValueAs::arr($this->_content));
+    return new DefaultFormDecorator();
+  }
+
+  public function produceSafeHTML()
+  {
+    return $this->getDecorator()->produceSafeHTML();
+  }
+
+  public function render(): string
+  {
+    return (string)$this->produceSafeHTML();
   }
 }

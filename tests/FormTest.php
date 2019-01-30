@@ -56,18 +56,23 @@ class FormTest extends TestCase
   public function testRender()
   {
     $form = new TestForm();
-    $this->assertNotEmpty($form->getFormId());
-    $form->setFormId('vbn');
-    $this->assertEquals(
-      '<form method="POST" action="/test"><div class="form-group"><label for="text-vbn">Text</label><input type="text" name="text" /></div><div class="form-group"><label for="number-vbn">Number</label><input type="number" name="number" /></div></form>',
-      $form->produceSafeHTML()->getContent()
+    $form->getDecorator()->setId('vbn');
+    $this->assertRegExp(
+      '/<form id="vbn" method="POST" action="\/test"><div class="form-group"><label for="text-(...)">Text<\/label><input type="text" name="text" id="text-\1" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" id="number-\2" \/><\/div><\/form>/',
+      $form->render()
     );
 
     $form->number = 4;
     $form->text = 'abc';
-    $this->assertEquals(
-      '<form method="POST" action="/test"><div class="form-group"><label for="text-vbn">Text</label><input type="text" value="abc" name="text" /></div><div class="form-group"><label for="number-vbn">Number</label><input type="number" value="4" name="number" /></div></form>',
-      $form->produceSafeHTML()->getContent()
+    $this->assertRegExp(
+      '/<form id="vbn" method="POST" action="\/test"><div class="form-group"><label for="text-(...)">Text<\/label><input type="text" name="text" value="abc" id="text-\1" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" value="4" id="number-\2" \/><\/div><\/form>/',
+      $form->render()
+    );
+
+    $form->text->getDecorator()->setId('myInput');
+    $this->assertRegExp(
+      '/<form id="vbn" method="POST" action="\/test"><div class="form-group"><label for="myInput">Text<\/label><input type="text" id="myInput" name="text" value="abc" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" value="4" id="number-\1" \/><\/div><\/form>/',
+      $form->render()
     );
   }
 }

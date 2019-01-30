@@ -1,24 +1,22 @@
 <?php
 namespace PackagedUi\Form\Decorators;
 
-use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Form\Option;
 use Packaged\Glimpse\Tags\Form\Select;
-use PackagedUi\Form\DataHandlerDecorator;
 use PackagedUi\Form\DataHandlers\EnumDataHandler;
-use PackagedUi\Form\DataHandler;
 
-class SelectDecorator implements DataHandlerDecorator
+class SelectDecorator extends AbstractDataHandlerDecorator
 {
-  public function buildElement(DataHandler $handler, array $options = null): HtmlTag
+  public function produceSafeHTML()
   {
-    $element = new Select();
-    if($handler instanceof EnumDataHandler)
+    $element = Select::create()
+      ->setId($this->getId());
+    if($this->_handler instanceof EnumDataHandler)
     {
-      foreach($handler->getOptions() as $value => $key)
+      foreach($this->_handler->getOptions() as $value => $key)
       {
         $option = new Option($key, $value);
-        if($value == $handler->getValue())
+        if($value == $this->_handler->getValue())
         {
           $option->setAttribute('selected', 'selected');
         }
@@ -27,5 +25,4 @@ class SelectDecorator implements DataHandlerDecorator
     }
     return $element;
   }
-
 }

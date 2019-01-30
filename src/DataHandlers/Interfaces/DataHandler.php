@@ -1,5 +1,7 @@
 <?php
-namespace PackagedUi\Form;
+namespace PackagedUi\Form\DataHandlers\Interfaces;
+
+use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
 
 interface DataHandler
 {
@@ -34,9 +36,13 @@ interface DataHandler
    */
   public function validateValue($value);
 
+  public function getName(): string;
+
+  public function setName($name);
+
   public function getValue();
 
-  public function setValue($vaue);
+  public function setValue($value);
 
   public function getDecorator(): DataHandlerDecorator;
 

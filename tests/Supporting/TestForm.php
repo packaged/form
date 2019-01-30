@@ -2,7 +2,7 @@
 namespace PackagedUi\Tests\Form\Supporting;
 
 use PackagedUi\Form\DataHandlers\TextDataHandler;
-use PackagedUi\Form\Form;
+use PackagedUi\Form\Form\Form;
 use PackagedUi\Tests\Form\Supporting\DataHandlers\TestIntegerDataHandler;
 
 class TestForm extends Form
@@ -16,7 +16,7 @@ class TestForm extends Form
    */
   public $number;
 
-  protected function _getAction()
+  public function getAction()
   {
     return '/test';
   }

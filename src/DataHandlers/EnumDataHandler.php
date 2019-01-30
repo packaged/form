@@ -1,7 +1,7 @@
 <?php
 namespace PackagedUi\Form\DataHandlers;
 
-use PackagedUi\Form\DataHandlerDecorator;
+use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
 use PackagedUi\Form\Decorators\SelectDecorator;
 
 class EnumDataHandler extends AbstractDataHandler

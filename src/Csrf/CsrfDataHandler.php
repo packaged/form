@@ -2,9 +2,9 @@
 namespace PackagedUi\Form\Csrf;
 
 use Packaged\Glimpse\Tags\Form\Input;
-use PackagedUi\Form\DataHandlerDecorator;
 use PackagedUi\Form\DataHandlers\AbstractDataHandler;
 use PackagedUi\Form\Decorators\InputDecorator;
+use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
 
 class CsrfDataHandler extends AbstractDataHandler
 {
@@ -89,8 +89,8 @@ class CsrfDataHandler extends AbstractDataHandler
   protected function _defaultDecorator(): DataHandlerDecorator
   {
     $decorator = new InputDecorator();
+    $decorator->setHandler($this);
     $decorator->setType(Input::TYPE_HIDDEN);
     return $decorator;
   }
-
 }

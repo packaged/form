@@ -1,12 +1,12 @@
 <?php
 namespace PackagedUi\Form\Decorators;
 
-use Packaged\Glimpse\Core\HtmlTag;
+use Packaged\Glimpse\Tags\Div;
 use Packaged\Glimpse\Tags\Form\Input;
-use PackagedUi\Form\DataHandler;
-use PackagedUi\Form\DataHandlerDecorator;
+use Packaged\Glimpse\Tags\Form\Label;
+use Packaged\Helpers\Strings;
 
-class InputDecorator implements DataHandlerDecorator
+class InputDecorator extends AbstractDataHandlerDecorator
 {
   protected $_type = Input::TYPE_TEXT;
 
@@ -29,23 +29,41 @@ class InputDecorator implements DataHandlerDecorator
     return $this;
   }
 
-  public function buildElement(DataHandler $handler, array $options = null): HtmlTag
+  public function produceSafeHTML()
   {
-    $element = new Input();
-    $element->setType($this->getType());
-    if($handler->getValue() !== null)
+    $input = Input::create();
+    $input->setId($this->getId());
+    $input->setType($this->getType());
+    $input->setName($this->_handler->getName());
+    if($this->_handler->getValue() !== null)
     {
-      $element->setValue($handler->getValue());
+      $input->setValue($this->_handler->getValue());
     }
     else
     {
-      $default = $handler->getDefaultValue();
+      $default = $this->_handler->getDefaultValue();
       if($default !== null)
       {
-        $element->setValue($default);
+        $input->setValue($default);
       }
     }
-    return $element;
-  }
 
+    if($this->getType() === Input::TYPE_HIDDEN)
+    {
+      return $input;
+    }
+
+    $splitName = Strings::splitOnCamelCase($input->getName());
+    $id = $input->getId();
+    if(empty($id))
+    {
+      $id = strtolower(str_replace(' ', '-', $splitName) . '-' . Strings::randomString(3));
+      $input->setId($id);
+    }
+
+    $label = Label::create();
+    $label->setAttribute('for', $id);
+    $label->setContent($this->_handler->getLabel() ?? Strings::titleize($splitName));
+    return Div::create([$label, $input])->addClass('form-group');
+  }
 }

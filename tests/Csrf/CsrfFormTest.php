@@ -31,9 +31,9 @@ class CsrfFormTest extends TestCase
   {
     $secret = 'user-secret';
     $form = new CsrfForm($secret);
-    $html = $form->produceSafeHTML()->getContent();
+    $html = $form->render();
     $this->assertRegExp(
-      '/\<form method="POST"\>\<input type="hidden" value=".*" name="csrfToken" \/\>\<\/form\>/',
+      '/\<form method="POST"\>\<input type="hidden" name="csrfToken" value=".*" \/\>\<\/form\>/',
       $html
     );
   }
