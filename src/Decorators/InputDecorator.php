@@ -29,7 +29,7 @@ class InputDecorator extends AbstractDataHandlerDecorator
     return $this;
   }
 
-  public function produceSafeHTML()
+  protected function _getElement()
   {
     $input = Input::create();
     $input->setId($this->getId());

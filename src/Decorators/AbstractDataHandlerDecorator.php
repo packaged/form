@@ -23,9 +23,4 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
     $this->_options = $options;
     return $this;
   }
-
-  public function render(): string
-  {
-    return (string)$this->produceSafeHTML();
-  }
 }

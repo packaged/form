@@ -59,4 +59,27 @@ abstract class AbstractDecorator implements Decorator
   {
     return $ele->setAttributes($this->_attributes);
   }
+
+  /**
+   * @return HtmlTag
+   */
+  abstract protected function _getElement();
+
+  /**
+   * @return string
+   * @throws \Exception
+   */
+  public function render(): string
+  {
+    return (string)$this->produceSafeHTML();
+  }
+
+  /**
+   * @return \Packaged\SafeHtml\SafeHtml
+   * @throws \Exception
+   */
+  public function produceSafeHTML()
+  {
+    return $this->_getElement()->produceSafeHTML();
+  }
 }

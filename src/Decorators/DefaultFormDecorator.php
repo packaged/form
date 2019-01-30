@@ -23,12 +23,7 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
     return $this->_form;
   }
 
-  public function render(): string
-  {
-    return (string)$this->produceSafeHTML();
-  }
-
-  public function produceSafeHTML()
+  protected function _getElement()
   {
     $form = $this->getForm();
 
