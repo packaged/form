@@ -29,7 +29,7 @@ interface Decorator extends Renderable, ISafeHtmlProducer
    *
    * @return $this
    */
-  public function setAttribute($name, $value);
+  public function addAttribute($name, $value);
 
   /**
    * @param string $name

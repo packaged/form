@@ -14,17 +14,10 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
    * @var DataHandler
    */
   protected $_handler;
-  protected $_options;
 
   public function setHandler(DataHandler $handler)
   {
     $this->_handler = $handler;
-    return $this;
-  }
-
-  public function setOptions(array $options)
-  {
-    $this->_options = $options;
     return $this;
   }
 

@@ -2,20 +2,22 @@
 namespace PackagedUi\Tests\Form\Supporting\DataHandlers;
 
 use Packaged\Glimpse\Tags\Form\Input;
+use Packaged\Validate\Validators\IntegerValidator;
+use Packaged\Validate\Validators\NullableValidator;
 use PackagedUi\Form\DataHandlers\AbstractDataHandler;
 use PackagedUi\Form\Decorators\InputDecorator;
 use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
 
 class TestIntegerDataHandler extends AbstractDataHandler
 {
-  const ERR_INVALID_NUMBER = "Invalid numeric value";
+  protected function _setupValidator()
+  {
+    $this->addValidator(new NullableValidator(new IntegerValidator()));
+  }
 
   public function validateValue($value)
   {
-    if($value !== null && !is_int($value))
-    {
-      throw new \UnexpectedValueException(self::ERR_INVALID_NUMBER);
-    }
+    parent::validateValue($value);
   }
 
   protected function _defaultDecorator(): DataHandlerDecorator

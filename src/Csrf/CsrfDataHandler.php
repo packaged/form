@@ -2,6 +2,7 @@
 namespace PackagedUi\Form\Csrf;
 
 use Packaged\Glimpse\Tags\Form\Input;
+use Packaged\Validate\ValidationException;
 use PackagedUi\Form\DataHandlers\AbstractDataHandler;
 use PackagedUi\Form\Decorators\InputDecorator;
 use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
@@ -82,8 +83,9 @@ class CsrfDataHandler extends AbstractDataHandler
   {
     if(!password_verify($this->_generatePassword(), $value))
     {
-      throw new \InvalidArgumentException(self::ERR_INVALID);
+      throw new ValidationException(self::ERR_INVALID);
     }
+    parent::validateValue($value);
   }
 
   protected function _defaultDecorator(): DataHandlerDecorator

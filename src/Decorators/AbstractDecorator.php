@@ -25,11 +25,11 @@ abstract class AbstractDecorator implements Decorator
    */
   public function setId($id)
   {
-    $this->setAttribute('id', $id);
+    $this->addAttribute('id', $id);
     return $this;
   }
 
-  public function setAttribute($name, $value)
+  public function addAttribute($name, $value)
   {
     $this->_attributes[$name] = $value;
     return $this;

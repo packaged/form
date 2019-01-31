@@ -16,11 +16,4 @@ interface DataHandlerDecorator extends Decorator
    * @return $this
    */
   public function setHandler(DataHandler $handler);
-
-  /**
-   * @param array $options
-   *
-   * @return $this
-   */
-  public function setOptions(array $options);
 }

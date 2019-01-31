@@ -24,7 +24,7 @@ class CsrfFormTest extends TestCase
 
     $form = new CsrfForm($secret);
     $form->csrfToken->setValue('invalidToken');
-    $this->assertNotTrue($form->csrfToken->isValid());
+    $this->assertFalse($form->csrfToken->isValid());
   }
 
   public function testRender()

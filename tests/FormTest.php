@@ -2,8 +2,8 @@
 
 namespace PackagedUi\Tests\Form;
 
+use Packaged\Validate\Validators\StringValidator;
 use PackagedUi\Form\DataHandlers\TextDataHandler;
-use PackagedUi\Tests\Form\Supporting\DataHandlers\TestIntegerDataHandler;
 use PackagedUi\Tests\Form\Supporting\TestForm;
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +30,13 @@ class FormTest extends TestCase
     $this->assertIsArray($form->getErrors());
     $this->assertArrayHasKey('number', $form->getErrors());
 
-    $this->expectExceptionMessage(TestIntegerDataHandler::ERR_INVALID_NUMBER);
+    $form->number->setValue(1);
+    $form->number->addValidator(new StringValidator(3, 10));
+    $this->assertFalse($form->isValid());
+
+    $form->number->setValue('abcd');
+    $form->number->clearValidators();
+    $this->expectExceptionMessage('must be a number');
     $form->validate();
   }
 
@@ -47,10 +53,18 @@ class FormTest extends TestCase
     $result = $form->hydrate(['text' => 'abc', 'number' => 'invalid']);
     $this->assertCount(1, $result);
     $this->assertArrayHasKey('number', $result);
-    $this->assertEquals(TestIntegerDataHandler::ERR_INVALID_NUMBER, $result['number']);
+    $this->assertEquals('must be a number', $result['number']);
+    $this->assertEquals(null, $form->number->getValue());
 
     $this->assertEquals('abc', $form->text->getValue());
     $this->assertNull($form->number->getValue());
+  }
+
+  public function testHydrateInvalid()
+  {
+    $form = new TestForm();
+    $form->hydrate(['text' => 'abc', 'number' => 'invalid'], true);
+    $this->assertEquals('invalid', $form->number->getValue());
   }
 
   public function testRender()
@@ -70,9 +84,18 @@ class FormTest extends TestCase
     );
 
     $form->text->getDecorator()->setId('myInput');
+    $form->getDecorator()->setId('abc')->addAttribute('data-test', true);
     $this->assertRegExp(
-      '/<form id="vbn" method="POST" action="\/test"><div class="form-group"><label for="myInput">Text<\/label><input type="text" id="myInput" name="text" value="abc" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" value="4" id="number-\1" \/><\/div><\/form>/',
+      '/<form id="abc" data-test method="POST" action="\/test"><div class="form-group"><label for="myInput">Text<\/label><input type="text" id="myInput" name="text" value="abc" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" value="4" id="number-\1" \/><\/div><\/form>/',
       $form->render()
     );
+    $this->assertTrue($form->getDecorator()->hasAttribute('data-test'));
+
+    $form->getDecorator()->setId('abc')->removeAttribute('data-test');
+    $this->assertRegExp(
+      '/<form id="abc" method="POST" action="\/test"><div class="form-group"><label for="myInput">Text<\/label><input type="text" id="myInput" name="text" value="abc" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" value="4" id="number-\1" \/><\/div><\/form>/',
+      $form->render()
+    );
+    $this->assertfalse($form->getDecorator()->hasAttribute('data-test'));
   }
 }
