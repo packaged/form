@@ -48,7 +48,11 @@ interface DataHandler
 
   public function getDefaultValue();
 
+  public function setPlaceholder($placeholder);
+
   public function getPlaceholder();
+
+  public function setLabel($label);
 
   public function getLabel();
 }
