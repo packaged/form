@@ -19,8 +19,6 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
    */
   protected $_dataHandlers = [];
 
-  protected $_errors;
-
   protected $_decorator;
 
   public function __construct()
@@ -134,13 +132,14 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
       if($ele instanceof DataHandler)
       {
         $value = $ele->formatValue($value);
-        $handlerErrors = $ele->validateValue($value);
+        $handlerErrors = $ele->clearErrors()->validateValue($value);
         if(empty($handlerErrors))
         {
           $ele->setValue($value);
         }
         else
         {
+          $ele->addError(...$handlerErrors);
           $errorKeys[$name] = $handlerErrors;
           if($hydrateInvalidValues)
           {
