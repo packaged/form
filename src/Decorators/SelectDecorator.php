@@ -8,7 +8,7 @@ use PackagedUi\Form\DataHandlers\EnumDataHandler;
 
 class SelectDecorator extends AbstractDataHandlerDecorator
 {
-  protected function _getInput(): HtmlTag
+  protected function _getInputElement(): HtmlTag
   {
     $element = Select::create()
       ->setId($this->getId());

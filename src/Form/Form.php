@@ -96,6 +96,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
       $handlerErrors = $handler->validate();
       if($handlerErrors)
       {
+        $handler->clearErrors()->addError(...$handlerErrors);
         if(!isset($errors[$name]))
         {
           $errors[$name] = [];

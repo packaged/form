@@ -16,4 +16,6 @@ interface DataHandlerDecorator extends Decorator
    * @return $this
    */
   public function setHandler(DataHandler $handler);
+
+  public function setFormatCallback(callable $callable);
 }

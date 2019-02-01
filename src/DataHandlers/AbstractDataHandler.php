@@ -17,6 +17,24 @@ abstract class AbstractDataHandler implements DataHandler
 
   /** @var DataHandlerDecorator */
   protected $_decorator;
+  protected $_errors = [];
+
+  public function getErrors(): array
+  {
+    return $this->_errors;
+  }
+
+  public function addError(ValidationException ...$errors)
+  {
+    $this->_errors = array_merge($this->_errors, $errors);
+    return $this;
+  }
+
+  public function clearErrors()
+  {
+    $this->_errors = [];
+    return $this;
+  }
 
   /**
    * @var IValidator[]
@@ -101,6 +119,7 @@ abstract class AbstractDataHandler implements DataHandler
   {
     if(!$this->_isValidatorSetUp)
     {
+      $this->_isValidatorSetUp = true;
       $this->_setupValidator();
     }
   }

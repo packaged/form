@@ -4,6 +4,9 @@ namespace PackagedUi\Form\Decorators;
 use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Div;
 use Packaged\Glimpse\Tags\Form\Label;
+use Packaged\Glimpse\Tags\Lists\ListItem;
+use Packaged\Glimpse\Tags\Lists\UnorderedList;
+use Packaged\Helpers\Objects;
 use Packaged\Helpers\Strings;
 use PackagedUi\Form\DataHandlers\Interfaces\DataHandler;
 use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
@@ -14,6 +17,10 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
    * @var DataHandler
    */
   protected $_handler;
+  /**
+   * @var callable
+   */
+  protected $_formatCallback;
 
   public function setHandler(DataHandler $handler)
   {
@@ -21,9 +28,9 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
     return $this;
   }
 
-  abstract protected function _getInput(): HtmlTag;
+  abstract protected function _getInputElement(): HtmlTag;
 
-  protected function _getLabel(): ?HtmlTag
+  protected function _getLabelElement(): ?HtmlTag
   {
     $labelText = $this->_handler->getLabel()
       ?? Strings::titleize(Strings::splitOnCamelCase($this->_handler->getName()));
@@ -38,8 +45,8 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
 
   protected function _getElement()
   {
-    $input = $this->_getInput();
-    $label = $this->_getLabel();
+    $input = $this->_getInputElement();
+    $label = $this->_getLabelElement();
     if($label)
     {
       $id = $input->getId();
@@ -56,16 +63,48 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
       }
       $label->setAttribute('for', $id);
     }
-    return $this->_formatElements($input, $label);
+
+    $errorTag = $this->_getErrorElement();
+    return $this->_formatElements($input, $label, $errorTag);
   }
 
-  protected function _formatElements(HtmlTag $input, ?HtmlTag $label)
+  protected function _getErrorElement()
   {
+    $errorTag = null;
+    $errors = $this->_handler->getErrors();
+    if($errors)
+    {
+      $errorTag = UnorderedList::create()
+        ->setContent(ListItem::collection(Objects::mpull($errors, 'getMessage')))
+        ->addClass('validation-errors');
+    }
+    return $errorTag;
+  }
+
+  protected function _formatElements(HtmlTag $input, ?HtmlTag $label, ?HtmlTag $errors)
+  {
+    $callback = $this->_formatCallback;
+    if(is_callable($callback))
+    {
+      return $callback($input, $label, $errors);
+    }
+
+    $return = Div::create()->addClass('form-group');
     if($label)
     {
-      return Div::create([$label, $input])->addClass('form-group');
+      $return->appendContent($label);
     }
-    return $input;
+    if($errors)
+    {
+      $return->appendContent($errors);
+    }
+    $return->appendContent($input);
+    return $return;
   }
 
+  public function setFormatCallback(callable $callback)
+  {
+    $this->_formatCallback = $callback;
+    return $this;
+  }
 }

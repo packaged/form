@@ -62,7 +62,7 @@ class AbstractDataHandlerTest extends TestCase
   public function testRender()
   {
     $fdh = new TestAbstractDataHandler();
-    $this->assertEquals('<input type="text" />', $fdh->getDecorator()->render());
+    $this->assertEquals('<div class="form-group"><input type="text" /></div>', $fdh->getDecorator()->render());
 
     $fdh->setName('myName');
     $this->assertRegExp(

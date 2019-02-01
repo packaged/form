@@ -27,7 +27,7 @@ class InputDecorator extends AbstractDataHandlerDecorator
     return $this;
   }
 
-  protected function _getInput(): HtmlTag
+  protected function _getInputElement(): HtmlTag
   {
     $input = Input::create();
     $input->setId($this->getId());
@@ -48,13 +48,13 @@ class InputDecorator extends AbstractDataHandlerDecorator
     return $input;
   }
 
-  protected function _getLabel(): ?HtmlTag
+  protected function _getLabelElement(): ?HtmlTag
   {
     if($this->getType() === Input::TYPE_HIDDEN)
     {
       return null;
     }
-    return parent::_getLabel();
+    return parent::_getLabelElement();
   }
 
 }

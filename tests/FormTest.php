@@ -99,5 +99,20 @@ class FormTest extends TestCase
       $form->render()
     );
     $this->assertfalse($form->getDecorator()->hasAttribute('data-test'));
+
+    // assert should not throw
+    $form->assert();
+
+    $form->number = 'abc';
+    $decorator = $form->number->getDecorator();
+    $decorator->setId('myNum');
+    $form->validate();
+    $this->assertEquals(
+      '<form id="abc" method="POST" action="/test"><div class="form-group"><label for="myInput">Text</label><input type="text" id="myInput" name="text" value="abc" /></div><div class="form-group"><label for="myNum">Number</label><ul class="validation-errors"><li>must be a number</li></ul><input type="number" id="myNum" name="number" value="abc" /></div></form>',
+      $form->render()
+    );
+
+    $decorator->setFormatCallback(function ($input, $label, $err) { return $input; });
+    $this->assertEquals('<input type="number" id="myNum" name="number" value="abc" />', $decorator->render());
   }
 }

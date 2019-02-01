@@ -2,6 +2,7 @@
 namespace PackagedUi\Form\DataHandlers\Interfaces;
 
 use Packaged\Validate\IValidatable;
+use Packaged\Validate\ValidationException;
 use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
 
 interface DataHandler extends IValidatable
@@ -44,21 +45,55 @@ interface DataHandler extends IValidatable
 
   public function getName(): ?string;
 
+  /**
+   * @param string $name
+   *
+   * @return DataHandler
+   */
   public function setName($name);
 
   public function getValue();
 
+  /**
+   * @param mixed $value
+   *
+   * @return DataHandler
+   */
   public function setValue($value);
 
   public function getDecorator(): DataHandlerDecorator;
 
   public function getDefaultValue();
 
+  /**
+   * @param string $placeholder
+   *
+   * @return DataHandler
+   */
   public function setPlaceholder($placeholder);
 
   public function getPlaceholder();
 
+  /**
+   * @param string $label
+   *
+   * @return DataHandler
+   */
   public function setLabel($label);
 
   public function getLabel();
+
+  public function getErrors(): array;
+
+  /**
+   * @param ValidationException ...$errors
+   *
+   * @return DataHandler
+   */
+  public function addError(ValidationException ...$errors);
+
+  /**
+   * @return DataHandler
+   */
+  public function clearErrors();
 }
