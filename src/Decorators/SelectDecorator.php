@@ -10,20 +10,23 @@ class SelectDecorator extends AbstractDataHandlerDecorator
 {
   protected function _getInputElement(): HtmlTag
   {
-    $element = Select::create()
-      ->setId($this->getId());
+    $input = Select::create();
+    $input->setId($this->getId());
+    $input->setName($this->_handler->getName());
+
+    $currentValue = $this->_handler->getValue();
     if($this->_handler instanceof EnumDataHandler)
     {
       foreach($this->_handler->getOptions() as $value => $key)
       {
         $option = new Option($key, $value);
-        if($value == $this->_handler->getValue())
+        if($value == $currentValue)
         {
           $option->setAttribute('selected', 'selected');
         }
-        $element->appendContent($option);
+        $input->appendContent($option);
       }
     }
-    return $element;
+    return $input;
   }
 }
