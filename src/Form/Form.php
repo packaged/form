@@ -6,12 +6,13 @@ use Packaged\Helpers\Objects;
 use Packaged\SafeHtml\ISafeHtmlProducer;
 use Packaged\SafeHtml\SafeHtml;
 use Packaged\Ui\Renderable;
+use Packaged\Validate\IValidatable;
 use Packaged\Validate\ValidationException;
 use PackagedUi\Form\DataHandlers\Interfaces\DataHandler;
 use PackagedUi\Form\Decorators\DefaultFormDecorator;
 use PackagedUi\Form\Form\Interfaces\FormDecorator;
 
-abstract class Form implements Renderable, ISafeHtmlProducer
+abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
 {
   /**
    * @var DataHandler[]

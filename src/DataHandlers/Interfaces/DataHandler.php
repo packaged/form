@@ -1,9 +1,10 @@
 <?php
 namespace PackagedUi\Form\DataHandlers\Interfaces;
 
+use Packaged\Validate\IValidatable;
 use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
 
-interface DataHandler
+interface DataHandler extends IValidatable
 {
   /**
    * Validate the data, return true if valid, false if invalid
@@ -15,20 +16,6 @@ interface DataHandler
   public function isValidValue($value): bool;
 
   /**
-   * Validate the data, return true if valid, false if invalid
-   *
-   * @return bool
-   */
-  public function isValid(): bool;
-
-  /**
-   * Validate the data, return array of errors
-   *
-   * @return array
-   */
-  public function validate(): array;
-
-  /**
    * Validate the data, return array of errors
    *
    * @param mixed $value
@@ -36,13 +23,6 @@ interface DataHandler
    * @return array
    */
   public function validateValue($value): array;
-
-  /**
-   * Validate the data, throwing an exception with the error
-   *
-   * @throws \Exception
-   */
-  public function assert();
 
   /**
    * Validate the data, throwing an exception with the error
