@@ -15,11 +15,6 @@ class TestIntegerDataHandler extends AbstractDataHandler
     $this->addValidator(new NullableValidator(new IntegerValidator()));
   }
 
-  public function validateValue($value)
-  {
-    parent::validateValue($value);
-  }
-
   protected function _defaultDecorator(): DataHandlerDecorator
   {
     $decorator = new InputDecorator();

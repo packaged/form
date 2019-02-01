@@ -6,6 +6,7 @@ use Packaged\Helpers\Objects;
 use Packaged\SafeHtml\ISafeHtmlProducer;
 use Packaged\SafeHtml\SafeHtml;
 use Packaged\Ui\Renderable;
+use Packaged\Validate\ValidationException;
 use PackagedUi\Form\DataHandlers\Interfaces\DataHandler;
 use PackagedUi\Form\Decorators\DefaultFormDecorator;
 use PackagedUi\Form\Form\Interfaces\FormDecorator;
@@ -68,36 +69,51 @@ abstract class Form implements Renderable, ISafeHtmlProducer
 
   abstract protected function _initDataHandlers();
 
+  /**
+   * @return bool
+   */
   public function isValid(): bool
   {
-    $this->validate(false);
-    return empty($this->_errors);
-  }
-
-  public function validate($throw = true)
-  {
-    $this->_errors = [];
     foreach($this->_dataHandlers as $name => $handler)
     {
-      try
+      if(!$handler->isValid())
       {
-        $handler->validate($handler->getValue());
-      }
-      catch(\Exception $e)
-      {
-        if($throw)
-        {
-          throw $e;
-        }
-        $this->_errors[$name] = $e->getMessage();
+        return false;
       }
     }
-    return $this->_errors;
+    return true;
   }
 
-  public function getErrors()
+  /**
+   * @return ValidationException[][]
+   */
+  public function validate(): array
   {
-    return $this->_errors ?? $this->validate(false);
+    $errors = [];
+    foreach($this->_dataHandlers as $name => $handler)
+    {
+      $handlerErrors = $handler->validate();
+      if($handlerErrors)
+      {
+        if(!isset($errors[$name]))
+        {
+          $errors[$name] = [];
+        }
+        $errors[$name] = array_merge($errors[$name], $handlerErrors);
+      }
+    }
+    return $errors;
+  }
+
+  /**
+   * @throws \Exception
+   */
+  public function assert()
+  {
+    foreach($this->_dataHandlers as $name => $handler)
+    {
+      $handler->assert();
+    }
   }
 
   /**
@@ -115,15 +131,15 @@ abstract class Form implements Renderable, ISafeHtmlProducer
       $ele = $this->__get($name);
       if($ele instanceof DataHandler)
       {
-        try
+        $value = $ele->formatValue($value);
+        $handlerErrors = $ele->validateValue($value);
+        if(empty($handlerErrors))
         {
-          $value = $ele->formatValue($value);
-          $ele->validateValue($value);
           $ele->setValue($value);
         }
-        catch(\Exception $e)
+        else
         {
-          $errorKeys[$name] = $e->getMessage();
+          $errorKeys[$name] = $handlerErrors;
           if($hydrateInvalidValues)
           {
             $ele->setValue($value);

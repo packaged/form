@@ -1,6 +1,7 @@
 <?php
 namespace PackagedUi\Form\DataHandlers;
 
+use Packaged\Validate\Validators\EnumValidator;
 use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
 use PackagedUi\Form\Decorators\SelectDecorator;
 
@@ -11,12 +12,14 @@ class EnumDataHandler extends AbstractDataHandler
   public function setOptions(array $value)
   {
     $this->_options = $value;
+    $this->clearValidators(); // rebuild validators
     return $this;
   }
 
   public function addOption($value, $display = null)
   {
     $this->_options[$value] = $display ?? $value;
+    $this->clearValidators(); // rebuild validators
     return $this;
   }
 
@@ -30,7 +33,12 @@ class EnumDataHandler extends AbstractDataHandler
     return new SelectDecorator();
   }
 
-  public function validateValue($value)
+  protected function _setupValidator()
+  {
+    $this->addValidator(new EnumValidator(array_keys($this->getOptions())));
+  }
+
+  /*public function validateValue($value)
   {
     parent::validateValue($value);
 
@@ -38,6 +46,6 @@ class EnumDataHandler extends AbstractDataHandler
     {
       throw new \UnexpectedValueException("'$value' is not a valid value");
     }
-  }
+  }*/
 
 }

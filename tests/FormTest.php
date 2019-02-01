@@ -27,8 +27,9 @@ class FormTest extends TestCase
     $form->number->setValue('a');
     $this->assertFalse($form->isValid());
 
-    $this->assertIsArray($form->getErrors());
-    $this->assertArrayHasKey('number', $form->getErrors());
+    $errors = $form->validate();
+    $this->assertIsArray($errors);
+    $this->assertArrayHasKey('number', $errors);
 
     $form->number->setValue(1);
     $form->number->addValidator(new StringValidator(3, 10));
@@ -37,7 +38,7 @@ class FormTest extends TestCase
     $form->number->setValue('abcd');
     $form->number->clearValidators();
     $this->expectExceptionMessage('must be a number');
-    $form->validate();
+    $form->assert();
   }
 
   public function testHydrate()
@@ -53,7 +54,8 @@ class FormTest extends TestCase
     $result = $form->hydrate(['text' => 'abc', 'number' => 'invalid']);
     $this->assertCount(1, $result);
     $this->assertArrayHasKey('number', $result);
-    $this->assertEquals('must be a number', $result['number']);
+    $this->assertCount(1, $result['number']);
+    $this->assertEquals('must be a number', $result['number'][0]->getMessage());
     $this->assertEquals(null, $form->number->getValue());
 
     $this->assertEquals('abc', $form->text->getValue());

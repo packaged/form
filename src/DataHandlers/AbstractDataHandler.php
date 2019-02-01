@@ -2,6 +2,7 @@
 namespace PackagedUi\Form\DataHandlers;
 
 use Packaged\Validate\IValidator;
+use Packaged\Validate\ValidationException;
 use PackagedUi\Form\DataHandlers\Interfaces\DataHandler;
 use PackagedUi\Form\Decorators\InputDecorator;
 use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
@@ -96,6 +97,14 @@ abstract class AbstractDataHandler implements DataHandler
     return $this;
   }
 
+  private function _initValidator()
+  {
+    if(!$this->_isValidatorSetUp)
+    {
+      $this->_setupValidator();
+    }
+  }
+
   /**
    * Validate the currently set value
    *
@@ -115,20 +124,23 @@ abstract class AbstractDataHandler implements DataHandler
    */
   public function isValidValue($value): bool
   {
-    try
+    $this->_initValidator();
+    if($this->_validators)
     {
-      $this->validateValue($value);
-    }
-    catch(\Exception $e)
-    {
-      return false;
+      foreach($this->_validators as $validator)
+      {
+        if(!$validator->isValid($value))
+        {
+          return false;
+        }
+      }
     }
     return true;
   }
 
-  public function validate()
+  public function validate(): array
   {
-    $this->validateValue($this->getValue());
+    return $this->validateValue($this->getValue());
   }
 
   /**
@@ -136,15 +148,40 @@ abstract class AbstractDataHandler implements DataHandler
    *
    * @param $value
    *
-   * @throws \Exception
+   * @return ValidationException[]
    */
-  public function validateValue($value)
+  public function validateValue($value): array
   {
-    if(!$this->_isValidatorSetUp)
+    $this->_initValidator();
+    $errors = [];
+    if($this->_validators)
     {
-      $this->_setupValidator();
+      foreach($this->_validators as $validator)
+      {
+        $errors = array_merge($errors, $validator->validate($value));
+      }
     }
+    return $errors;
+  }
 
+  /**
+   * @throws ValidationException
+   */
+  public function assert()
+  {
+    $this->assertValue($this->getValue());
+  }
+
+  /**
+   * Validate the data, throwing an exception with the error
+   *
+   * @param $value
+   *
+   * @throws ValidationException
+   */
+  public function assertValue($value)
+  {
+    $this->_initValidator();
     if($this->_validators)
     {
       foreach($this->_validators as $validator)
