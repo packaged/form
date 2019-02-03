@@ -1,9 +1,9 @@
 <?php
 namespace PackagedUi\Form\DataHandlers;
 
-use Packaged\Validate\Validators\EnumValidator;
 use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
 use PackagedUi\Form\Decorators\SelectDecorator;
+use PackagedUi\Form\Validators\HandlerEnumValidator;
 
 class EnumDataHandler extends AbstractDataHandler
 {
@@ -35,17 +35,6 @@ class EnumDataHandler extends AbstractDataHandler
 
   protected function _setupValidator()
   {
-    $this->addValidator(new EnumValidator(array_keys($this->getOptions())));
+    $this->addValidator(new HandlerEnumValidator($this));
   }
-
-  /*public function validateValue($value)
-  {
-    parent::validateValue($value);
-
-    if(!array_key_exists($value, $this->_options))
-    {
-      throw new \UnexpectedValueException("'$value' is not a valid value");
-    }
-  }*/
-
 }
