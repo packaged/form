@@ -12,14 +12,12 @@ class EnumDataHandler extends AbstractDataHandler
   public function setOptions(array $value)
   {
     $this->_options = $value;
-    $this->clearValidators(); // rebuild validators
     return $this;
   }
 
   public function addOption($value, $display = null)
   {
     $this->_options[$value] = $display ?? $value;
-    $this->clearValidators(); // rebuild validators
     return $this;
   }
 
