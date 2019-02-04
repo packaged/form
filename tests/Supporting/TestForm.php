@@ -1,6 +1,7 @@
 <?php
 namespace PackagedUi\Tests\Form\Supporting;
 
+use PackagedUi\Form\DataHandlers\ReadOnlyDataHandler;
 use PackagedUi\Form\DataHandlers\TextDataHandler;
 use PackagedUi\Form\Form\Form;
 use PackagedUi\Tests\Form\Supporting\DataHandlers\TestIntegerDataHandler;
@@ -15,6 +16,11 @@ class TestForm extends Form
    * @var TestIntegerDataHandler
    */
   public $number;
+
+  /**
+   * @var ReadOnlyDataHandler
+   */
+  public $readOnly;
 
   public function getAction()
   {

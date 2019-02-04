@@ -44,7 +44,7 @@ class FormTest extends TestCase
   public function testHydrate()
   {
     $form = new TestForm();
-    $data = ['text' => 'abc', 'number' => 1];
+    $data = ['text' => 'abc', 'number' => 1, 'readOnly' => 'testing'];
     $this->assertEmpty($form->hydrate($data));
     $this->assertEquals('abc', $form->text->getValue());
     $this->assertEquals(1, $form->number->getValue());
@@ -74,28 +74,28 @@ class FormTest extends TestCase
     $form = new TestForm();
     $form->getDecorator()->setId('vbn');
     $this->assertRegExp(
-      '/<form id="vbn" method="POST" action="\/test"><div class="form-group"><label for="text-(...)">Text<\/label><input type="text" name="text" id="text-\1" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" id="number-\2" \/><\/div><\/form>/',
+      '/<form id="vbn" method="POST" action="\/test"><div class="form-group"><label for="text-(...)">Text<\/label><input type="text" name="text" id="text-\1" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" id="number-\2" \/><\/div><div class="form-group"><label for="read-only-(...)">Read Only<\/label><span id="read-only-\3"><\/span><\/div><div class="form-group"><input type="submit" value="Submit" \/><\/div><\/form>/',
       $form->render()
     );
 
     $form->number = 4;
     $form->text = 'abc';
     $this->assertRegExp(
-      '/<form id="vbn" method="POST" action="\/test"><div class="form-group"><label for="text-(...)">Text<\/label><input type="text" name="text" value="abc" id="text-\1" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" value="4" id="number-\2" \/><\/div><\/form>/',
+      '/<form id="vbn" method="POST" action="\/test"><div class="form-group"><label for="text-(...)">Text<\/label><input type="text" name="text" value="abc" id="text-\1" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" value="4" id="number-\2" \/><\/div><div class="form-group"><label for="read-only-(...)">Read Only<\/label><span id="read-only-\3"><\/span><\/div><div class="form-group"><input type="submit" value="Submit" \/><\/div><\/form>/',
       $form->render()
     );
 
     $form->text->getDecorator()->setId('myInput');
     $form->getDecorator()->setId('abc')->addAttribute('data-test', true);
     $this->assertRegExp(
-      '/<form id="abc" data-test method="POST" action="\/test"><div class="form-group"><label for="myInput">Text<\/label><input type="text" id="myInput" name="text" value="abc" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" value="4" id="number-\1" \/><\/div><\/form>/',
+      '/<form id="abc" data-test method="POST" action="\/test"><div class="form-group"><label for="myInput">Text<\/label><input type="text" id="myInput" name="text" value="abc" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" value="4" id="number-\1" \/><\/div><div class="form-group"><label for="read-only-(...)">Read Only<\/label><span id="read-only-\2"><\/span><\/div><div class="form-group"><input type="submit" value="Submit" \/><\/div><\/form>/',
       $form->render()
     );
     $this->assertTrue($form->getDecorator()->hasAttribute('data-test'));
 
     $form->getDecorator()->setId('abc')->removeAttribute('data-test');
     $this->assertRegExp(
-      '/<form id="abc" method="POST" action="\/test"><div class="form-group"><label for="myInput">Text<\/label><input type="text" id="myInput" name="text" value="abc" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" value="4" id="number-\1" \/><\/div><\/form>/',
+      '/<form id="abc" method="POST" action="\/test"><div class="form-group"><label for="myInput">Text<\/label><input type="text" id="myInput" name="text" value="abc" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" value="4" id="number-\1" \/><\/div><div class="form-group"><label for="read-only-(...)">Read Only<\/label><span id="read-only-\2"><\/span><\/div><div class="form-group"><input type="submit" value="Submit" \/><\/div><\/form>/',
       $form->render()
     );
     $this->assertfalse($form->getDecorator()->hasAttribute('data-test'));
@@ -103,12 +103,13 @@ class FormTest extends TestCase
     // assert should not throw
     $form->assert();
 
+    $form->readOnly->getDecorator()->setId('ro');
     $form->number = 'abc';
     $decorator = $form->number->getDecorator();
     $decorator->setId('myNum');
     $form->validate();
     $this->assertEquals(
-      '<form id="abc" method="POST" action="/test"><div class="form-group"><label for="myInput">Text</label><input type="text" id="myInput" name="text" value="abc" /></div><div class="form-group"><label for="myNum">Number</label><ul class="validation-errors"><li>must be a number</li></ul><input type="number" id="myNum" name="number" value="abc" /></div></form>',
+      '<form id="abc" method="POST" action="/test"><div class="form-group"><label for="myInput">Text</label><input type="text" id="myInput" name="text" value="abc" /></div><div class="form-group"><label for="myNum">Number</label><ul class="validation-errors"><li>must be a number</li></ul><input type="number" id="myNum" name="number" value="abc" /></div><div class="form-group"><label for="ro">Read Only</label><span id="ro"></span></div><div class="form-group"><input type="submit" value="Submit" /></div></form>',
       $form->render()
     );
 
