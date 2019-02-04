@@ -9,6 +9,7 @@ use Packaged\Ui\Renderable;
 use Packaged\Validate\IValidatable;
 use Packaged\Validate\ValidationException;
 use PackagedUi\Form\DataHandlers\Interfaces\DataHandler;
+use PackagedUi\Form\DataHandlers\ReadOnlyDataHandler;
 use PackagedUi\Form\Decorators\DefaultFormDecorator;
 use PackagedUi\Form\Form\Interfaces\FormDecorator;
 
@@ -41,6 +42,11 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   {
     foreach(Objects::propertyValues($this) as $property => $value)
     {
+      if($value === null)
+      {
+        // use read only handler if none have been specified
+        $value = new ReadOnlyDataHandler();
+      }
       $this->_dataHandlers[$property] = $value;
       $this->_dataHandlers[$property]->setName($property);
       //Unset the public properties to avoid data handler modification
