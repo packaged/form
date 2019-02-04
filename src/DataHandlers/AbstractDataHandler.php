@@ -4,7 +4,6 @@ namespace PackagedUi\Form\DataHandlers;
 use Packaged\Validate\IValidator;
 use Packaged\Validate\ValidationException;
 use PackagedUi\Form\DataHandlers\Interfaces\DataHandler;
-use PackagedUi\Form\Decorators\InputDecorator;
 use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
 
 abstract class AbstractDataHandler implements DataHandler
@@ -235,10 +234,7 @@ abstract class AbstractDataHandler implements DataHandler
     return $this->_decorator->setHandler($this);
   }
 
-  protected function _defaultDecorator(): DataHandlerDecorator
-  {
-    return new InputDecorator();
-  }
+  abstract protected function _defaultDecorator(): DataHandlerDecorator;
 
   /**
    * @return mixed

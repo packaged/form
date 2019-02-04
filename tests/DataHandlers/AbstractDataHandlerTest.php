@@ -2,8 +2,9 @@
 namespace PackagedUi\Tests\Form\DataHandlers;
 
 use Packaged\Glimpse\Tags\Form\Input;
+use PackagedUi\Form\DataHandlers\ReadOnlyDataHandler;
+use PackagedUi\Form\DataHandlers\TextDataHandler;
 use PackagedUi\Form\Decorators\InputDecorator;
-use PackagedUi\Tests\Form\Supporting\DataHandlers\TestAbstractDataHandler;
 use PackagedUi\Tests\Form\Supporting\DataHandlers\TestIntegerDataHandler;
 use PHPUnit\Framework\TestCase;
 
@@ -11,7 +12,7 @@ class AbstractDataHandlerTest extends TestCase
 {
   public function testAbstract()
   {
-    $fdh = new TestAbstractDataHandler();
+    $fdh = new TextDataHandler();
     $this->assertEmpty($fdh->getValue());
     $fdh->setValue('abc');
     $this->assertEquals('abc', $fdh->getValue());
@@ -33,7 +34,7 @@ class AbstractDataHandlerTest extends TestCase
 
   public function testDecorator()
   {
-    $fdh = new TestAbstractDataHandler();
+    $fdh = new TextDataHandler();
     $defaultDecorator = $fdh->getDecorator();
     $newDecorator = new InputDecorator();
     $newDecorator->setType(Input::TYPE_DATE);
@@ -44,7 +45,7 @@ class AbstractDataHandlerTest extends TestCase
 
   public function testAccessor()
   {
-    $fdh = new TestAbstractDataHandler();
+    $fdh = new TextDataHandler();
 
     $this->assertEmpty($fdh->getLabel());
     $fdh->setLabel('abc');
@@ -61,18 +62,18 @@ class AbstractDataHandlerTest extends TestCase
 
   public function testRender()
   {
-    $fdh = new TestAbstractDataHandler();
-    $this->assertEquals('<div class="form-group"><input type="text" /></div>', $fdh->getDecorator()->render());
+    $fdh = new ReadOnlyDataHandler();
+    $this->assertEquals('<div class="form-group"><span></span></div>', $fdh->getDecorator()->render());
 
     $fdh->setName('myName');
     $this->assertRegExp(
-      '/\<div class="form-group"\>\<label for="(my-name-...)"\>My Name\<\/label\>\<input type="text" name="myName" id="\1" \/\>\<\/div\>/',
+      '/\<div class="form-group"\>\<label for="(my-name-...)"\>My Name\<\/label\>\<span id="\1"\>\<\/span\>\<\/div\>/',
       $fdh->getDecorator()->render()
     );
 
     $fdh->setLabel('This is my input');
     $this->assertRegExp(
-      '/\<div class="form-group"\>\<label for="(my-name-...)"\>This is my input\<\/label\>\<input type="text" name="myName" id="\1" \/\>\<\/div\>/',
+      '/\<div class="form-group"\>\<label for="(my-name-...)"\>This is my input\<\/label\>\<span id="\1"\>\<\/span\>\<\/div\>/',
       $fdh->getDecorator()->render()
     );
   }
