@@ -8,6 +8,7 @@ class ReadOnlyDecorator extends AbstractDataHandlerDecorator
 {
   protected function _getInputElement(): HtmlTag
   {
-    return Span::create($this->_handler->getValue());
+    return Span::create($this->_handler->getValue())
+      ->setId($this->getId());
   }
 }

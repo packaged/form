@@ -11,6 +11,7 @@ use Packaged\Validate\ValidationException;
 use PackagedUi\Form\DataHandlers\Interfaces\DataHandler;
 use PackagedUi\Form\DataHandlers\ReadOnlyDataHandler;
 use PackagedUi\Form\Decorators\DefaultFormDecorator;
+use PackagedUi\Form\Decorators\Interfaces\Decorator;
 use PackagedUi\Form\Form\Interfaces\FormDecorator;
 
 abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
@@ -187,6 +188,11 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   protected function _defaultDecorator(): FormDecorator
   {
     return new DefaultFormDecorator();
+  }
+
+  public function getSubmitDecorator(): Decorator
+  {
+    return new FormSubmitDecorator();
   }
 
   public function produceSafeHTML(): SafeHtml
