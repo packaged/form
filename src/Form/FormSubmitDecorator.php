@@ -9,6 +9,6 @@ class FormSubmitDecorator extends AbstractDecorator
 {
   protected function _getElement()
   {
-    return Div::create(Input::create()->setType(Input::TYPE_SUBMIT)->setValue('Submit'))->addClass('form-group');
+    return Div::create(Input::create()->setType(Input::TYPE_SUBMIT)->setValue('Submit'))->addClass('p-form-field');
   }
 }

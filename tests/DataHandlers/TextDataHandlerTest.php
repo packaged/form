@@ -36,7 +36,7 @@ class TextDataHandlerTest extends TestCase
     $text->setName('text');
     $text->setDecorator($dec);
     $this->assertEquals(
-      '<div class="form-group"><input type="hidden" name="text" /></div>',
+      '<div class="p-form-field"><div class="p-form--input"><input type="hidden" name="text" /></div></div>',
       $text->getDecorator()->render()
     );
   }

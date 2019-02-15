@@ -74,28 +74,28 @@ class FormTest extends TestCase
     $form = new TestForm();
     $form->getDecorator()->setId('vbn');
     $this->assertRegExp(
-      '/<form id="vbn" method="POST" action="\/test"><div class="form-group"><label for="text-(...)">Text<\/label><input type="text" name="text" id="text-\1" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" id="number-\2" \/><\/div><div class="form-group"><label for="read-only-(...)">Read Only<\/label><span id="read-only-\3"><\/span><\/div><div class="form-group"><input type="submit" value="Submit" \/><\/div><\/form>/',
+      '/<form id="vbn" method="POST" class="p-form" action="\/test"><div class="p-form-field"><div class="p-form--label"><label for="text-(...)">Text<\/label><\/div><div class="p-form--input"><input type="text" name="text" id="text-\1" \/><\/div><\/div><div class="p-form-field"><div class="p-form--label"><label for="number-(...)">Number<\/label><\/div><div class="p-form--input"><input type="number" name="number" id="number-\2" \/><\/div><\/div><div class="p-form-field"><div class="p-form--label"><label for="read-only-(...)">Read Only<\/label><\/div><div class="p-form--input"><span id="read-only-\3"><\/span><\/div><\/div><div class="p-form-field"><input type="submit" value="Submit" \/><\/div><\/form>/',
       $form->render()
     );
 
     $form->number = 4;
     $form->text = 'abc';
     $this->assertRegExp(
-      '/<form id="vbn" method="POST" action="\/test"><div class="form-group"><label for="text-(...)">Text<\/label><input type="text" name="text" value="abc" id="text-\1" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" value="4" id="number-\2" \/><\/div><div class="form-group"><label for="read-only-(...)">Read Only<\/label><span id="read-only-\3"><\/span><\/div><div class="form-group"><input type="submit" value="Submit" \/><\/div><\/form>/',
+      '/<form id="vbn" method="POST" class="p-form" action="\/test"><div class="p-form-field"><div class="p-form--label"><label for="text-(...)">Text<\/label><\/div><div class="p-form--input"><input type="text" name="text" value="abc" id="text-\1" \/><\/div><\/div><div class="p-form-field"><div class="p-form--label"><label for="number-(...)">Number<\/label><\/div><div class="p-form--input"><input type="number" name="number" value="4" id="number-\2" \/><\/div><\/div><div class="p-form-field"><div class="p-form--label"><label for="read-only-(...)">Read Only<\/label><\/div><div class="p-form--input"><span id="read-only-\3"><\/span><\/div><\/div><div class="p-form-field"><input type="submit" value="Submit" \/><\/div><\/form>/',
       $form->render()
     );
 
     $form->text->getDecorator()->setId('myInput');
     $form->getDecorator()->setId('abc')->addAttribute('data-test', true);
     $this->assertRegExp(
-      '/<form id="abc" data-test method="POST" action="\/test"><div class="form-group"><label for="myInput">Text<\/label><input type="text" id="myInput" name="text" value="abc" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" value="4" id="number-\1" \/><\/div><div class="form-group"><label for="read-only-(...)">Read Only<\/label><span id="read-only-\2"><\/span><\/div><div class="form-group"><input type="submit" value="Submit" \/><\/div><\/form>/',
+      '/<form id="abc" data-test method="POST" class="p-form" action="\/test"><div class="p-form-field"><div class="p-form--label"><label for="myInput">Text<\/label><\/div><div class="p-form--input"><input type="text" id="myInput" name="text" value="abc" \/><\/div><\/div><div class="p-form-field"><div class="p-form--label"><label for="number-(...)">Number<\/label><\/div><div class="p-form--input"><input type="number" name="number" value="4" id="number-\1" \/><\/div><\/div><div class="p-form-field"><div class="p-form--label"><label for="read-only-(...)">Read Only<\/label><\/div><div class="p-form--input"><span id="read-only-\2"><\/span><\/div><\/div><div class="p-form-field"><input type="submit" value="Submit" \/><\/div><\/form>/',
       $form->render()
     );
     $this->assertTrue($form->getDecorator()->hasAttribute('data-test'));
 
     $form->getDecorator()->setId('abc')->removeAttribute('data-test');
     $this->assertRegExp(
-      '/<form id="abc" method="POST" action="\/test"><div class="form-group"><label for="myInput">Text<\/label><input type="text" id="myInput" name="text" value="abc" \/><\/div><div class="form-group"><label for="number-(...)">Number<\/label><input type="number" name="number" value="4" id="number-\1" \/><\/div><div class="form-group"><label for="read-only-(...)">Read Only<\/label><span id="read-only-\2"><\/span><\/div><div class="form-group"><input type="submit" value="Submit" \/><\/div><\/form>/',
+      '/<form id="abc" method="POST" class="p-form" action="\/test"><div class="p-form-field"><div class="p-form--label"><label for="myInput">Text<\/label><\/div><div class="p-form--input"><input type="text" id="myInput" name="text" value="abc" \/><\/div><\/div><div class="p-form-field"><div class="p-form--label"><label for="number-(...)">Number<\/label><\/div><div class="p-form--input"><input type="number" name="number" value="4" id="number-\1" \/><\/div><\/div><div class="p-form-field"><div class="p-form--label"><label for="read-only-(...)">Read Only<\/label><\/div><div class="p-form--input"><span id="read-only-\2"><\/span><\/div><\/div><div class="p-form-field"><input type="submit" value="Submit" \/><\/div><\/form>/',
       $form->render()
     );
     $this->assertfalse($form->getDecorator()->hasAttribute('data-test'));
@@ -109,7 +109,7 @@ class FormTest extends TestCase
     $decorator->setId('myNum');
     $form->validate();
     $this->assertEquals(
-      '<form id="abc" method="POST" action="/test"><div class="form-group"><label for="myInput">Text</label><input type="text" id="myInput" name="text" value="abc" /></div><div class="form-group"><label for="myNum">Number</label><ul class="validation-errors"><li>must be a number</li></ul><input type="number" id="myNum" name="number" value="abc" /></div><div class="form-group"><label for="ro">Read Only</label><span id="ro"></span></div><div class="form-group"><input type="submit" value="Submit" /></div></form>',
+      '<form id="abc" method="POST" class="p-form" action="/test"><div class="p-form-field"><div class="p-form--label"><label for="myInput">Text</label></div><div class="p-form--input"><input type="text" id="myInput" name="text" value="abc" /></div></div><div class="p-form-field"><div class="p-form--label"><label for="myNum">Number</label></div><div class="p-form--errors"><ul><li>must be a number</li></ul></div><div class="p-form--input"><input type="number" id="myNum" name="number" value="abc" /></div></div><div class="p-form-field"><div class="p-form--label"><label for="ro">Read Only</label></div><div class="p-form--input"><span id="ro"></span></div></div><div class="p-form-field"><input type="submit" value="Submit" /></div></form>',
       $form->render()
     );
 
