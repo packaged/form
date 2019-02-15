@@ -75,8 +75,7 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
     if($errors)
     {
       $errorTag = UnorderedList::create()
-        ->setContent(ListItem::collection(Objects::mpull($errors, 'getMessage')))
-        ->addClass('validation-errors');
+        ->setContent(ListItem::collection(Objects::mpull($errors, 'getMessage')));
     }
     return $errorTag;
   }
@@ -89,16 +88,16 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
       return $callback($input, $label, $errors);
     }
 
-    $return = Div::create()->addClass('form-group');
+    $return = Div::create()->addClass('p-form-field');
     if($label)
     {
-      $return->appendContent($label);
+      $return->appendContent(Div::create($label)->addClass('p-form--label'));
     }
     if($errors)
     {
-      $return->appendContent($errors);
+      $return->appendContent(Div::create($errors)->addClass('p-form--errors'));
     }
-    $return->appendContent($input);
+    $return->appendContent(Div::create($input)->addClass('p-form--input'));
     return $return;
   }
 

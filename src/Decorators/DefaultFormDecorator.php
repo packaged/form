@@ -28,7 +28,8 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
     $form = $this->getForm();
 
     $formElement = $this->_hydrateElement(CustomHtmlTag::build('form'))
-      ->setAttribute('method', $form->getMethod());
+      ->setAttribute('method', $form->getMethod())
+      ->addClass('p-form');
 
     $action = $form->getAction();
     if($action)
