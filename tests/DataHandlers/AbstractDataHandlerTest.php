@@ -1,11 +1,11 @@
 <?php
-namespace PackagedUi\Tests\Form\DataHandlers;
+namespace Packaged\Tests\Form\DataHandlers;
 
 use Packaged\Glimpse\Tags\Form\Input;
-use PackagedUi\Form\DataHandlers\ReadOnlyDataHandler;
-use PackagedUi\Form\DataHandlers\TextDataHandler;
-use PackagedUi\Form\Decorators\InputDecorator;
-use PackagedUi\Tests\Form\Supporting\DataHandlers\TestIntegerDataHandler;
+use Packaged\Form\DataHandlers\ReadOnlyDataHandler;
+use Packaged\Form\DataHandlers\TextDataHandler;
+use Packaged\Form\Decorators\InputDecorator;
+use Packaged\Tests\Form\Supporting\DataHandlers\TestIntegerDataHandler;
 use PHPUnit\Framework\TestCase;
 
 class AbstractDataHandlerTest extends TestCase

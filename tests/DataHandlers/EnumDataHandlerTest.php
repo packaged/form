@@ -1,8 +1,8 @@
 <?php
 
-namespace PackagedUi\Tests\Form\DataHandlers;
+namespace Packaged\Tests\Form\DataHandlers;
 
-use PackagedUi\Form\DataHandlers\EnumDataHandler;
+use Packaged\Form\DataHandlers\EnumDataHandler;
 use PHPUnit\Framework\TestCase;
 
 class EnumDataHandlerTest extends TestCase

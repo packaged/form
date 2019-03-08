@@ -1,10 +1,10 @@
 <?php
-namespace PackagedUi\Tests\Form\Supporting;
+namespace Packaged\Tests\Form\Supporting;
 
-use PackagedUi\Form\DataHandlers\ReadOnlyDataHandler;
-use PackagedUi\Form\DataHandlers\TextDataHandler;
-use PackagedUi\Form\Form\Form;
-use PackagedUi\Tests\Form\Supporting\DataHandlers\TestIntegerDataHandler;
+use Packaged\Form\DataHandlers\ReadOnlyDataHandler;
+use Packaged\Form\DataHandlers\TextDataHandler;
+use Packaged\Form\Form\Form;
+use Packaged\Tests\Form\Supporting\DataHandlers\TestIntegerDataHandler;
 
 class TestForm extends Form
 {

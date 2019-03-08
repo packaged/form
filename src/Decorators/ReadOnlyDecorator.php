@@ -1,5 +1,5 @@
 <?php
-namespace PackagedUi\Form\Decorators;
+namespace Packaged\Form\Decorators;
 
 use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Span;

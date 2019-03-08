@@ -1,9 +1,9 @@
 <?php
-namespace PackagedUi\Form\Form;
+namespace Packaged\Form\Form;
 
 use Packaged\Glimpse\Tags\Div;
 use Packaged\Glimpse\Tags\Form\Input;
-use PackagedUi\Form\Decorators\AbstractDecorator;
+use Packaged\Form\Decorators\AbstractDecorator;
 
 class FormSubmitDecorator extends AbstractDecorator
 {

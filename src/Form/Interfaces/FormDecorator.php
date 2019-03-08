@@ -1,8 +1,8 @@
 <?php
-namespace PackagedUi\Form\Form\Interfaces;
+namespace Packaged\Form\Form\Interfaces;
 
-use PackagedUi\Form\Decorators\Interfaces\Decorator;
-use PackagedUi\Form\Form\Form;
+use Packaged\Form\Decorators\Interfaces\Decorator;
+use Packaged\Form\Form\Form;
 
 interface FormDecorator extends Decorator
 {

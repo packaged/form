@@ -1,5 +1,5 @@
 <?php
-namespace PackagedUi\Form\Decorators\Interfaces;
+namespace Packaged\Form\Decorators\Interfaces;
 
 use Packaged\SafeHtml\ISafeHtmlProducer;
 use Packaged\Ui\Renderable;
@@ -7,7 +7,7 @@ use Packaged\Ui\Renderable;
 /**
  * Decorators are responsible for creating elements
  *
- * @package PackagedUi\Form
+ * @package Packaged\Form
  */
 interface Decorator extends Renderable, ISafeHtmlProducer
 {

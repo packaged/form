@@ -1,6 +1,6 @@
 {
-  "name": "packaged-ui/form",
-  "description": "User Interface",
+  "name": "packaged/form",
+  "description": "Form Helper",
   "license": "MIT",
   "authors": [
     {
@@ -19,12 +19,12 @@
   },
   "autoload": {
     "psr-4": {
-      "PackagedUi\\Form\\": "src"
+      "Packaged\\Form\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "PackagedUi\\Tests\\Form\\": "tests"
+      "Packaged\\Tests\\Form\\": "tests"
     }
   }
 }

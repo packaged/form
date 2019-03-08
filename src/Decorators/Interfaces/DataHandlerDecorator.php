@@ -1,12 +1,12 @@
 <?php
-namespace PackagedUi\Form\Decorators\Interfaces;
+namespace Packaged\Form\Decorators\Interfaces;
 
-use PackagedUi\Form\DataHandlers\Interfaces\DataHandler;
+use Packaged\Form\DataHandlers\Interfaces\DataHandler;
 
 /**
  * DataHandlerDecorator are responsible for creating display elements from DataHandler
  *
- * @package PackagedUi\Form
+ * @package Packaged\Form
  */
 interface DataHandlerDecorator extends Decorator
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace PackagedUi\Tests\Form\DataHandlers;
+namespace Packaged\Tests\Form\DataHandlers;
 
 use Packaged\Glimpse\Tags\Form\Input;
-use PackagedUi\Form\DataHandlers\TextDataHandler;
-use PackagedUi\Form\Decorators\InputDecorator;
+use Packaged\Form\DataHandlers\TextDataHandler;
+use Packaged\Form\Decorators\InputDecorator;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

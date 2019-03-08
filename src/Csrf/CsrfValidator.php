@@ -1,5 +1,5 @@
 <?php
-namespace PackagedUi\Form\Csrf;
+namespace Packaged\Form\Csrf;
 
 use Generator;
 use Packaged\Validate\AbstractValidator;

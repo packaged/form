@@ -1,10 +1,10 @@
 <?php
 
-namespace PackagedUi\Tests\Form;
+namespace Packaged\Tests\Form;
 
 use Packaged\Validate\Validators\StringValidator;
-use PackagedUi\Form\DataHandlers\TextDataHandler;
-use PackagedUi\Tests\Form\Supporting\TestForm;
+use Packaged\Form\DataHandlers\TextDataHandler;
+use Packaged\Tests\Form\Supporting\TestForm;
 use PHPUnit\Framework\TestCase;
 
 class FormTest extends TestCase

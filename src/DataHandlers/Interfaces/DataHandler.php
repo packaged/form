@@ -1,9 +1,9 @@
 <?php
-namespace PackagedUi\Form\DataHandlers\Interfaces;
+namespace Packaged\Form\DataHandlers\Interfaces;
 
 use Packaged\Validate\IValidatable;
 use Packaged\Validate\ValidationException;
-use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
+use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 
 interface DataHandler extends IValidatable
 {

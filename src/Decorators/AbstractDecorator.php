@@ -1,10 +1,10 @@
 <?php
-namespace PackagedUi\Form\Decorators;
+namespace Packaged\Form\Decorators;
 
 use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Helpers\Arrays;
 use Packaged\SafeHtml\SafeHtml;
-use PackagedUi\Form\Decorators\Interfaces\Decorator;
+use Packaged\Form\Decorators\Interfaces\Decorator;
 
 abstract class AbstractDecorator implements Decorator
 {

@@ -1,7 +1,7 @@
 <?php
-namespace PackagedUi\Tests\Form\Csrf;
+namespace Packaged\Tests\Form\Csrf;
 
-use PackagedUi\Form\Csrf\CsrfForm;
+use Packaged\Form\Csrf\CsrfForm;
 use PHPUnit\Framework\TestCase;
 
 class CsrfFormTest extends TestCase

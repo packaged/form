@@ -1,7 +1,7 @@
 <?php
-namespace PackagedUi\Form\Csrf;
+namespace Packaged\Form\Csrf;
 
-use PackagedUi\Form\Form\Form;
+use Packaged\Form\Form\Form;
 
 class CsrfForm extends Form
 {

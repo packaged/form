@@ -1,9 +1,9 @@
 <?php
-namespace PackagedUi\Form\Decorators;
+namespace Packaged\Form\Decorators;
 
 use Packaged\Glimpse\Core\CustomHtmlTag;
-use PackagedUi\Form\Form\Form;
-use PackagedUi\Form\Form\Interfaces\FormDecorator;
+use Packaged\Form\Form\Form;
+use Packaged\Form\Form\Interfaces\FormDecorator;
 
 class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
 {

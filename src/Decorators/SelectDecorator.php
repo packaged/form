@@ -1,10 +1,10 @@
 <?php
-namespace PackagedUi\Form\Decorators;
+namespace Packaged\Form\Decorators;
 
 use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Form\Option;
 use Packaged\Glimpse\Tags\Form\Select;
-use PackagedUi\Form\DataHandlers\EnumDataHandler;
+use Packaged\Form\DataHandlers\EnumDataHandler;
 
 class SelectDecorator extends AbstractDataHandlerDecorator
 {

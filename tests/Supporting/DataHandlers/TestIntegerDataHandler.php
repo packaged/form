@@ -1,12 +1,12 @@
 <?php
-namespace PackagedUi\Tests\Form\Supporting\DataHandlers;
+namespace Packaged\Tests\Form\Supporting\DataHandlers;
 
 use Packaged\Glimpse\Tags\Form\Input;
 use Packaged\Validate\Validators\IntegerValidator;
 use Packaged\Validate\Validators\NullableValidator;
-use PackagedUi\Form\DataHandlers\AbstractDataHandler;
-use PackagedUi\Form\Decorators\InputDecorator;
-use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
+use Packaged\Form\DataHandlers\AbstractDataHandler;
+use Packaged\Form\Decorators\InputDecorator;
+use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 
 class TestIntegerDataHandler extends AbstractDataHandler
 {

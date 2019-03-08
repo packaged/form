@@ -1,5 +1,5 @@
 <?php
-namespace PackagedUi\Form\Decorators;
+namespace Packaged\Form\Decorators;
 
 use Packaged\Glimpse\Tags\Form\Input;
 use Packaged\SafeHtml\SafeHtml;

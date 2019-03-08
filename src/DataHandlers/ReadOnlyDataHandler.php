@@ -1,8 +1,8 @@
 <?php
-namespace PackagedUi\Form\DataHandlers;
+namespace Packaged\Form\DataHandlers;
 
-use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
-use PackagedUi\Form\Decorators\ReadOnlyDecorator;
+use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
+use Packaged\Form\Decorators\ReadOnlyDecorator;
 
 class ReadOnlyDataHandler extends AbstractDataHandler
 {

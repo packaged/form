@@ -1,10 +1,10 @@
 <?php
-namespace PackagedUi\Form\DataHandlers;
+namespace Packaged\Form\DataHandlers;
 
 use Packaged\Validate\IValidator;
 use Packaged\Validate\ValidationException;
-use PackagedUi\Form\DataHandlers\Interfaces\DataHandler;
-use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
+use Packaged\Form\DataHandlers\Interfaces\DataHandler;
+use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 
 abstract class AbstractDataHandler implements DataHandler
 {

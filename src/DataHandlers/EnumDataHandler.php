@@ -1,9 +1,9 @@
 <?php
-namespace PackagedUi\Form\DataHandlers;
+namespace Packaged\Form\DataHandlers;
 
-use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
-use PackagedUi\Form\Decorators\SelectDecorator;
-use PackagedUi\Form\Validators\HandlerEnumValidator;
+use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
+use Packaged\Form\Decorators\SelectDecorator;
+use Packaged\Form\Validators\HandlerEnumValidator;
 
 class EnumDataHandler extends AbstractDataHandler
 {

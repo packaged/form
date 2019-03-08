@@ -1,5 +1,6 @@
 <?php
-namespace PackagedUi\Form\Form;
+
+namespace Packaged\Form\Form;
 
 use Packaged\Helpers\Arrays;
 use Packaged\Helpers\Objects;
@@ -8,11 +9,11 @@ use Packaged\SafeHtml\SafeHtml;
 use Packaged\Ui\Renderable;
 use Packaged\Validate\IValidatable;
 use Packaged\Validate\ValidationException;
-use PackagedUi\Form\DataHandlers\Interfaces\DataHandler;
-use PackagedUi\Form\DataHandlers\ReadOnlyDataHandler;
-use PackagedUi\Form\Decorators\DefaultFormDecorator;
-use PackagedUi\Form\Decorators\Interfaces\Decorator;
-use PackagedUi\Form\Form\Interfaces\FormDecorator;
+use Packaged\Form\DataHandlers\Interfaces\DataHandler;
+use Packaged\Form\DataHandlers\ReadOnlyDataHandler;
+use Packaged\Form\Decorators\DefaultFormDecorator;
+use Packaged\Form\Decorators\Interfaces\Decorator;
+use Packaged\Form\Form\Interfaces\FormDecorator;
 
 abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
 {
@@ -41,10 +42,8 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
 
   final protected function _preparePublicProperties()
   {
-    foreach(Objects::propertyValues($this) as $property => $value)
-    {
-      if($value === null)
-      {
+    foreach (Objects::propertyValues($this) as $property => $value) {
+      if ($value === null) {
         // use read only handler if none have been specified
         $value = new ReadOnlyDataHandler();
       }
@@ -57,8 +56,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
 
   public function __set($name, $value)
   {
-    if(isset($this->_dataHandlers[$name]))
-    {
+    if (isset($this->_dataHandlers[$name])) {
       $this->_dataHandlers[$name]->setValue($value);
     }
   }
@@ -80,10 +78,8 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
    */
   public function isValid(): bool
   {
-    foreach($this->_dataHandlers as $name => $handler)
-    {
-      if(!$handler->isValid())
-      {
+    foreach ($this->_dataHandlers as $name => $handler) {
+      if (!$handler->isValid()) {
         return false;
       }
     }
@@ -96,14 +92,11 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   public function validate(): array
   {
     $errors = [];
-    foreach($this->_dataHandlers as $name => $handler)
-    {
+    foreach ($this->_dataHandlers as $name => $handler) {
       $handlerErrors = $handler->validate();
-      if($handlerErrors)
-      {
+      if ($handlerErrors) {
         $handler->clearErrors()->addError(...$handlerErrors);
-        if(!isset($errors[$name]))
-        {
+        if (!isset($errors[$name])) {
           $errors[$name] = [];
         }
         $errors[$name] = array_merge($errors[$name], $handlerErrors);
@@ -117,8 +110,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
    */
   public function assert()
   {
-    foreach($this->_dataHandlers as $name => $handler)
-    {
+    foreach ($this->_dataHandlers as $name => $handler) {
       $handler->assert();
     }
   }
@@ -126,30 +118,24 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   /**
    * @param array $data
    *
-   * @param bool  $hydrateInvalidValues
+   * @param bool $hydrateInvalidValues
    *
    * @return array Keys in the data that do not have valid values
    */
   public function hydrate(array $data, $hydrateInvalidValues = false)
   {
     $errorKeys = [];
-    foreach($data as $name => $value)
-    {
+    foreach ($data as $name => $value) {
       $ele = $this->__get($name);
-      if($ele instanceof DataHandler)
-      {
+      if ($ele instanceof DataHandler) {
         $value = $ele->formatValue($value);
         $handlerErrors = $ele->clearErrors()->validateValue($value);
-        if(empty($handlerErrors))
-        {
+        if (empty($handlerErrors)) {
           $ele->setValue($value);
-        }
-        else
-        {
+        } else {
           $ele->addError(...$handlerErrors);
           $errorKeys[$name] = $handlerErrors;
-          if($hydrateInvalidValues)
-          {
+          if ($hydrateInvalidValues) {
             $ele->setValue($value);
           }
         }
@@ -161,8 +147,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   public function getFormData()
   {
     $data = [];
-    foreach($this->_dataHandlers as $name => $handler)
-    {
+    foreach ($this->_dataHandlers as $name => $handler) {
       $data[$name] = $handler->getValue();
     }
     return $data;
@@ -178,8 +163,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
 
   public function getDecorator(): FormDecorator
   {
-    if(!$this->_decorator)
-    {
+    if (!$this->_decorator) {
       $this->_decorator = $this->_defaultDecorator();
     }
     return $this->_decorator->setForm($this);

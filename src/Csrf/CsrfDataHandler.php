@@ -1,9 +1,9 @@
 <?php
-namespace PackagedUi\Form\Csrf;
+namespace Packaged\Form\Csrf;
 
-use PackagedUi\Form\DataHandlers\AbstractDataHandler;
-use PackagedUi\Form\Decorators\HiddenInputDecorator;
-use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
+use Packaged\Form\DataHandlers\AbstractDataHandler;
+use Packaged\Form\Decorators\HiddenInputDecorator;
+use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 
 class CsrfDataHandler extends AbstractDataHandler
 {

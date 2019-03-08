@@ -1,5 +1,5 @@
 <?php
-namespace PackagedUi\Form\Decorators;
+namespace Packaged\Form\Decorators;
 
 use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Div;
@@ -8,8 +8,8 @@ use Packaged\Glimpse\Tags\Lists\ListItem;
 use Packaged\Glimpse\Tags\Lists\UnorderedList;
 use Packaged\Helpers\Objects;
 use Packaged\Helpers\Strings;
-use PackagedUi\Form\DataHandlers\Interfaces\DataHandler;
-use PackagedUi\Form\Decorators\Interfaces\DataHandlerDecorator;
+use Packaged\Form\DataHandlers\Interfaces\DataHandler;
+use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 
 abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements DataHandlerDecorator
 {
