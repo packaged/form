@@ -11,7 +11,7 @@
   "require": {
     "php": ">=7.1",
     "packaged/glimpse": "^2.2",
-    "packaged/ui": "^0.1",
+    "packaged/ui": "~0.2",
     "packaged/validate": "^2.1"
   },
   "require-dev": {
