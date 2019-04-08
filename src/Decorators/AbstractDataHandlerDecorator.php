@@ -1,6 +1,8 @@
 <?php
 namespace Packaged\Form\Decorators;
 
+use Packaged\Form\DataHandlers\Interfaces\DataHandler;
+use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Div;
 use Packaged\Glimpse\Tags\Form\Label;
@@ -8,8 +10,6 @@ use Packaged\Glimpse\Tags\Lists\ListItem;
 use Packaged\Glimpse\Tags\Lists\UnorderedList;
 use Packaged\Helpers\Objects;
 use Packaged\Helpers\Strings;
-use Packaged\Form\DataHandlers\Interfaces\DataHandler;
-use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 
 abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements DataHandlerDecorator
 {
@@ -46,6 +46,7 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
   protected function _getElement()
   {
     $input = $this->_getInputElement();
+    $input->addAttributes($this->_attributes, true);
     $label = $this->_getLabelElement();
     if($label)
     {
