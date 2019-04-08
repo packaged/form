@@ -3,6 +3,7 @@ namespace Packaged\Form\Decorators;
 
 use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Form\Input;
+use Packaged\Helpers\Strings;
 
 class InputDecorator extends AbstractDataHandlerDecorator
 {
@@ -29,10 +30,12 @@ class InputDecorator extends AbstractDataHandlerDecorator
 
   protected function _getInputElement(): HtmlTag
   {
-    $input = Input::create();
-    $input->setId($this->getId());
-    $input->setType($this->getType());
-    $input->setName($this->_handler->getName());
+    $input = Input::create()
+      ->setId($this->getId())
+      ->setType($this->getType())
+      ->setName($this->_handler->getName())
+      ->setAttribute('placeholder', Strings::titleize($this->_handler->getName()));
+
     if($this->_handler->getValue() !== null)
     {
       $input->setValue($this->_handler->getValue());
