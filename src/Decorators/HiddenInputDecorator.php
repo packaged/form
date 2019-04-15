@@ -10,6 +10,6 @@ class HiddenInputDecorator extends InputDecorator
 
   public function produceSafeHTML(): SafeHtml
   {
-    return SafeHtml::escape([$this->_getInputElement(), $this->_handler->getErrors()], '');
+    return SafeHtml::escape([$this->_getInputElement(), $this->_getErrorElement()], '');
   }
 }
