@@ -1,11 +1,11 @@
 <?php
 namespace Packaged\Form\DataHandlers;
 
+use Packaged\Form\Decorators\InputDecorator;
+use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 use Packaged\Glimpse\Tags\Form\Input;
 use Packaged\Helpers\Strings;
 use Packaged\Helpers\ValueAs;
-use Packaged\Form\Decorators\InputDecorator;
-use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 
 class TextDataHandler extends AbstractDataHandler
 {

@@ -1,10 +1,11 @@
 <?php
 namespace Packaged\Form\DataHandlers;
 
-use Packaged\Validate\IValidator;
-use Packaged\Validate\ValidationException;
+use Exception;
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
 use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
+use Packaged\Validate\IValidator;
+use Packaged\Validate\ValidationException;
 
 abstract class AbstractDataHandler implements DataHandler
 {
@@ -88,7 +89,7 @@ abstract class AbstractDataHandler implements DataHandler
    * @param mixed $value
    *
    * @return DataHandler
-   * @throws \Exception
+   * @throws Exception
    */
   public function setValueFormatted($value)
   {

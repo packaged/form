@@ -1,9 +1,10 @@
 <?php
 namespace Packaged\Form\DataHandlers\Interfaces;
 
+use Exception;
+use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 use Packaged\Validate\IValidatable;
 use Packaged\Validate\ValidationException;
-use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 
 interface DataHandler extends IValidatable
 {
@@ -30,7 +31,7 @@ interface DataHandler extends IValidatable
    *
    * @param mixed $value
    *
-   * @throws \Exception
+   * @throws Exception
    */
   public function assertValue($value);
 

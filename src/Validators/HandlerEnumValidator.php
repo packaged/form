@@ -1,8 +1,8 @@
 <?php
 namespace Packaged\Form\Validators;
 
-use Packaged\Validate\Validators\EnumValidator;
 use Packaged\Form\DataHandlers\EnumDataHandler;
+use Packaged\Validate\Validators\EnumValidator;
 
 class HandlerEnumValidator extends EnumValidator
 {

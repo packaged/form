@@ -114,6 +114,9 @@ class FormTest extends TestCase
     );
 
     $decorator->setFormatCallback(function ($input, $label, $err) { return $input; });
-    $this->assertEquals('<input type="number" id="myNum" name="number" placeholder="Number" value="abc" />', $decorator->render());
+    $this->assertEquals(
+      '<input type="number" id="myNum" name="number" placeholder="Number" value="abc" />',
+      $decorator->render()
+    );
   }
 }

@@ -1,10 +1,11 @@
 <?php
 namespace Packaged\Form\Decorators;
 
+use Exception;
+use Packaged\Form\Decorators\Interfaces\Decorator;
 use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Helpers\Arrays;
 use Packaged\SafeHtml\SafeHtml;
-use Packaged\Form\Decorators\Interfaces\Decorator;
 
 abstract class AbstractDecorator implements Decorator
 {
@@ -68,7 +69,7 @@ abstract class AbstractDecorator implements Decorator
 
   /**
    * @return string
-   * @throws \Exception
+   * @throws Exception
    */
   public function render(): string
   {
@@ -77,7 +78,7 @@ abstract class AbstractDecorator implements Decorator
 
   /**
    * @return SafeHtml
-   * @throws \Exception
+   * @throws Exception
    */
   public function produceSafeHTML(): SafeHtml
   {

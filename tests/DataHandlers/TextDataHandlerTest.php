@@ -2,9 +2,10 @@
 
 namespace Packaged\Tests\Form\DataHandlers;
 
-use Packaged\Glimpse\Tags\Form\Input;
+use InvalidArgumentException;
 use Packaged\Form\DataHandlers\TextDataHandler;
 use Packaged\Form\Decorators\InputDecorator;
+use Packaged\Glimpse\Tags\Form\Input;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -14,7 +15,7 @@ class TextDataHandlerTest extends TestCase
   public function testInvalidFormatValue()
   {
     $text = new TextDataHandler();
-    $this->expectException(\InvalidArgumentException::class);
+    $this->expectException(InvalidArgumentException::class);
     $text->formatValue(new stdClass());
   }
 

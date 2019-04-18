@@ -1,10 +1,10 @@
 <?php
 namespace Packaged\Tests\Form\DataHandlers;
 
-use Packaged\Glimpse\Tags\Form\Input;
 use Packaged\Form\DataHandlers\ReadOnlyDataHandler;
 use Packaged\Form\DataHandlers\TextDataHandler;
 use Packaged\Form\Decorators\InputDecorator;
+use Packaged\Glimpse\Tags\Form\Input;
 use Packaged\Tests\Form\Supporting\DataHandlers\TestIntegerDataHandler;
 use PHPUnit\Framework\TestCase;
 
