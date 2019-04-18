@@ -33,7 +33,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
 
   public function getMethod()
   {
-    return 'POST';
+    return 'post';
   }
 
   public function getAction()
