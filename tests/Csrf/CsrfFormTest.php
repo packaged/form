@@ -33,7 +33,7 @@ class CsrfFormTest extends TestCase
     $form = new CsrfForm($secret);
     $html = $form->render();
     $this->assertRegExp(
-      '/<form method="POST" class="p-form"><input type="hidden" name="csrfToken" value=".*" \/><div class="p-form-field"><input type="submit" value="Submit" \/><\/div><\/form>/',
+      '/<form method="post" class="p-form"><input type="hidden" name="csrfToken" value=".*" \/><div class="p-form-field"><div class="p-form--submit"><input type="submit" value="Submit" \/><\/div><\/div><\/form>/',
       $html
     );
   }
