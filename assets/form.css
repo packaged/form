@@ -32,3 +32,11 @@
   color: #313131;
   border: 1px solid #8c8c8c;
 }
+
+.p-form--submit input:active,
+.p-form--submit button:active {
+  background-color: #c3c3c3;
+  color: #313131;
+  border: 1px solid #8c8c8c;
+  box-shadow: inset 0px 0px 3px #313131;
+}
