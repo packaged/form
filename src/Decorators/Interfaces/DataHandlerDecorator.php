@@ -2,6 +2,8 @@
 namespace Packaged\Form\Decorators\Interfaces;
 
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
+use Packaged\Glimpse\Core\HtmlTag;
+use Packaged\Ui\Html\HtmlElement;
 
 /**
  * DataHandlerDecorator are responsible for creating display elements from DataHandler
@@ -17,5 +19,7 @@ interface DataHandlerDecorator extends Decorator
    */
   public function setHandler(DataHandler $handler);
 
-  public function setFormatCallback(callable $callable);
+  public function getInput(): HtmlElement;
+
+  public function getLabel(): ?HtmlTag;
 }

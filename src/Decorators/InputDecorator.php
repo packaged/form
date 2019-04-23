@@ -4,63 +4,37 @@ namespace Packaged\Form\Decorators;
 use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Form\Input;
 use Packaged\Helpers\Strings;
+use Packaged\Ui\Html\HtmlElement;
 
 class InputDecorator extends AbstractDataHandlerDecorator
 {
-  protected $_type = Input::TYPE_TEXT;
-
-  /**
-   * @return mixed
-   */
-  public function getType()
+  protected function _initInputElement(): HtmlTag
   {
-    return $this->_type;
+    return Input::create();
   }
 
-  /**
-   * @param mixed $type
-   *
-   * @return InputDecorator
-   */
-  public function setType($type)
+  protected function _configureInputElement(HtmlElement $input)
   {
-    $this->_type = $type;
-    return $this;
-  }
-
-  protected function _getInputElement(): HtmlTag
-  {
-    $input = Input::create()
-      ->setId($this->getId())
-      ->setType($this->getType())
-      ->setName($this->_handler->getName());
-    if($input->getType() !== Input::TYPE_HIDDEN)
+    parent::_configureInputElement($input);
+    if($input instanceof Input)
     {
-      $input->setAttribute('placeholder', Strings::titleize($this->_handler->getName()));
-    }
-
-    if($this->_handler->getValue() !== null)
-    {
-      $input->setValue($this->_handler->getValue());
-    }
-    else
-    {
-      $default = $this->_handler->getDefaultValue();
-      if($default !== null)
+      if($input->getType() !== Input::TYPE_HIDDEN)
       {
-        $input->setValue($default);
+        $input->setAttribute('placeholder', Strings::titleize($this->_handler->getName()));
+      }
+
+      if($this->_handler->getValue() !== null)
+      {
+        $input->setValue($this->_handler->getValue());
+      }
+      else
+      {
+        $default = $this->_handler->getDefaultValue();
+        if($default !== null)
+        {
+          $input->setValue($default);
+        }
       }
     }
-    return $input;
   }
-
-  protected function _getLabelElement(): ?HtmlTag
-  {
-    if($this->getType() === Input::TYPE_HIDDEN)
-    {
-      return null;
-    }
-    return parent::_getLabelElement();
-  }
-
 }

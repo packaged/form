@@ -18,7 +18,7 @@ class TextDataHandler extends AbstractDataHandler
   protected function _defaultDecorator(): DataHandlerDecorator
   {
     $decorator = new InputDecorator();
-    $decorator->setType(Input::TYPE_TEXT);
+    $decorator->getInput()->setAttribute('type', Input::TYPE_TEXT);
     return $decorator;
   }
 }

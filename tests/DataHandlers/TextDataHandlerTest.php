@@ -31,13 +31,13 @@ class TextDataHandlerTest extends TestCase
   public function testHidden()
   {
     $dec = new InputDecorator();
-    $dec->setType(Input::TYPE_HIDDEN);
+    $dec->getInput()->setAttribute('type', Input::TYPE_HIDDEN);
 
     $text = new TextDataHandler();
     $text->setName('text');
     $text->setDecorator($dec);
-    $this->assertEquals(
-      '<div class="p-form-field"><div class="p-form--input"><input type="hidden" name="text" /></div></div>',
+    $this->assertRegExp(
+      '~<div class="p-form-field"><div class="p-form--label"><label for="(text-...)">Text</label></div><div class="p-form--input"><input type="hidden" id="\1" name="text" /></div></div>~',
       $text->getDecorator()->render()
     );
   }

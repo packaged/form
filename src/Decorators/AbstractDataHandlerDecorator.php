@@ -10,17 +10,24 @@ use Packaged\Glimpse\Tags\Lists\ListItem;
 use Packaged\Glimpse\Tags\Lists\UnorderedList;
 use Packaged\Helpers\Objects;
 use Packaged\Helpers\Strings;
+use Packaged\Ui\Html\HtmlElement;
 
 abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements DataHandlerDecorator
 {
+  protected $_tag = 'div';
   /**
    * @var DataHandler
    */
   protected $_handler;
-  /**
-   * @var callable
-   */
-  protected $_formatCallback;
+
+  protected $_input;
+  protected $_label;
+
+  public function __construct()
+  {
+    $this->_input = $this->_initInputElement();
+    $this->_label = $this->_initLabelElement();
+  }
 
   public function setHandler(DataHandler $handler)
   {
@@ -28,45 +35,73 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
     return $this;
   }
 
-  abstract protected function _getInputElement(): HtmlTag;
+  abstract protected function _initInputElement(): HtmlTag;
 
-  protected function _getLabelElement(): ?HtmlTag
+  protected function _initLabelElement(): ?HtmlTag
   {
-    $labelText = $this->_handler->getLabel()
-      ?? Strings::titleize(Strings::splitOnCamelCase($this->_handler->getName()));
-    if($labelText)
-    {
-      $label = Label::create();
-      $label->setContent($labelText);
-      return $label;
-    }
-    return null;
+    return Label::create();
   }
 
-  protected function _getElement()
+  /**
+   * @return HtmlTag
+   */
+  public function getInput(): HtmlElement
   {
-    $input = $this->_getInputElement();
-    $input->addAttributes($this->_attributes, true);
-    $label = $this->_getLabelElement();
-    if($label)
-    {
-      $id = $input->getId();
-      if(empty($id))
-      {
-        // create an id
-        $name = $this->_handler->getName();
-        $idSeed = $name
-          ? str_replace(' ', '-', Strings::splitOnCamelCase($name)) . '-' . Strings::randomString(3)
-          : Strings::pattern('XXXXX-0000-X0X0');
+    return $this->_input;
+  }
 
-        $id = strtolower($idSeed);
-        $input->setId($id);
+  /**
+   * @return HtmlTag|null
+   */
+  public function getLabel(): ?HtmlTag
+  {
+    return $this->_label;
+  }
+
+  protected function _configureInputElement(HtmlElement $input)
+  {
+    $id = $input->getId();
+    $name = $this->_handler->getName();
+    if(empty($id) && $this->_label && $name)
+    {
+      // create an id
+      $id = strtolower(str_replace(' ', '-', Strings::splitOnCamelCase($name)) . '-' . Strings::randomString(3));
+      $input->setId($id);
+    }
+    $input->setAttribute('name', $name, true);
+  }
+
+  protected function _configureLabelElement(HtmlTag $label)
+  {
+    if(empty($label->getContent(true)))
+    {
+      $labelText = $this->_handler->getLabel()
+        ?? Strings::titleize(Strings::splitOnCamelCase($this->_handler->getName()));
+      if($labelText)
+      {
+        $label->setContent($labelText);
       }
-      $label->setAttribute('for', $id);
+    }
+    $label->setAttribute('for', $this->_input->getId(), true);
+  }
+
+  protected function _prepareForProduce(): HtmlElement
+  {
+    $this->addClass('p-form-field');
+    return parent::_prepareForProduce();
+  }
+
+  protected function _getContentForRender()
+  {
+    $input = $this->_input;
+    $this->_configureInputElement($input);
+    if($this->_label)
+    {
+      $this->_configureLabelElement($this->_label);
     }
 
     $errorTag = $this->_getErrorElement();
-    return $this->_formatElements($input, $label, $errorTag);
+    return $this->_formatElements($input, $this->_label, $errorTag);
   }
 
   protected function _getErrorElement()
@@ -83,28 +118,16 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
 
   protected function _formatElements(HtmlTag $input, ?HtmlTag $label, ?HtmlTag $errors)
   {
-    $callback = $this->_formatCallback;
-    if(is_callable($callback))
-    {
-      return $callback($input, $label, $errors);
-    }
-
-    $return = Div::create()->addClass('p-form-field');
+    $return = [];
     if($label)
     {
-      $return->appendContent(Div::create($label)->addClass('p-form--label'));
+      $return [] = Div::create($label)->addClass('p-form--label');
     }
     if($errors)
     {
-      $return->appendContent(Div::create($errors)->addClass('p-form--errors'));
+      $return[] = Div::create($errors)->addClass('p-form--errors');
     }
-    $return->appendContent(Div::create($input)->addClass('p-form--input'));
+    $return[] = Div::create($input)->addClass('p-form--input');
     return $return;
-  }
-
-  public function setFormatCallback(callable $callback)
-  {
-    $this->_formatCallback = $callback;
-    return $this;
   }
 }

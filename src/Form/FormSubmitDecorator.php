@@ -4,10 +4,17 @@ namespace Packaged\Form\Form;
 use Packaged\Form\Decorators\AbstractDecorator;
 use Packaged\Glimpse\Tags\Div;
 use Packaged\Glimpse\Tags\Form\Input;
+use Packaged\Ui\Html\HtmlElement;
 
 class FormSubmitDecorator extends AbstractDecorator
 {
+  protected $_tag = 'div';
   private $_value = 'Submit';
+
+  public function __construct()
+  {
+    $this->addClass('p-form-field');
+  }
 
   public function setValue(string $value)
   {
@@ -15,12 +22,15 @@ class FormSubmitDecorator extends AbstractDecorator
     return $this;
   }
 
-  protected function _getElement()
+  protected function _getContentForRender()
   {
     return Div::create(
-      Div::create(
-        Input::create()->setType(Input::TYPE_SUBMIT)->setValue($this->_value)
-      )->addClass('p-form--submit')
-    )->addClass('p-form-field');
+      Input::create()->setType(Input::TYPE_SUBMIT)->setValue($this->_value)
+    )->addClass('p-form--submit');
+  }
+
+  protected function _prepareForProduce(): HtmlElement
+  {
+    return parent::_prepareForProduce();
   }
 }

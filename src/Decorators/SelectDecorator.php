@@ -5,28 +5,34 @@ use Packaged\Form\DataHandlers\EnumDataHandler;
 use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Form\Option;
 use Packaged\Glimpse\Tags\Form\Select;
+use Packaged\Ui\Html\HtmlElement;
 
 class SelectDecorator extends AbstractDataHandlerDecorator
 {
-  protected function _getInputElement(): HtmlTag
+  protected function _initInputElement(): HtmlTag
   {
-    $input = Select::create();
-    $input->setId($this->getId());
-    $input->setName($this->_handler->getName());
+    return Select::create();
+  }
 
-    $currentValue = $this->_handler->getValue();
-    if($this->_handler instanceof EnumDataHandler)
+  protected function _configureInputElement(HtmlElement $input)
+  {
+    if($input instanceof Select)
     {
-      foreach($this->_handler->getOptions() as $value => $key)
+      $currentValue = $this->_handler->getValue();
+      if($this->_handler instanceof EnumDataHandler)
       {
-        $option = new Option($key, $value);
-        if($value == $currentValue)
+        $options = [];
+        foreach($this->_handler->getOptions() as $value => $key)
         {
-          $option->setAttribute('selected', 'selected');
+          $option = new Option($key, $value);
+          if($value == $currentValue)
+          {
+            $option->setAttribute('selected', 'selected');
+          }
+          $options[] = $option;
         }
-        $input->appendContent($option);
+        $input->setContent($options);
       }
     }
-    return $input;
   }
 }

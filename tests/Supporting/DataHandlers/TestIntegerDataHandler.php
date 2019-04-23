@@ -18,7 +18,7 @@ class TestIntegerDataHandler extends AbstractDataHandler
   protected function _defaultDecorator(): DataHandlerDecorator
   {
     $decorator = new InputDecorator();
-    $decorator->setType(Input::TYPE_NUMBER);
+    $decorator->getInput()->setAttribute('type', Input::TYPE_NUMBER);
     return $decorator;
   }
 }

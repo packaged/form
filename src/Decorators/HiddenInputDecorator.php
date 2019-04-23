@@ -1,15 +1,27 @@
 <?php
 namespace Packaged\Form\Decorators;
 
+use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Form\Input;
-use Packaged\SafeHtml\SafeHtml;
+use Packaged\Ui\Html\HtmlElement;
 
 class HiddenInputDecorator extends InputDecorator
 {
-  protected $_type = Input::TYPE_HIDDEN;
+  protected $_tag = '';
 
-  public function produceSafeHTML(): SafeHtml
+  protected function _formatElements(HtmlTag $input, ?HtmlTag $label, ?HtmlTag $errors)
   {
-    return SafeHtml::escape([$this->_getInputElement(), $this->_getErrorElement()], '');
+    return [$input, $errors];
+  }
+
+  protected function _initLabelElement(): ?HtmlTag
+  {
+    return null;
+  }
+
+  protected function _configureInputElement(HtmlElement $input)
+  {
+    $input->setAttribute('type', Input::TYPE_HIDDEN);
+    parent::_configureInputElement($input);
   }
 }

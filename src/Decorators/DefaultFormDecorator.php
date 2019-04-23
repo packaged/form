@@ -3,14 +3,20 @@ namespace Packaged\Form\Decorators;
 
 use Packaged\Form\Form\Form;
 use Packaged\Form\Form\Interfaces\FormDecorator;
-use Packaged\Glimpse\Core\CustomHtmlTag;
+use Packaged\Ui\Html\HtmlElement;
 
 class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
 {
+  protected $_tag = 'form';
   /**
    * @var Form
    */
   protected $_form;
+
+  public function __construct()
+  {
+    $this->addClass('p-form');
+  }
 
   public function setForm(Form $form): FormDecorator
   {
@@ -23,27 +29,31 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
     return $this->_form;
   }
 
-  protected function _getElement()
+  protected function _prepareForProduce(): HtmlElement
   {
     $form = $this->getForm();
-
-    $formElement = $this->_hydrateElement(CustomHtmlTag::build('form'))
-      ->setAttribute('method', $form->getMethod())
-      ->addClass('p-form');
 
     $action = $form->getAction();
     if($action)
     {
-      $formElement->setAttribute('action', $action);
+      $this->setAttribute('action', $action);
     }
+    $this->setAttribute('method', $form->getMethod());
+    return parent::_prepareForProduce();
+  }
 
+  protected function _getContentForRender()
+  {
+    $form = $this->getForm();
+
+    $content = [];
     foreach($form->getDataHandlers() as $handler)
     {
-      $formElement->appendContent($handler->getDecorator()->produceSafeHTML());
+      $content[] = $handler->getDecorator()->produceSafeHTML();
     }
 
-    $formElement->appendContent($form->getSubmitDecorator()->produceSafeHTML());
+    $content[] = $form->getSubmitDecorator()->produceSafeHTML();
 
-    return $formElement;
+    return $content;
   }
 }
