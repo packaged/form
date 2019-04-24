@@ -11,6 +11,21 @@ use stdClass;
 
 class TextDataHandlerTest extends TestCase
 {
+  public function testTextHandler()
+  {
+    $text = new TextDataHandler();
+    $text->setName('test');
+    $text->setValue('my text');
+    $this->assertRegExp(
+      '~<div class="p-form-field"><div class="p-form--label"><label for="test-(...)">Test</label></div><div class="p-form--input"><input type="text" id="test-\1" name="test" placeholder="Test" value="my text" /></div></div>~',
+      $text->getDecorator()->render()
+    );
+    $text->getDecorator()->getLabel()->setContent('changed label');
+    $this->assertRegExp(
+      '~<div class="p-form-field"><div class="p-form--label"><label for="test-(...)">changed label</label></div><div class="p-form--input"><input type="text" id="test-\1" name="test" placeholder="Test" value="my text" /></div></div>~',
+      $text->getDecorator()->render()
+    );
+  }
 
   public function testInvalidFormatValue()
   {

@@ -2,9 +2,9 @@
 
 namespace Packaged\Tests\Form\DataHandlers;
 
-use Packaged\Form\DataHandlers\BooleanDataHandler;
 use Packaged\Form\DataHandlers\EnumDataHandler;
 use Packaged\Form\Decorators\CheckboxDecorator;
+use Packaged\Form\Decorators\RadioDecorator;
 use Packaged\Form\Decorators\SelectDecorator;
 use PHPUnit\Framework\TestCase;
 
@@ -69,22 +69,22 @@ class EnumDataHandlerTest extends TestCase
     );
   }
 
-  public function testCheckbox()
+  public function testRadioEnum()
   {
-    $h = new BooleanDataHandler();
+    $h = new EnumDataHandler();
     $h->setName('mychoice');
-    $h->setValue(false);
-    $h->setLabel('Do You Agree?');
-    $h->setDecorator(new CheckboxDecorator());
+    $h->setLabel('Select One');
+    $h->setOptions(['one' => 'First', 'two' => 'Second', 'three' => 'Third']);
+    $h->setDecorator(new RadioDecorator());
 
     $this->assertEquals(
-      '<div class="p-form-field"><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" name="mychoice" value="true" />Do You Agree?</div></div></div></div>',
+      '<div class="p-form-field"><div class="p-form--label"><label>Select One</label></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="radio" name="mychoice" value="one" />First</div><div class="p-form--checkbox"><input type="radio" name="mychoice" value="two" />Second</div><div class="p-form--checkbox"><input type="radio" name="mychoice" value="three" />Third</div></div></div></div>',
       $h->getDecorator()->render()
     );
 
-    $h->setValue('yes');
+    $h->setValue(['one', 'three']);
     $this->assertEquals(
-      '<div class="p-form-field"><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" name="mychoice" value="true" checked />Do You Agree?</div></div></div></div>',
+      '<div class="p-form-field"><div class="p-form--label"><label>Select One</label></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="radio" name="mychoice" value="one" checked />First</div><div class="p-form--checkbox"><input type="radio" name="mychoice" value="two" />Second</div><div class="p-form--checkbox"><input type="radio" name="mychoice" value="three" checked />Third</div></div></div></div>',
       $h->getDecorator()->render()
     );
   }
