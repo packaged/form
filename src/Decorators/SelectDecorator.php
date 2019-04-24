@@ -27,7 +27,7 @@ class SelectDecorator extends AbstractDataHandlerDecorator
           $option = new Option($key, $value);
           if($value == $currentValue)
           {
-            $option->setAttribute('selected', 'selected');
+            $option->setAttribute('selected', true);
           }
           $options[] = $option;
         }
