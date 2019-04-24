@@ -5,6 +5,8 @@ use Packaged\Form\DataHandlers\EnumDataHandler;
 use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Div;
 use Packaged\Glimpse\Tags\Form\Input;
+use Packaged\Glimpse\Tags\Form\Label;
+use Packaged\Helpers\Strings;
 use Packaged\Ui\Html\HtmlElement;
 
 class CheckboxDecorator extends AbstractDataHandlerDecorator
@@ -25,14 +27,26 @@ class CheckboxDecorator extends AbstractDataHandlerDecorator
         $options = [];
         foreach($this->_handler->getOptions() as $value => $label)
         {
-          $options[] = $this->_getCheckbox($name . '[]', $value, $label, $currentValue);
+          $options[] = $this->_getCheckbox(
+            $name . Strings::pattern('-XXX-000'),
+            $name . '[]',
+            $value,
+            $label,
+            $currentValue
+          );
         }
         $input->setContent($options);
       }
       else
       {
         $input->setContent(
-          $this->_getCheckbox($name, 'true', $this->_handler->getLabel(), $currentValue ? 'true' : 'false')
+          $this->_getCheckbox(
+            $name . Strings::pattern('-XXX-000'),
+            $name,
+            'true',
+            $this->_handler->getLabel(),
+            $currentValue ? 'true' : 'false'
+          )
         );
       }
     }
@@ -48,13 +62,14 @@ class CheckboxDecorator extends AbstractDataHandlerDecorator
     return $elements;
   }
 
-  private function _getCheckbox($name, $value, $text, $currentValue)
+  private function _getCheckbox($id, $name, $value, $text, $currentValue)
   {
     if(!is_array($currentValue))
     {
       $currentValue = [$currentValue];
     }
     $checkbox = new Input();
+    $checkbox->setId($id);
     $checkbox->setType('checkbox');
     $checkbox->setName($name);
     $checkbox->setValue($value);
@@ -62,6 +77,7 @@ class CheckboxDecorator extends AbstractDataHandlerDecorator
     {
       $checkbox->setAttribute('checked', true);
     }
-    return Div::create($checkbox, $text)->addClass('p-form--checkbox');
+    return Div::create($checkbox, Label::create($text)->setAttribute('for', $id))
+      ->addClass('p-form--checkbox');
   }
 }

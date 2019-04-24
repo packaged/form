@@ -5,6 +5,8 @@ use Packaged\Form\DataHandlers\EnumDataHandler;
 use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Div;
 use Packaged\Glimpse\Tags\Form\Input;
+use Packaged\Glimpse\Tags\Form\Label;
+use Packaged\Helpers\Strings;
 use Packaged\Ui\Html\HtmlElement;
 
 class RadioDecorator extends AbstractDataHandlerDecorator
@@ -29,15 +31,17 @@ class RadioDecorator extends AbstractDataHandlerDecorator
           {
             $currentValue = [$currentValue];
           }
-          $checkbox = new Input();
-          $checkbox->setType('radio');
-          $checkbox->setName($name);
-          $checkbox->setValue($value);
+          $radio = new Input();
+          $radio->setId($name . Strings::pattern('-XXX-000'));
+          $radio->setType('radio');
+          $radio->setName($name);
+          $radio->setValue($value);
           if(in_array($value, $currentValue))
           {
-            $checkbox->setAttribute('checked', true);
+            $radio->setAttribute('checked', true);
           }
-          $options[] = Div::create($checkbox, $label)->addClass('p-form--checkbox');
+          $options[] = Div::create($radio, Label::create($label)->setAttribute('for', $radio->getid()))
+            ->addClass('p-form--checkbox');
         }
         $input->setContent($options);
       }

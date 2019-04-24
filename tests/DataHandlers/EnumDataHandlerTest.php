@@ -57,14 +57,14 @@ class EnumDataHandlerTest extends TestCase
     $h->setOptions(['one' => 'First', 'two' => 'Second', 'three' => 'Third']);
     $h->setDecorator(new CheckboxDecorator());
 
-    $this->assertEquals(
-      '<div class="p-form-field"><div class="p-form--label"><label>Select One</label></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" name="mychoice[]" value="one" />First</div><div class="p-form--checkbox"><input type="checkbox" name="mychoice[]" value="two" />Second</div><div class="p-form--checkbox"><input type="checkbox" name="mychoice[]" value="three" />Third</div></div></div></div>',
+    $this->assertRegExp(
+      '~<div class="p-form-field"><div class="p-form--label"><label>Select One</label></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="one" /><label for="\1">First</label></div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="two" /><label for="\2">Second</label></div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="three" /><label for="\3">Third</label></div></div></div></div>~',
       $h->getDecorator()->render()
     );
 
     $h->setValue(['one', 'three']);
-    $this->assertEquals(
-      '<div class="p-form-field"><div class="p-form--label"><label>Select One</label></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" name="mychoice[]" value="one" checked />First</div><div class="p-form--checkbox"><input type="checkbox" name="mychoice[]" value="two" />Second</div><div class="p-form--checkbox"><input type="checkbox" name="mychoice[]" value="three" checked />Third</div></div></div></div>',
+    $this->assertRegExp(
+      '~<div class="p-form-field"><div class="p-form--label"><label>Select One</label></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="one" checked /><label for="\1">First</label></div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="two" /><label for="\2">Second</label></div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="three" checked /><label for="\3">Third</label></div></div></div></div>~',
       $h->getDecorator()->render()
     );
   }
@@ -77,14 +77,14 @@ class EnumDataHandlerTest extends TestCase
     $h->setOptions(['one' => 'First', 'two' => 'Second', 'three' => 'Third']);
     $h->setDecorator(new RadioDecorator());
 
-    $this->assertEquals(
-      '<div class="p-form-field"><div class="p-form--label"><label>Select One</label></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="radio" name="mychoice" value="one" />First</div><div class="p-form--checkbox"><input type="radio" name="mychoice" value="two" />Second</div><div class="p-form--checkbox"><input type="radio" name="mychoice" value="three" />Third</div></div></div></div>',
+    $this->assertRegExp(
+      '~<div class="p-form-field"><div class="p-form--label"><label>Select One</label></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="one" /><label for="\1">First</label></div><div class="p-form--checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="two" /><label for="\2">Second</label></div><div class="p-form--checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="three" /><label for="\3">Third</label></div></div></div></div>~',
       $h->getDecorator()->render()
     );
 
     $h->setValue(['one', 'three']);
-    $this->assertEquals(
-      '<div class="p-form-field"><div class="p-form--label"><label>Select One</label></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="radio" name="mychoice" value="one" checked />First</div><div class="p-form--checkbox"><input type="radio" name="mychoice" value="two" />Second</div><div class="p-form--checkbox"><input type="radio" name="mychoice" value="three" checked />Third</div></div></div></div>',
+    $this->assertRegExp(
+      '~<div class="p-form-field"><div class="p-form--label"><label>Select One</label></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="one" checked /><label for="\1">First</label></div><div class="p-form--checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="two" /><label for="\2">Second</label></div><div class="p-form--checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="three" checked /><label for="\3">Third</label></div></div></div></div>~',
       $h->getDecorator()->render()
     );
   }

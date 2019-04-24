@@ -18,15 +18,15 @@ class BooleanHandlerTest extends TestCase
     $h->setLabel('Do You Agree?');
     $this->assertTrue($h->isValid());
 
-    $this->assertEquals(
-      '<div class="p-form-field"><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" name="mychoice" value="true" />Do You Agree?</div></div></div></div>',
+    $this->assertRegExp(
+      '~<div class="p-form-field"><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice" value="true" /><label for="\1">Do You Agree\?</label></div></div></div></div>~',
       $h->getDecorator()->render()
     );
 
     $h->setValueFormatted('yes');
     $this->assertTrue($h->isValid());
-    $this->assertEquals(
-      '<div class="p-form-field"><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" name="mychoice" value="true" checked />Do You Agree?</div></div></div></div>',
+    $this->assertRegExp(
+      '~<div class="p-form-field"><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice" value="true" checked /><label for="\1">Do You Agree\?</label></div></div></div></div>~',
       $h->getDecorator()->render()
     );
   }
