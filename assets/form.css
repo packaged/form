@@ -40,3 +40,7 @@
   border: 1px solid #8c8c8c;
   box-shadow: inset 0px 0px 3px #313131;
 }
+
+.p-form--input .p-form--checkbox input {
+  height: 16px;
+}
