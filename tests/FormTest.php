@@ -3,6 +3,7 @@
 namespace Packaged\Tests\Form;
 
 use Packaged\Form\DataHandlers\TextDataHandler;
+use Packaged\Tests\Form\Supporting\EmptyForm;
 use Packaged\Tests\Form\Supporting\TestForm;
 use Packaged\Validate\Validators\StringValidator;
 use PHPUnit\Framework\TestCase;
@@ -112,5 +113,17 @@ class FormTest extends TestCase
       '<form class="p-form" id="abc" action="/test" method="post"><div class="p-form-field"><div class="p-form--label"><label for="myInput">Text</label></div><div class="p-form--input"><input type="text" id="myInput" name="text" placeholder="Text" value="abc" /></div></div><div class="p-form-field"><div class="p-form--label"><label for="myNum">Number</label></div><div class="p-form--errors"><ul><li>must be a number</li></ul></div><div class="p-form--input"><input type="number" id="myNum" name="number" placeholder="Number" value="abc" /></div></div><div class="p-form-field"><div class="p-form--label"><label for="ro">Read Only</label></div><div class="p-form--input"><span id="ro"></span></div></div><div class="p-form-field"><div class="p-form--submit"><input type="submit" value="Submit" /></div></div></form>',
       $form->render()
     );
+  }
+
+  public function testAction()
+  {
+    $form = new EmptyForm();
+    $this->assertEquals('<form class="p-form" method="post"></form>', $form->render());
+
+    $form->setAction('/test-url');
+    $this->assertEquals('<form class="p-form" method="post" action="/test-url"></form>', $form->render());
+
+    $form->setMethod('get');
+    $this->assertEquals('<form class="p-form" method="get" action="/test-url"></form>', $form->render());
   }
 }

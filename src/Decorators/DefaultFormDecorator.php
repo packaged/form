@@ -52,7 +52,11 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
       $content[] = $handler->getDecorator()->produceSafeHTML();
     }
 
-    $content[] = $form->getSubmitDecorator()->produceSafeHTML();
+    $submitDecorator = $form->getSubmitDecorator();
+    if($submitDecorator)
+    {
+      $content[] = $submitDecorator->produceSafeHTML();
+    }
 
     return $content;
   }

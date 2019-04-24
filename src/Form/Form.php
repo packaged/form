@@ -25,20 +25,35 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
 
   protected $_decorator;
 
+  protected $_action = '';
+  protected $_method = 'post';
+
   public function __construct()
   {
     $this->_initDataHandlers();
     $this->_preparePublicProperties();
   }
 
+  public function setMethod(string $method)
+  {
+    $this->_method = $method;
+    return $this;
+  }
+
   public function getMethod()
   {
-    return 'post';
+    return $this->_method;
+  }
+
+  public function setAction(string $action)
+  {
+    $this->_action = $action;
+    return $this;
   }
 
   public function getAction()
   {
-    return '';
+    return $this->_action;
   }
 
   final protected function _preparePublicProperties()
@@ -192,7 +207,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     return new DefaultFormDecorator();
   }
 
-  public function getSubmitDecorator(): Decorator
+  public function getSubmitDecorator(): ?Decorator
   {
     return new FormSubmitDecorator();
   }
