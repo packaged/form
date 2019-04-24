@@ -118,16 +118,16 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
 
   protected function _formatElements(HtmlTag $input, ?HtmlTag $label, ?HtmlTag $errors)
   {
-    $return = [];
+    $return = ['label' => null, 'errors' => null, 'input' => null];
     if($label)
     {
-      $return [] = Div::create($label)->addClass('p-form--label');
+      $return['label'] = Div::create($label)->addClass('p-form--label');
     }
     if($errors)
     {
-      $return[] = Div::create($errors)->addClass('p-form--errors');
+      $return['errors'] = Div::create($errors)->addClass('p-form--errors');
     }
-    $return[] = Div::create($input)->addClass('p-form--input');
+    $return['input'] = Div::create($input)->addClass('p-form--input');
     return $return;
   }
 }
