@@ -48,4 +48,44 @@ class EnumDataHandlerTest extends TestCase
       $ele->getDecorator()->render()
     );
   }
+
+  public function testCheckboxEnum()
+  {
+    $h = new EnumDataHandler();
+    $h->setName('mychoice');
+    $h->setLabel('Select One');
+    $h->setOptions(['one' => 'First', 'two' => 'Second', 'three' => 'Third']);
+    $h->setDecorator(new CheckboxDecorator());
+
+    $this->assertEquals(
+      '<div class="p-form-field"><div class="p-form--label"><label>Select One</label></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" name="mychoice[]" value="one" />First</div><div class="p-form--checkbox"><input type="checkbox" name="mychoice[]" value="two" />Second</div><div class="p-form--checkbox"><input type="checkbox" name="mychoice[]" value="three" />Third</div></div></div></div>',
+      $h->getDecorator()->render()
+    );
+
+    $h->setValue(['one', 'three']);
+    $this->assertEquals(
+      '<div class="p-form-field"><div class="p-form--label"><label>Select One</label></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" name="mychoice[]" value="one" checked />First</div><div class="p-form--checkbox"><input type="checkbox" name="mychoice[]" value="two" />Second</div><div class="p-form--checkbox"><input type="checkbox" name="mychoice[]" value="three" checked />Third</div></div></div></div>',
+      $h->getDecorator()->render()
+    );
+  }
+
+  public function testCheckbox()
+  {
+    $h = new BooleanDataHandler();
+    $h->setName('mychoice');
+    $h->setValue(false);
+    $h->setLabel('Do You Agree?');
+    $h->setDecorator(new CheckboxDecorator());
+
+    $this->assertEquals(
+      '<div class="p-form-field"><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" name="mychoice" value="true" />Do You Agree?</div></div></div></div>',
+      $h->getDecorator()->render()
+    );
+
+    $h->setValue('yes');
+    $this->assertEquals(
+      '<div class="p-form-field"><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" name="mychoice" value="true" checked />Do You Agree?</div></div></div></div>',
+      $h->getDecorator()->render()
+    );
+  }
 }
