@@ -11,6 +11,27 @@ use Packaged\Ui\Html\HtmlElement;
 
 class CheckboxDecorator extends AbstractDataHandlerDecorator
 {
+  protected $_required = false;
+
+  /**
+   * @return bool
+   */
+  public function isRequired(): bool
+  {
+    return $this->_required;
+  }
+
+  /**
+   * @param bool $required
+   *
+   * @return $this
+   */
+  public function setRequired(bool $required)
+  {
+    $this->_required = $required;
+    return $this;
+  }
+
   protected function _initInputElement(): HtmlTag
   {
     return Div::create();
@@ -27,27 +48,29 @@ class CheckboxDecorator extends AbstractDataHandlerDecorator
         $options = [];
         foreach($this->_handler->getOptions() as $value => $label)
         {
-          $options[] = $this->_getCheckbox(
+          $option = $this->_getCheckbox(
             $name . Strings::pattern('-XXX-000'),
             $name . '[]',
             $value,
-            $label,
             $currentValue
           );
+          $options[] = $this->_getContainer($option, $label);
         }
         $input->setContent($options);
       }
       else
       {
-        $input->setContent(
-          $this->_getCheckbox(
-            $name . Strings::pattern('-XXX-000'),
-            $name,
-            'true',
-            $this->_handler->getLabel(),
-            $currentValue ? 'true' : 'false'
-          )
+        $checkbox = $this->_getCheckbox(
+          $name . Strings::pattern('-XXX-000'),
+          $name,
+          'true',
+          $currentValue ? 'true' : 'false'
         );
+        if($this->_required)
+        {
+          $checkbox->setAttribute('required', true);
+        }
+        $input->setContent($this->_getContainer($checkbox, $this->_handler->getLabel()));
       }
     }
   }
@@ -62,7 +85,7 @@ class CheckboxDecorator extends AbstractDataHandlerDecorator
     return $elements;
   }
 
-  private function _getCheckbox($id, $name, $value, $text, $currentValue)
+  private function _getCheckbox($id, $name, $value, $currentValue)
   {
     if(!is_array($currentValue))
     {
@@ -77,7 +100,14 @@ class CheckboxDecorator extends AbstractDataHandlerDecorator
     {
       $checkbox->setAttribute('checked', true);
     }
-    return Div::create($checkbox, Label::create($text)->setAttribute('for', $id))
-      ->addClass('p-form--checkbox');
+    return $checkbox;
+  }
+
+  private function _getContainer(Input $checkbox, $label)
+  {
+    return Div::create(
+      $checkbox,
+      Label::create($label)->setAttribute('for', $checkbox->getId())
+    )->addClass('p-form--checkbox');
   }
 }
