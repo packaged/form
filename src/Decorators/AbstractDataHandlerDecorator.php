@@ -23,6 +23,8 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
   protected $_input;
   protected $_label;
 
+  protected $_elementOrder = ['label', 'errors', 'input'];
+
   public function __construct()
   {
     $this->_input = $this->_initInputElement();
@@ -88,6 +90,10 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
   protected function _prepareForProduce(): HtmlElement
   {
     $this->addClass('p-form-field');
+    if(!$this->_handler->isValid())
+    {
+      $this->addClass('p-form-field--error');
+    }
     return parent::_prepareForProduce();
   }
 
@@ -118,7 +124,7 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
 
   protected function _formatElements(HtmlTag $input, ?HtmlTag $label, ?HtmlTag $errors)
   {
-    $return = ['label' => null, 'errors' => null, 'input' => null];
+    $return = array_fill_keys($this->_elementOrder, null);
     if($label)
     {
       $return['label'] = Div::create($label)->addClass('p-form--label');

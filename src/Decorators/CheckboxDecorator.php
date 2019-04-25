@@ -77,12 +77,12 @@ class CheckboxDecorator extends AbstractDataHandlerDecorator
 
   protected function _formatElements(HtmlTag $input, ?HtmlTag $label, ?HtmlTag $errors)
   {
-    $elements = parent::_formatElements($input, $label, $errors);
     if(!($this->_handler instanceof EnumDataHandler))
     {
-      $elements = ['input' => $elements['input'], 'errors' => $elements['errors']];
+      $this->_elementOrder = ['input', 'errors'];
+      return parent::_formatElements($input, null, $errors);
     }
-    return $elements;
+    return parent::_formatElements($input, $label, $errors);
   }
 
   private function _getCheckbox($id, $name, $value, $currentValue)

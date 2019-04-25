@@ -159,7 +159,8 @@ abstract class AbstractDataHandler implements DataHandler
 
   public function validate(): array
   {
-    return $this->validateValue($this->getValue());
+    $this->clearErrors()->addError(...$this->validateValue($this->getValue()));
+    return $this->getErrors();
   }
 
   /**
