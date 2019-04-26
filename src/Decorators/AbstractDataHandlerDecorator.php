@@ -109,7 +109,7 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
   protected function _prepareForProduce(): HtmlElement
   {
     $this->addClass('p-form-field');
-    if(!$this->_handler->isValid())
+    if($this->_handler->getErrors())
     {
       $this->addClass('p-form-field--error');
     }
