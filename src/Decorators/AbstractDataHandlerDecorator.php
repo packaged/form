@@ -156,6 +156,11 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
     {
       $return[self::INPUT] = Div::create($input)->addClass('p-form--input');
     }
-    return array_merge([self::LABEL => null, self::ERRORS => null, self::INPUT => null], $return);
+
+    // array merge, but don't replace existing
+    return array_merge(
+      $return,
+      array_diff_key([self::LABEL => null, self::ERRORS => null, self::INPUT => null], $return)
+    );
   }
 }
