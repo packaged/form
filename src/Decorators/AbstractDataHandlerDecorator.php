@@ -148,7 +148,7 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
     {
       $return[self::LABEL] = Div::create($label)->addClass('p-form--label');
     }
-    if(array_key_exists(self::LABEL, $return) && $errors)
+    if(array_key_exists(self::ERRORS, $return) && $errors)
     {
       $return[self::ERRORS] = Div::create($errors)->addClass('p-form--errors');
     }
