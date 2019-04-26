@@ -33,9 +33,9 @@ class TextDataHandlerTest extends TestCase
     $text = new TextDataHandler();
     $text->setName('test');
     $text->setValue('my text');
-    $text->getDecorator()->setElementOrder([DataHandlerDecorator::INPUT]);
+    $text->getDecorator()->setElementOrder([DataHandlerDecorator::INPUT, DataHandlerDecorator::LABEL]);
     $this->assertRegExp(
-      '~<div class="p-form-field"><div class="p-form--input"><input type="text" id="(test-...)" name="test" placeholder="Test" value="my text" /></div></div>~',
+      '~<div class="p-form-field"><div class="p-form--input"><input type="text" id="(test-...)" name="test" placeholder="Test" value="my text" /></div><div class="p-form--label"><label for="\1">Test</label></div></div>~',
       $text->getDecorator()->render()
     );
   }
