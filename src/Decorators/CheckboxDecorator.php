@@ -80,7 +80,6 @@ class CheckboxDecorator extends AbstractDataHandlerDecorator
     if(!($this->_handler instanceof EnumDataHandler))
     {
       $this->_elementOrder = [self::INPUT, self::ERRORS];
-      return parent::_formatElements($input, null, $errors);
     }
     return parent::_formatElements($input, $label, $errors);
   }

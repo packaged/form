@@ -5,6 +5,7 @@ namespace Packaged\Tests\Form\DataHandlers;
 use InvalidArgumentException;
 use Packaged\Form\DataHandlers\TextDataHandler;
 use Packaged\Form\Decorators\InputDecorator;
+use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 use Packaged\Glimpse\Tags\Form\Input;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -23,6 +24,18 @@ class TextDataHandlerTest extends TestCase
     $text->getDecorator()->getLabel()->setContent('changed label');
     $this->assertRegExp(
       '~<div class="p-form-field"><div class="p-form--label"><label for="test-(...)">changed label</label></div><div class="p-form--input"><input type="text" id="test-\1" name="test" placeholder="Test" value="my text" /></div></div>~',
+      $text->getDecorator()->render()
+    );
+  }
+
+  public function testElementOrder()
+  {
+    $text = new TextDataHandler();
+    $text->setName('test');
+    $text->setValue('my text');
+    $text->getDecorator()->setElementOrder([DataHandlerDecorator::INPUT]);
+    $this->assertRegExp(
+      '~<div class="p-form-field"><div class="p-form--input"><input type="text" id="(test-...)" name="test" placeholder="Test" value="my text" /></div></div>~',
       $text->getDecorator()->render()
     );
   }

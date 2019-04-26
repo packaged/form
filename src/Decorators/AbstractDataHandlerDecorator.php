@@ -60,6 +60,25 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
     return $this->_label;
   }
 
+  /**
+   * @param array $elementOrder
+   *
+   * @return $this
+   */
+  public function setElementOrder(array $elementOrder)
+  {
+    $this->_elementOrder = $elementOrder;
+    return $this;
+  }
+
+  /**
+   * @return array
+   */
+  public function getElementOrder(): array
+  {
+    return $this->_elementOrder;
+  }
+
   protected function _configureInputElement(HtmlElement $input)
   {
     $id = $input->getId();
@@ -124,16 +143,19 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
 
   protected function _formatElements(HtmlTag $input, ?HtmlTag $label, ?HtmlTag $errors)
   {
-    $return = array_fill_keys($this->_elementOrder, null);
-    if($label)
+    $return = array_fill_keys($this->getElementOrder(), null);
+    if(array_key_exists(self::LABEL, $return) && $label)
     {
       $return[self::LABEL] = Div::create($label)->addClass('p-form--label');
     }
-    if($errors)
+    if(array_key_exists(self::LABEL, $return) && $errors)
     {
       $return[self::ERRORS] = Div::create($errors)->addClass('p-form--errors');
     }
-    $return[self::INPUT] = Div::create($input)->addClass('p-form--input');
-    return $return;
+    if(array_key_exists(self::INPUT, $return))
+    {
+      $return[self::INPUT] = Div::create($input)->addClass('p-form--input');
+    }
+    return array_merge([self::LABEL => null, self::ERRORS => null, self::INPUT => null], $return);
   }
 }
