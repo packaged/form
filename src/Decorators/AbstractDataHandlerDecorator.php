@@ -23,7 +23,7 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
   protected $_input;
   protected $_label;
 
-  protected $_elementOrder = ['label', 'errors', 'input'];
+  protected $_elementOrder = [self::LABEL, self::ERRORS, self::INPUT];
 
   public function __construct()
   {
@@ -127,13 +127,13 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
     $return = array_fill_keys($this->_elementOrder, null);
     if($label)
     {
-      $return['label'] = Div::create($label)->addClass('p-form--label');
+      $return[self::LABEL] = Div::create($label)->addClass('p-form--label');
     }
     if($errors)
     {
-      $return['errors'] = Div::create($errors)->addClass('p-form--errors');
+      $return[self::ERRORS] = Div::create($errors)->addClass('p-form--errors');
     }
-    $return['input'] = Div::create($input)->addClass('p-form--input');
+    $return[self::INPUT] = Div::create($input)->addClass('p-form--input');
     return $return;
   }
 }

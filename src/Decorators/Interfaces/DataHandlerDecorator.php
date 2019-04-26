@@ -12,6 +12,10 @@ use Packaged\Ui\Html\HtmlElement;
  */
 interface DataHandlerDecorator extends Decorator
 {
+  const LABEL = 'label';
+  const INPUT = 'input';
+  const ERRORS = 'errors';
+
   /**
    * @param DataHandler $handler
    *
