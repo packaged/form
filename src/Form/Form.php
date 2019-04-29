@@ -26,6 +26,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   protected $_dataHandlers = [];
 
   protected $_decorator;
+  protected $_submitDecorator;
 
   protected $_action = '';
   protected $_method = 'post';
@@ -197,7 +198,11 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
 
   public function getSubmitDecorator(): ?Decorator
   {
-    return new FormSubmitDecorator();
+    if(!$this->_submitDecorator)
+    {
+      $this->_submitDecorator = new FormSubmitDecorator();
+    }
+    return $this->_submitDecorator;
   }
 
   public function render(): string
