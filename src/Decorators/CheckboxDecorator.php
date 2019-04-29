@@ -8,6 +8,8 @@ use Packaged\Glimpse\Tags\Form\Input;
 use Packaged\Glimpse\Tags\Form\Label;
 use Packaged\Helpers\Strings;
 use Packaged\Ui\Html\HtmlElement;
+use function in_array;
+use function is_array;
 
 class CheckboxDecorator extends AbstractDataHandlerDecorator
 {
@@ -75,15 +77,6 @@ class CheckboxDecorator extends AbstractDataHandlerDecorator
     }
   }
 
-  protected function _formatElements(HtmlTag $input, ?HtmlTag $label, ?HtmlTag $errors)
-  {
-    if(!($this->_handler instanceof EnumDataHandler))
-    {
-      $this->_elementOrder = [self::INPUT, self::ERRORS];
-    }
-    return parent::_formatElements($input, $label, $errors);
-  }
-
   private function _getCheckbox($id, $name, $value, $currentValue)
   {
     if(!is_array($currentValue))
@@ -108,5 +101,14 @@ class CheckboxDecorator extends AbstractDataHandlerDecorator
       $checkbox,
       Label::create($label)->setAttribute('for', $checkbox->getId())
     )->addClass('p-form--checkbox');
+  }
+
+  protected function _formatElements(HtmlTag $input, ?HtmlTag $label, ?HtmlTag $errors)
+  {
+    if(!($this->_handler instanceof EnumDataHandler))
+    {
+      $this->_elementOrder = [self::INPUT, self::ERRORS];
+    }
+    return parent::_formatElements($input, $label, $errors);
   }
 }

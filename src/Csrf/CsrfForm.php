@@ -2,6 +2,7 @@
 namespace Packaged\Form\Csrf;
 
 use Packaged\Form\Form\Form;
+use function md5;
 
 class CsrfForm extends Form
 {
@@ -18,13 +19,13 @@ class CsrfForm extends Form
     parent::__construct();
   }
 
-  protected function _getCsrfSecret()
-  {
-    return md5(static::class);
-  }
-
   protected function _initDataHandlers()
   {
     $this->csrfToken = new CsrfDataHandler($this->_getCsrfSecret(), $this->_sessionSecret);
+  }
+
+  protected function _getCsrfSecret()
+  {
+    return md5(static::class);
   }
 }

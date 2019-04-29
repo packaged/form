@@ -3,6 +3,7 @@ namespace Packaged\Form\Validators;
 
 use Packaged\Form\DataHandlers\EnumDataHandler;
 use Packaged\Validate\Validators\EnumValidator;
+use function array_keys;
 
 class HandlerEnumValidator extends EnumValidator
 {

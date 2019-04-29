@@ -11,6 +11,12 @@ use Packaged\Glimpse\Tags\Lists\UnorderedList;
 use Packaged\Helpers\Objects;
 use Packaged\Helpers\Strings;
 use Packaged\Ui\Html\HtmlElement;
+use function array_diff_key;
+use function array_fill_keys;
+use function array_key_exists;
+use function array_merge;
+use function str_replace;
+use function strtolower;
 
 abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements DataHandlerDecorator
 {
@@ -31,17 +37,17 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
     $this->_label = $this->_initLabelElement();
   }
 
-  public function setHandler(DataHandler $handler)
-  {
-    $this->_handler = $handler;
-    return $this;
-  }
-
   abstract protected function _initInputElement(): HtmlTag;
 
   protected function _initLabelElement(): ?HtmlTag
   {
     return Label::create();
+  }
+
+  public function setHandler(DataHandler $handler)
+  {
+    $this->_handler = $handler;
+    return $this;
   }
 
   /**
@@ -60,23 +66,27 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
     return $this->_label;
   }
 
-  /**
-   * @param array $elementOrder
-   *
-   * @return $this
-   */
-  public function setElementOrder(array $elementOrder)
+  protected function _prepareForProduce(): HtmlElement
   {
-    $this->_elementOrder = $elementOrder;
-    return $this;
+    $this->addClass('p-form-field');
+    if($this->_handler->getErrors())
+    {
+      $this->addClass('p-form-field--error');
+    }
+    return parent::_prepareForProduce();
   }
 
-  /**
-   * @return array
-   */
-  public function getElementOrder(): array
+  protected function _getContentForRender()
   {
-    return $this->_elementOrder;
+    $input = $this->_input;
+    $this->_configureInputElement($input);
+    if($this->_label)
+    {
+      $this->_configureLabelElement($this->_label);
+    }
+
+    $errorTag = $this->_getErrorElement();
+    return $this->_formatElements($input, $this->_label, $errorTag);
   }
 
   protected function _configureInputElement(HtmlElement $input)
@@ -104,29 +114,6 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
       }
     }
     $label->setAttribute('for', $this->_input->getId(), true);
-  }
-
-  protected function _prepareForProduce(): HtmlElement
-  {
-    $this->addClass('p-form-field');
-    if($this->_handler->getErrors())
-    {
-      $this->addClass('p-form-field--error');
-    }
-    return parent::_prepareForProduce();
-  }
-
-  protected function _getContentForRender()
-  {
-    $input = $this->_input;
-    $this->_configureInputElement($input);
-    if($this->_label)
-    {
-      $this->_configureLabelElement($this->_label);
-    }
-
-    $errorTag = $this->_getErrorElement();
-    return $this->_formatElements($input, $this->_label, $errorTag);
   }
 
   protected function _getErrorElement()
@@ -162,5 +149,24 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
       $return,
       array_diff_key([self::LABEL => null, self::ERRORS => null, self::INPUT => null], $return)
     );
+  }
+
+  /**
+   * @return array
+   */
+  public function getElementOrder(): array
+  {
+    return $this->_elementOrder;
+  }
+
+  /**
+   * @param array $elementOrder
+   *
+   * @return $this
+   */
+  public function setElementOrder(array $elementOrder)
+  {
+    $this->_elementOrder = $elementOrder;
+    return $this;
   }
 }

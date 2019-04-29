@@ -4,6 +4,7 @@ namespace Packaged\Form\Csrf;
 use Generator;
 use Packaged\Validate\AbstractValidator;
 use Packaged\Validate\ValidationException;
+use function password_verify;
 
 class CsrfValidator extends AbstractValidator
 {

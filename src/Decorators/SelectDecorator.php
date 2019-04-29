@@ -16,6 +16,7 @@ class SelectDecorator extends AbstractDataHandlerDecorator
 
   protected function _configureInputElement(HtmlElement $input)
   {
+    parent::_configureInputElement($input);
     if($input instanceof Select)
     {
       $currentValue = $this->_handler->getValue();

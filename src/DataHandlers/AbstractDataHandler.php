@@ -6,6 +6,7 @@ use Packaged\Form\DataHandlers\Interfaces\DataHandler;
 use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 use Packaged\Validate\IValidator;
 use Packaged\Validate\ValidationException;
+use function array_merge;
 
 abstract class AbstractDataHandler implements DataHandler
 {
@@ -18,33 +19,16 @@ abstract class AbstractDataHandler implements DataHandler
   /** @var DataHandlerDecorator */
   protected $_decorator;
   protected $_errors = [];
-
-  public function getErrors(): array
-  {
-    return $this->_errors;
-  }
+  /**
+   * @var IValidator[]
+   */
+  protected $_validators = [];
+  private $_isValidatorSetUp = false;
 
   public function addError(ValidationException ...$errors)
   {
     $this->_errors = array_merge($this->_errors, $errors);
     return $this;
-  }
-
-  public function clearErrors()
-  {
-    $this->_errors = [];
-    return $this;
-  }
-
-  /**
-   * @var IValidator[]
-   */
-  protected $_validators = [];
-
-  private $_isValidatorSetUp = false;
-
-  protected function _setupValidator()
-  {
   }
 
   /**
@@ -67,25 +51,6 @@ abstract class AbstractDataHandler implements DataHandler
   }
 
   /**
-   * @return mixed
-   */
-  public function getValue()
-  {
-    return $this->_value;
-  }
-
-  /**
-   * @param mixed $value
-   *
-   * @return DataHandler
-   */
-  public function setValue($value)
-  {
-    $this->_value = $value;
-    return $this;
-  }
-
-  /**
    * @param mixed $value
    *
    * @return DataHandler
@@ -95,6 +60,11 @@ abstract class AbstractDataHandler implements DataHandler
   {
     $this->_value = $this->formatValue($value);
     return $this;
+  }
+
+  public function formatValue($value)
+  {
+    return $value;
   }
 
   /**
@@ -115,13 +85,8 @@ abstract class AbstractDataHandler implements DataHandler
     return $this;
   }
 
-  private function _initValidator()
+  protected function _setupValidator()
   {
-    if(!$this->_isValidatorSetUp)
-    {
-      $this->_isValidatorSetUp = true;
-      $this->_setupValidator();
-    }
   }
 
   /**
@@ -157,10 +122,44 @@ abstract class AbstractDataHandler implements DataHandler
     return true;
   }
 
+  private function _initValidator()
+  {
+    if(!$this->_isValidatorSetUp)
+    {
+      $this->_isValidatorSetUp = true;
+      $this->_setupValidator();
+    }
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getValue()
+  {
+    return $this->_value;
+  }
+
+  /**
+   * @param mixed $value
+   *
+   * @return DataHandler
+   */
+  public function setValue($value)
+  {
+    $this->_value = $value;
+    return $this;
+  }
+
   public function validate(): array
   {
     $this->clearErrors()->addError(...$this->validateValue($this->getValue()));
     return $this->getErrors();
+  }
+
+  public function clearErrors()
+  {
+    $this->_errors = [];
+    return $this;
   }
 
   /**
@@ -182,6 +181,11 @@ abstract class AbstractDataHandler implements DataHandler
       }
     }
     return $errors;
+  }
+
+  public function getErrors(): array
+  {
+    return $this->_errors;
   }
 
   /**
@@ -211,9 +215,13 @@ abstract class AbstractDataHandler implements DataHandler
     }
   }
 
-  public function formatValue($value)
+  public function getDecorator(): DataHandlerDecorator
   {
-    return $value;
+    if(!$this->_decorator)
+    {
+      $this->_decorator = $this->_defaultDecorator();
+    }
+    return $this->_decorator->setHandler($this);
   }
 
   /**
@@ -225,15 +233,6 @@ abstract class AbstractDataHandler implements DataHandler
   {
     $this->_decorator = $decorator;
     return $this;
-  }
-
-  public function getDecorator(): DataHandlerDecorator
-  {
-    if(!$this->_decorator)
-    {
-      $this->_decorator = $this->_defaultDecorator();
-    }
-    return $this->_decorator->setHandler($this);
   }
 
   abstract protected function _defaultDecorator(): DataHandlerDecorator;

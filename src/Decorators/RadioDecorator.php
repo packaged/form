@@ -8,6 +8,8 @@ use Packaged\Glimpse\Tags\Form\Input;
 use Packaged\Glimpse\Tags\Form\Label;
 use Packaged\Helpers\Strings;
 use Packaged\Ui\Html\HtmlElement;
+use function in_array;
+use function is_array;
 
 class RadioDecorator extends AbstractDataHandlerDecorator
 {

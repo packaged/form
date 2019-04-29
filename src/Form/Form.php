@@ -15,6 +15,8 @@ use Packaged\SafeHtml\SafeHtml;
 use Packaged\Ui\Renderable;
 use Packaged\Validate\IValidatable;
 use Packaged\Validate\ValidationException;
+use function array_key_exists;
+use function array_merge;
 
 abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
 {
@@ -34,27 +36,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     $this->_preparePublicProperties();
   }
 
-  public function setMethod(string $method)
-  {
-    $this->_method = $method;
-    return $this;
-  }
-
-  public function getMethod()
-  {
-    return $this->_method;
-  }
-
-  public function setAction(string $action)
-  {
-    $this->_action = $action;
-    return $this;
-  }
-
-  public function getAction()
-  {
-    return $this->_action;
-  }
+  abstract protected function _initDataHandlers();
 
   final protected function _preparePublicProperties()
   {
@@ -72,25 +54,32 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     }
   }
 
-  public function __set($name, $value)
+  public function getMethod()
   {
-    if(isset($this->_dataHandlers[$name]))
-    {
-      $this->_dataHandlers[$name]->setValue($value);
-    }
+    return $this->_method;
+  }
+
+  public function setMethod(string $method)
+  {
+    $this->_method = $method;
+    return $this;
+  }
+
+  public function getAction()
+  {
+    return $this->_action;
+  }
+
+  public function setAction(string $action)
+  {
+    $this->_action = $action;
+    return $this;
   }
 
   public function __isset($name)
   {
     return array_key_exists($name, $this->_dataHandlers);
   }
-
-  public function __get($name)
-  {
-    return Arrays::value($this->_dataHandlers, $name);
-  }
-
-  abstract protected function _initDataHandlers();
 
   /**
    * @return bool
@@ -175,6 +164,19 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     return $errorKeys;
   }
 
+  public function __get($name)
+  {
+    return Arrays::value($this->_dataHandlers, $name);
+  }
+
+  public function __set($name, $value)
+  {
+    if(isset($this->_dataHandlers[$name]))
+    {
+      $this->_dataHandlers[$name]->setValue($value);
+    }
+  }
+
   public function getFormData()
   {
     $data = [];
@@ -193,6 +195,21 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     return $this->_dataHandlers;
   }
 
+  public function getSubmitDecorator(): ?Decorator
+  {
+    return new FormSubmitDecorator();
+  }
+
+  public function render(): string
+  {
+    return (string)$this->produceSafeHTML();
+  }
+
+  public function produceSafeHTML(): SafeHtml
+  {
+    return $this->getDecorator()->produceSafeHTML();
+  }
+
   public function getDecorator(): FormDecorator
   {
     if(!$this->_decorator)
@@ -205,20 +222,5 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   protected function _defaultDecorator(): FormDecorator
   {
     return new DefaultFormDecorator();
-  }
-
-  public function getSubmitDecorator(): ?Decorator
-  {
-    return new FormSubmitDecorator();
-  }
-
-  public function produceSafeHTML(): SafeHtml
-  {
-    return $this->getDecorator()->produceSafeHTML();
-  }
-
-  public function render(): string
-  {
-    return (string)$this->produceSafeHTML();
   }
 }

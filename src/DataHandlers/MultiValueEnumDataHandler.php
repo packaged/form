@@ -6,6 +6,7 @@ use Packaged\Form\Decorators\CheckboxDecorator;
 use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 use Packaged\Form\Validators\HandlerEnumValidator;
 use Packaged\Validate\Validators\ArrayValidator;
+use function is_array;
 
 class MultiValueEnumDataHandler extends EnumDataHandler
 {

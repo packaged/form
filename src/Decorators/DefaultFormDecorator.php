@@ -18,17 +18,6 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
     $this->addClass('p-form');
   }
 
-  public function setForm(Form $form): FormDecorator
-  {
-    $this->_form = $form;
-    return $this;
-  }
-
-  public function getForm(): Form
-  {
-    return $this->_form;
-  }
-
   protected function _prepareForProduce(): HtmlElement
   {
     $form = $this->getForm();
@@ -40,6 +29,17 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
     }
     $this->setAttribute('method', $form->getMethod());
     return parent::_prepareForProduce();
+  }
+
+  public function getForm(): Form
+  {
+    return $this->_form;
+  }
+
+  public function setForm(Form $form): FormDecorator
+  {
+    $this->_form = $form;
+    return $this;
   }
 
   protected function _getContentForRender()

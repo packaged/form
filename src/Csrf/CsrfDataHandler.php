@@ -4,14 +4,15 @@ namespace Packaged\Form\Csrf;
 use Packaged\Form\DataHandlers\AbstractDataHandler;
 use Packaged\Form\Decorators\HiddenInputDecorator;
 use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
+use function password_hash;
+use const PASSWORD_DEFAULT;
 
 class CsrfDataHandler extends AbstractDataHandler
 {
+  const ERR_INVALID = 'Invalid or missing CSRF token';
   protected $_sessionSecret;
   protected $_formSecret;
   protected $_value;
-
-  const ERR_INVALID = 'Invalid or missing CSRF token';
 
   public function __construct($formSecret, $sessionSecret)
   {
