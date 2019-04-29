@@ -2,8 +2,8 @@
 namespace Packaged\Form\Decorators;
 
 use Packaged\Form\Decorators\Interfaces\Decorator;
-use Packaged\Ui\Html\HtmlElement;
+use Packaged\Ui\Html\TemplatedHtmlElement;
 
-abstract class AbstractDecorator extends HtmlElement implements Decorator
+abstract class AbstractDecorator extends TemplatedHtmlElement implements Decorator
 {
 }
