@@ -1,0 +1,9 @@
+<?php
+/**
+ * @var $this DefaultFormDecorator
+ */
+
+use Packaged\Form\Decorators\DefaultFormDecorator;
+
+?><?php foreach($this->getForm()->getDataHandlers() as $handler): ?><?= $handler->getDecorator(); ?><?php endforeach;
+?><?= $this->getForm()->getSubmitDecorator(); ?>

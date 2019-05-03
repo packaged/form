@@ -42,22 +42,16 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
     return $this;
   }
 
-  protected function _getContentForRender()
+  protected function _getHiddenDecorators()
   {
-    $form = $this->getForm();
-
-    $content = [];
-    foreach($form->getDataHandlers() as $handler)
+    $decorators = [];
+    foreach($this->getForm()->getDataHandlers() as $handler)
     {
-      $content[] = $handler->getDecorator()->produceSafeHTML();
+      if($handler->getDecorator() instanceof HiddenInputDecorator)
+      {
+        $decorators[] = $handler->getDecorator();
+      }
     }
-
-    $submitDecorator = $form->getSubmitDecorator();
-    if($submitDecorator)
-    {
-      $content[] = $submitDecorator->produceSafeHTML();
-    }
-
-    return $content;
+    return $decorators;
   }
 }
