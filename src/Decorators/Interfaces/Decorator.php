@@ -11,4 +11,5 @@ use Packaged\Ui\Renderable;
  */
 interface Decorator extends Renderable, ISafeHtmlProducer
 {
+  public function __toString();
 }
