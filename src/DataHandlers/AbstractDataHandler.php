@@ -296,7 +296,7 @@ abstract class AbstractDataHandler implements DataHandler
 
   public function __toString()
   {
-    return $this->getDecorator()->produceSafeHTML();
+    return $this->getDecorator()->produceSafeHTML()->getContent();
   }
 
 }

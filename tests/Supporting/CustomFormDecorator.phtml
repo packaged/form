@@ -3,9 +3,13 @@
  * @var $this CustomFormDecorator
  */
 
+use Packaged\Tests\Form\Supporting\CustomDecoratorForm;
 use Packaged\Tests\Form\Supporting\CustomFormDecorator;
 
+/** @var CustomDecoratorForm $form */
+$form = $this->getForm();
 ?>
 <div class="hidden"><?= implode('', $this->_getHiddenDecorators()); ?></div>
-<?php foreach($this->getForm()->getDataHandlers() as $handler): ?><?= $handler->getDecorator(); ?><?php endforeach;
-?><?= $this->getForm()->getSubmitDecorator(); ?>
+<?= $form->name; ?>
+<?= $form->email; ?>
+<?= $this->getForm()->getSubmitDecorator(); ?>
