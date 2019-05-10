@@ -207,7 +207,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
 
   public function render(): string
   {
-    return (string)$this->produceSafeHTML();
+    return $this->produceSafeHTML()->getContent();
   }
 
   public function produceSafeHTML(): SafeHtml
@@ -222,6 +222,12 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
       $this->_decorator = $this->_defaultDecorator();
     }
     return $this->_decorator->setForm($this);
+  }
+
+  public function setDecorator(FormDecorator $decorator)
+  {
+    $this->_decorator = $decorator;
+    return $this;
   }
 
   protected function _defaultDecorator(): FormDecorator

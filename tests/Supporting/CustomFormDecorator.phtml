@@ -10,6 +10,6 @@ use Packaged\Tests\Form\Supporting\CustomFormDecorator;
 $form = $this->getForm();
 ?>
 <div class="hidden"><?= implode('', $this->_getHiddenDecorators()); ?></div>
-<?= $form->name; ?>
-<?= $form->email; ?>
+<?= $form->name->render(); ?>
+<?= $form->email->render(); ?>
 <?= $this->getForm()->getSubmitDecorator(); ?>

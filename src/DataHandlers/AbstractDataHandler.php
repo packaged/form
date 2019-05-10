@@ -294,9 +294,8 @@ abstract class AbstractDataHandler implements DataHandler
     return $this;
   }
 
-  public function __toString()
+  public function render(): string
   {
-    return $this->getDecorator()->produceSafeHTML()->getContent();
+    return $this->getDecorator()->render();
   }
-
 }

@@ -3,7 +3,6 @@ namespace Packaged\Tests\Form\Supporting;
 
 use Packaged\Form\Csrf\CsrfForm;
 use Packaged\Form\DataHandlers\TextDataHandler;
-use Packaged\Form\Form\Interfaces\FormDecorator;
 
 class CustomDecoratorForm extends CsrfForm
 {
@@ -15,10 +14,5 @@ class CustomDecoratorForm extends CsrfForm
     parent::_initDataHandlers();
     $this->name = new TextDataHandler();
     $this->email = new TextDataHandler();
-  }
-
-  protected function _defaultDecorator(): FormDecorator
-  {
-    return new CustomFormDecorator();
   }
 }

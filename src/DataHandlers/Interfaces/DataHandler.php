@@ -97,4 +97,6 @@ interface DataHandler extends IValidatable
    * @return DataHandler
    */
   public function clearErrors();
+
+  public function render(): string;
 }
