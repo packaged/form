@@ -49,7 +49,10 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
         $value = new ReadOnlyDataHandler();
       }
       $this->_dataHandlers[$property] = $value;
-      $this->_dataHandlers[$property]->setName($property);
+      if($this->_dataHandlers[$property]->getName() === null)
+      {
+        $this->_dataHandlers[$property]->setName($property);
+      }
       //Unset the public properties to avoid data handler modification
       unset($this->$property);
     }
