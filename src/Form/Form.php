@@ -142,10 +142,12 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
    */
   public function hydrate(array $data, $hydrateInvalidValues = false)
   {
+    $keyedHandlers = Objects::mpull($this->_dataHandlers, null, 'getName');
+
     $errorKeys = [];
     foreach($data as $name => $value)
     {
-      $ele = $this->__get($name);
+      $ele = Arrays::value($keyedHandlers, $name);
       if($ele instanceof DataHandler)
       {
         $value = $ele->formatValue($value);
