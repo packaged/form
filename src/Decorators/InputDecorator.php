@@ -20,7 +20,11 @@ class InputDecorator extends AbstractDataHandlerDecorator
     {
       if($input->getType() !== Input::TYPE_HIDDEN)
       {
-        $input->setAttribute('placeholder', Strings::titleize($this->_handler->getName()));
+        $input->setAttribute(
+          'placeholder',
+          $this->_handler->getPlaceholder()
+            ?: Strings::titleize($this->_handler->getName())
+        );
       }
 
       if($this->_handler->getValue() !== null)
