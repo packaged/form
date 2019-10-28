@@ -3,6 +3,7 @@
 namespace Packaged\Tests\Form;
 
 use Packaged\Form\DataHandlers\TextDataHandler;
+use Packaged\Form\Decorators\ReadOnlyDecorator;
 use Packaged\Tests\Form\Supporting\EmptyForm;
 use Packaged\Tests\Form\Supporting\TestForm;
 use Packaged\Validate\Validators\StringValidator;
@@ -61,6 +62,13 @@ class FormTest extends TestCase
 
     $this->assertEquals('abc', $form->text->getValue());
     $this->assertNull($form->number->getValue());
+  }
+
+  public function testGetHandlersByDecorator()
+  {
+    $form = new TestForm();
+    $handlers = $form->getHandlersByDecorator(ReadOnlyDecorator::class);
+    static::assertCount(1, $handlers);
   }
 
   public function testHydrateInvalid()

@@ -239,4 +239,17 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   {
     return new DefaultFormDecorator();
   }
+
+  public function getHandlersByDecorator($decoratorClass)
+  {
+    $handlers = [];
+    foreach($this->getDataHandlers() as $handler)
+    {
+      if($handler->getDecorator() instanceof $decoratorClass)
+      {
+        $handlers[] = $handler;
+      }
+    }
+    return $handlers;
+  }
 }
