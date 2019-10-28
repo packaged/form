@@ -298,4 +298,10 @@ abstract class AbstractDataHandler implements DataHandler
   {
     return $this->getDecorator()->render();
   }
+
+  public function __toString()
+  {
+    return $this->render();
+  }
+
 }
