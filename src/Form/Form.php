@@ -205,9 +205,14 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   {
     if(!$this->_submitDecorator)
     {
-      $this->_submitDecorator = new FormSubmitDecorator();
+      $this->_submitDecorator = $this->_defaultSubmitDecorator();
     }
     return $this->_submitDecorator;
+  }
+
+  protected function _defaultSubmitDecorator(): Decorator
+  {
+    return new FormSubmitDecorator();
   }
 
   public function render(): string
