@@ -8,6 +8,14 @@ use Packaged\Ui\Html\HtmlElement;
 
 class InputDecorator extends AbstractDataHandlerDecorator
 {
+  protected $_type;
+
+  public function setInputType($type)
+  {
+    $this->_type = $type;
+    return $this;
+  }
+
   protected function _initInputElement(): HtmlTag
   {
     return Input::create();
@@ -18,6 +26,11 @@ class InputDecorator extends AbstractDataHandlerDecorator
     parent::_configureInputElement($input);
     if($input instanceof Input)
     {
+      if($this->_type !== null)
+      {
+        $input->setType($this->_type);
+      }
+
       if($input->getType() !== Input::TYPE_HIDDEN)
       {
         $input->setAttribute(
