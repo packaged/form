@@ -3,13 +3,14 @@
  * @var $this CustomFormDecorator
  */
 
+use Packaged\Form\Decorators\HiddenInputDecorator;
 use Packaged\Tests\Form\Supporting\CustomDecoratorForm;
 use Packaged\Tests\Form\Supporting\CustomFormDecorator;
 
 /** @var CustomDecoratorForm $form */
 $form = $this->getForm();
 ?>
-<div class="hidden"><?= implode('', $this->_getHiddenDecorators()); ?></div>
-<?= $form->name->render(); ?>
-<?= $form->email->render(); ?>
+<div class="hidden"><?= implode('', $form->getHandlersByDecorator(HiddenInputDecorator::class)); ?></div>
+<?= $form->name; ?>
+<?= $form->email; ?>
 <?= $this->getForm()->getSubmitDecorator(); ?>
