@@ -220,8 +220,9 @@ abstract class AbstractDataHandler implements DataHandler
     if(!$this->_decorator)
     {
       $this->_decorator = $this->_defaultDecorator();
+      $this->_decorator->setHandler($this);
     }
-    return $this->_decorator->setHandler($this);
+    return $this->_decorator;
   }
 
   /**
@@ -231,6 +232,7 @@ abstract class AbstractDataHandler implements DataHandler
    */
   public function setDecorator(DataHandlerDecorator $decorator)
   {
+    $decorator->setHandler($this);
     $this->_decorator = $decorator;
     return $this;
   }
