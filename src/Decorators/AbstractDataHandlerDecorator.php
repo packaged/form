@@ -31,8 +31,11 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
 
   protected $_elementOrder = [self::LABEL, self::ERRORS, self::INPUT];
 
+  protected $_formatCallback;
+
   public function __construct()
   {
+    $this->_formatCallback = function ($return) { return $return; };
     $this->_input = $this->_initInputElement();
     $this->_label = $this->_initLabelElement();
   }
@@ -86,7 +89,8 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
     }
 
     $errorTag = $this->_getErrorElement();
-    return $this->_formatElements($input, $this->_label, $errorTag);
+    $callback = $this->_formatCallback;
+    return $callback($this->_formatElements($input, $this->_label, $errorTag));
   }
 
   protected function _configureInputElement(HtmlElement $input)
@@ -167,6 +171,12 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
   public function setElementOrder(array $elementOrder)
   {
     $this->_elementOrder = $elementOrder;
+    return $this;
+  }
+
+  public function setFormatCallback(callable $callback)
+  {
+    $this->_formatCallback = $callback;
     return $this;
   }
 }
