@@ -48,14 +48,20 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
         // use read only handler if none have been specified
         $value = new ReadOnlyDataHandler();
       }
-      $this->_dataHandlers[$property] = $value;
-      if($this->_dataHandlers[$property]->getName() === null)
-      {
-        $this->_dataHandlers[$property]->setName($property);
-      }
+      $this->addDataHandler($property, $value);
       //Unset the public properties to avoid data handler modification
       unset($this->$property);
     }
+  }
+
+  public function addDataHandler($property, DataHandler $handler)
+  {
+    $this->_dataHandlers[$property] = $handler;
+    if($this->_dataHandlers[$property]->getName() === null)
+    {
+      $this->_dataHandlers[$property]->setName($property);
+    }
+    return $this;
   }
 
   public function getMethod()
