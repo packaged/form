@@ -13,6 +13,7 @@ class CustomDecoratorForm extends CsrfForm
   {
     parent::_initDataHandlers();
     $this->name = new TextDataHandler();
+    $this->name->setId("name-input");
     $this->email = new TextDataHandler();
   }
 }

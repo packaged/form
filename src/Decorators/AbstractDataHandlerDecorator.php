@@ -1,6 +1,7 @@
 <?php
 namespace Packaged\Form\Decorators;
 
+use Packaged\Form\DataHandlers\AbstractDataHandler;
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
 use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 use Packaged\Glimpse\Core\HtmlTag;
@@ -22,7 +23,7 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
 {
   protected $_tag = 'div';
   /**
-   * @var DataHandler
+   * @var DataHandler|AbstractDataHandler
    */
   protected $_handler;
 
@@ -96,13 +97,24 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
   protected function _configureInputElement(HtmlElement $input)
   {
     $id = $input->getId();
+    if(empty($id) && $this->_handler instanceof AbstractDataHandler)
+    {
+      $id = $this->_handler->getId();
+    }
+
     $name = $this->_handler->getName();
+
     if(empty($id) && $this->_label && $name)
     {
       // create an id
       $id = strtolower(str_replace(' ', '-', Strings::splitOnCamelCase($name)) . '-' . Strings::randomString(3));
+    }
+
+    if(!empty($id))
+    {
       $input->setId($id);
     }
+
     $input->setAttribute('name', $name, true);
   }
 

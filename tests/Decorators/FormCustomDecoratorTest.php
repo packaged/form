@@ -15,5 +15,6 @@ class FormCustomDecoratorTest extends TestCase
     $output = $form->produceSafeHTML()->getContent();
     $this->assertContains('name="email"', $output);
     $this->assertContains('method="post"><div class="hidden"><input type="hidden"', $output);
+    $this->assertContains('id="name-input"', $output);
   }
 }

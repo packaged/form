@@ -10,6 +10,7 @@ use function array_merge;
 
 abstract class AbstractDataHandler implements DataHandler
 {
+  protected $_id;
   protected $_name;
   protected $_value;
   protected $_label;
@@ -238,6 +239,25 @@ abstract class AbstractDataHandler implements DataHandler
   }
 
   abstract protected function _defaultDecorator(): DataHandlerDecorator;
+
+  /**
+   * @return mixed
+   */
+  public function getId()
+  {
+    return $this->_id;
+  }
+
+  /**
+   * @param mixed $id
+   *
+   * @return AbstractDataHandler
+   */
+  public function setId($id)
+  {
+    $this->_id = $id;
+    return $this;
+  }
 
   /**
    * @return mixed
