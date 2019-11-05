@@ -54,7 +54,7 @@ abstract class AbstractDataHandler implements DataHandler
   /**
    * @param mixed $value
    *
-   * @return DataHandler
+   * @return $this
    * @throws Exception
    */
   public function setValueFormatted($value)
@@ -143,7 +143,7 @@ abstract class AbstractDataHandler implements DataHandler
   /**
    * @param mixed $value
    *
-   * @return DataHandler
+   * @return $this
    */
   public function setValue($value)
   {
