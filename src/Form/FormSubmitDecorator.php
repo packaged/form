@@ -22,11 +22,19 @@ class FormSubmitDecorator extends AbstractDecorator
     return $this;
   }
 
+  protected function _getValue()
+  {
+    return $this->_value;
+  }
+
   protected function _getContentForRender()
   {
-    return Div::create(
-      Input::create()->setType(Input::TYPE_SUBMIT)->setValue($this->_value)
-    )->addClass('p-form--submit');
+    return Div::create($this->_input())->addClass('p-form--submit');
+  }
+
+  protected function _input()
+  {
+    return Input::create()->setType(Input::TYPE_SUBMIT)->setValue($this->_getValue());
   }
 
   protected function _prepareForProduce(): HtmlElement
