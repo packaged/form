@@ -34,6 +34,8 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
 
   protected $_formatCallback;
 
+  protected $_rendered;
+
   public function __construct()
   {
     $this->_formatCallback = function ($return) { return $return; };
@@ -91,7 +93,13 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
 
     $errorTag = $this->_getErrorElement();
     $callback = $this->_formatCallback;
-    return $callback($this->_formatElements($input, $this->_label, $errorTag));
+    $this->_rendered = $callback($this->_formatElements($input, $this->_label, $errorTag));
+    return $this->getElements();
+  }
+
+  public function getElements()
+  {
+    return $this->_rendered;
   }
 
   protected function _configureInputElement(HtmlElement $input)
