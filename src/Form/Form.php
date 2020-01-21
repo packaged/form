@@ -12,6 +12,7 @@ use Packaged\Helpers\Arrays;
 use Packaged\Helpers\Objects;
 use Packaged\SafeHtml\ISafeHtmlProducer;
 use Packaged\SafeHtml\SafeHtml;
+use Packaged\Ui\Html\HtmlAttributesTrait;
 use Packaged\Ui\Renderable;
 use Packaged\Validate\IValidatable;
 use Packaged\Validate\ValidationException;
@@ -20,6 +21,8 @@ use function array_merge;
 
 abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
 {
+  use HtmlAttributesTrait;
+
   /**
    * @var DataHandler[]
    */

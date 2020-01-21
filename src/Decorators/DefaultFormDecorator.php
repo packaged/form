@@ -21,6 +21,10 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
   protected function _prepareForProduce(): HtmlElement
   {
     $form = $this->getForm();
+    $formAttr = $form->getAttributes();
+    unset($formAttr['class']);
+    $this->addAttributes($formAttr, true);
+    $this->addClass(...$form->getClasses());
 
     $action = $form->getAction();
     if($action)
