@@ -45,4 +45,9 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
     $this->_form = $form;
     return $this;
   }
+
+  protected function _getTemplatedPhtmlClassList()
+  {
+    return [get_class($this->getForm()), $this->_getTemplatedPhtmlClass()];
+  }
 }
