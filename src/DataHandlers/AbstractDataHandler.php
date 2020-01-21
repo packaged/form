@@ -3,6 +3,7 @@ namespace Packaged\Form\DataHandlers;
 
 use Exception;
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
+use Packaged\Form\Decorators\AbstractDataHandlerDecorator;
 use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 use Packaged\Validate\IValidator;
 use Packaged\Validate\ValidationException;
@@ -319,6 +320,27 @@ abstract class AbstractDataHandler implements DataHandler
   public function render(): string
   {
     return $this->getDecorator()->render();
+  }
+
+  public function renderInput(): string
+  {
+    return $this->_renderElement(DataHandlerDecorator::INPUT);
+  }
+
+  public function renderLabel(): string
+  {
+    return $this->_renderElement(DataHandlerDecorator::LABEL);
+  }
+
+  public function renderErrors(): string
+  {
+    return $this->_renderElement(DataHandlerDecorator::ERRORS);
+  }
+
+  protected function _renderElement($type): string
+  {
+    $dec = $this->getDecorator();
+    return $dec instanceof AbstractDataHandlerDecorator ? (string)$dec->getElement($type) : '';
   }
 
   public function __toString()

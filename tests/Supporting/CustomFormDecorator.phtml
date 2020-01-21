@@ -13,4 +13,9 @@ $form = $this->getForm();
 <div class="hidden"><?= implode('', $form->getHandlersByDecorator(HiddenInputDecorator::class)); ?></div>
 <?= $form->name; ?>
 <?= $form->email; ?>
+<?= $form->password; ?>
 <?= $this->getForm()->getSubmitDecorator(); ?>
+
+<div class="lbl"><?= $form->name->renderLabel(); ?></div>
+<div class="err"><?= $form->name->renderErrors(); ?></div>
+<div class="inp"><?= $form->name->renderInput(); ?></div>

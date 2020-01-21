@@ -99,7 +99,17 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
 
   public function getElements()
   {
+    if($this->_rendered === null)
+    {
+      $this->render();
+    }
     return $this->_rendered;
+  }
+
+  public function getElement($type, $default = null)
+  {
+    $eles = $this->getElements();
+    return $eles[$type] ?? $default;
   }
 
   protected function _configureInputElement(HtmlElement $input)
