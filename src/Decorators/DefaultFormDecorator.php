@@ -24,7 +24,7 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
     $formAttr = $form->getAttributes();
     unset($formAttr['class']);
     $this->addAttributes($formAttr, true);
-    $this->addClass(...$form->getClasses());
+    $this->addClass($form->getClasses());
 
     $action = $form->getAction();
     if($action)
@@ -48,6 +48,6 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
 
   protected function _getTemplatedPhtmlClassList()
   {
-    return [get_class($this->getForm()), $this->_getTemplatedPhtmlClass()];
+    return array_unique([get_class($this->getForm()), $this->_getTemplatedPhtmlClass(), self::class]);
   }
 }
