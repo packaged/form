@@ -27,6 +27,15 @@ abstract class AbstractDataHandler implements DataHandler
   protected $_validators = [];
   private $_isValidatorSetUp = false;
 
+  public static function i()
+  {
+    if(func_num_args() > 0)
+    {
+      return new static(...func_get_args());
+    }
+    return new static();
+  }
+
   public function addError(ValidationException ...$errors)
   {
     $this->_errors = array_merge($this->_errors, $errors);
