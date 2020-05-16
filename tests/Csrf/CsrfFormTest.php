@@ -15,6 +15,11 @@ class CsrfFormTest extends TestCase
 
     $this->assertTrue($form->csrfToken->isValid());
     $this->assertTrue($form->csrfToken->isValidValue($formValue));
+
+    $form->csrfToken->applyNewToken();
+    $formValue = $form->csrfToken->getValue();
+    $this->assertTrue($form->csrfToken->isValid());
+    $this->assertTrue($form->csrfToken->isValidValue($formValue));
     $form->csrfToken = $formValue;
     $this->assertTrue($form->csrfToken->isValid());
 

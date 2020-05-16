@@ -4,8 +4,6 @@ namespace Packaged\Form\Csrf;
 use Packaged\Form\DataHandlers\AbstractDataHandler;
 use Packaged\Form\Decorators\HiddenInputDecorator;
 use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
-use function password_hash;
-use const PASSWORD_DEFAULT;
 
 class CsrfDataHandler extends AbstractDataHandler
 {
@@ -14,10 +12,14 @@ class CsrfDataHandler extends AbstractDataHandler
   protected $_formSecret;
   protected $_value;
 
-  public function __construct($formSecret, $sessionSecret)
+  //Total number of minutes this csrf will be valid for, null for unlimited time
+  protected $_expiryMins;
+
+  public function __construct($formSecret, $sessionSecret, ?int $expiryMinutes)
   {
     $this->setFormSecret($formSecret);
     $this->setSessionSecret($sessionSecret);
+    $this->_expiryMins = $expiryMinutes;
   }
 
   public function applyNewToken()
@@ -30,9 +32,14 @@ class CsrfDataHandler extends AbstractDataHandler
   {
     if($this->_defaultValue === null)
     {
-      $this->_defaultValue = password_hash($this->_generatePassword(), PASSWORD_DEFAULT);
+      $this->_defaultValue = static::generateHash($this->_generatePassword(), $this->_expiryMins === null ? 0 : time());
     }
     return $this->_defaultValue;
+  }
+
+  public static function generateHash(string $password, $timestamp = 0): string
+  {
+    return md5($password . $timestamp) . base_convert($timestamp, 10, 36);
   }
 
   protected function _generatePassword()
@@ -80,7 +87,7 @@ class CsrfDataHandler extends AbstractDataHandler
 
   protected function _setupValidator()
   {
-    $this->addValidator(new CsrfValidator($this->_generatePassword()));
+    $this->addValidator(new CsrfValidator($this->_generatePassword(), $this->_expiryMins));
   }
 
   protected function _defaultDecorator(): DataHandlerDecorator
