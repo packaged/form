@@ -14,7 +14,7 @@ class CsrfForm extends Form
   protected $_sessionSecret;
 
   //Number of minutes the csrf token should be valid for.  Setting to null for unlimited time
-  protected $_tokenExpiryMinutes = 60;
+  protected $_tokenExpiryMinutes = 1440;
 
   public function __construct($sessionSecret)
   {
