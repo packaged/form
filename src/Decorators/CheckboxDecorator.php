@@ -100,7 +100,7 @@ class CheckboxDecorator extends AbstractDataHandlerDecorator
     return Div::create(
       $checkbox,
       Label::create($label)->setAttribute('for', $checkbox->getId())
-    )->addClass('p-form--checkbox');
+    )->addClass('p-form__checkbox');
   }
 
   protected function _formatElements(HtmlTag $input, ?HtmlTag $label, ?HtmlTag $errors)

@@ -64,14 +64,14 @@ class AbstractDataHandlerTest extends TestCase
   {
     $fdh = new ReadOnlyDataHandler();
     $this->assertEquals(
-      '<div class="p-form-field"><div class="p-form--label"><label></label></div><div class="p-form--input"><span></span></div></div>',
+      '<div class="p-form__field"><div class="p-form__label"><label></label></div><div class="p-form__input"><span></span></div></div>',
       $fdh->getDecorator()->render()
     );
 
     $fdh = new ReadOnlyDataHandler();
     $fdh->setName('myName');
     $this->assertRegExp(
-      '/<div class="p-form-field"><div class="p-form--label"><label for="(my-name-...)">My Name<\/label><\/div><div class="p-form--input"><span id="\1"><\/span><\/div><\/div>/',
+      '/<div class="p-form__field"><div class="p-form__label"><label for="(my-name-...)">My Name<\/label><\/div><div class="p-form__input"><span id="\1"><\/span><\/div><\/div>/',
       $fdh->getDecorator()->render()
     );
 
@@ -79,7 +79,7 @@ class AbstractDataHandlerTest extends TestCase
     $fdh->setName('myName');
     $fdh->setLabel('This is my input');
     $this->assertRegExp(
-      '/<div class="p-form-field"><div class="p-form--label"><label for="(my-name-...)">This is my input<\/label><\/div><div class="p-form--input"><span id="\1"><\/span><\/div><\/div>/',
+      '/<div class="p-form__field"><div class="p-form__label"><label for="(my-name-...)">This is my input<\/label><\/div><div class="p-form__input"><span id="\1"><\/span><\/div><\/div>/',
       $fdh->getDecorator()->render()
     );
 
@@ -88,7 +88,7 @@ class AbstractDataHandlerTest extends TestCase
     $fdh->setLabel('This is my input');
     $fdh->setValue('my value');
     $this->assertRegExp(
-      '/<div class="p-form-field"><div class="p-form--label"><label for="(my-name-...)">This is my input<\/label><\/div><div class="p-form--input"><span id="\1">my value<\/span><\/div><\/div>/',
+      '/<div class="p-form__field"><div class="p-form__label"><label for="(my-name-...)">This is my input<\/label><\/div><div class="p-form__input"><span id="\1">my value<\/span><\/div><\/div>/',
       $fdh->getDecorator()->render()
     );
   }

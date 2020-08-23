@@ -43,7 +43,7 @@ class RadioDecorator extends AbstractDataHandlerDecorator
             $radio->setAttribute('checked', true);
           }
           $options[] = Div::create($radio, Label::create($label)->setAttribute('for', $radio->getid()))
-            ->addClass('p-form--checkbox');
+            ->addClass('p-form__checkbox');
         }
         $input->setContent($options);
       }

@@ -74,10 +74,10 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
 
   protected function _prepareForProduce(): HtmlElement
   {
-    $this->addClass('p-form-field');
+    $this->addClass('p-form__field');
     if($this->_handler->getErrors())
     {
-      $this->addClass('p-form-field--error');
+      $this->addClass('p-form__field--error');
     }
     return parent::_prepareForProduce();
   }
@@ -168,15 +168,15 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
     $return = array_fill_keys($this->getElementOrder(), null);
     if(array_key_exists(self::LABEL, $return) && $label)
     {
-      $return[self::LABEL] = Div::create($label)->addClass('p-form--label');
+      $return[self::LABEL] = Div::create($label)->addClass('p-form__label');
     }
     if(array_key_exists(self::ERRORS, $return) && $errors)
     {
-      $return[self::ERRORS] = Div::create($errors)->addClass('p-form--errors');
+      $return[self::ERRORS] = Div::create($errors)->addClass('p-form__errors');
     }
     if(array_key_exists(self::INPUT, $return))
     {
-      $return[self::INPUT] = Div::create($input)->addClass('p-form--input');
+      $return[self::INPUT] = Div::create($input)->addClass('p-form__input');
     }
 
     // array merge, but don't replace existing

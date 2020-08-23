@@ -24,7 +24,7 @@ class FormCustomDecoratorTest extends TestCase
     $this->assertContains('placeholder="Email" value="test@example.com"', $output);
     $this->assertContains('placeholder="Name" value="Mr Test"', $output);
     $this->assertContains('<div class="err"></div>', $output);
-    $this->assertContains('<div class="inp"><div class="p-form--input">', $output);
-    $this->assertContains('<div class="lbl"><div class="p-form--label">', $output);
+    $this->assertContains('<div class="inp"><div class="p-form__input">', $output);
+    $this->assertContains('<div class="lbl"><div class="p-form__label">', $output);
   }
 }

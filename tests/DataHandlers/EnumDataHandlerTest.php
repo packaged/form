@@ -14,7 +14,7 @@ class EnumDataHandlerTest extends TestCase
   {
     $ele = new EnumDataHandler();
     $this->assertEquals(
-      '<div class="p-form-field"><div class="p-form--label"><label></label></div><div class="p-form--input"><select></select></div></div>',
+      '<div class="p-form__field"><div class="p-form__label"><label></label></div><div class="p-form__input"><select></select></div></div>',
       $ele->getDecorator()->render()
     );
 
@@ -22,7 +22,7 @@ class EnumDataHandlerTest extends TestCase
     $ele->setOptions(['a' => 'one', 'b' => 'two']);
     $ele->validate();
     $this->assertEquals(
-      '<div class="p-form-field p-form-field--error"><div class="p-form--label"><label></label></div><div class="p-form--errors"><ul><li>not a valid value</li></ul></div><div class="p-form--input"><select><option value="a">one</option><option value="b">two</option></select></div></div>',
+      '<div class="p-form__field p-form__field--error"><div class="p-form__label"><label></label></div><div class="p-form__errors"><ul><li>not a valid value</li></ul></div><div class="p-form__input"><select><option value="a">one</option><option value="b">two</option></select></div></div>',
       $ele->getDecorator()->render()
     );
 
@@ -31,7 +31,7 @@ class EnumDataHandlerTest extends TestCase
     $ele->setValue('b');
     $ele->validate();
     $this->assertEquals(
-      '<div class="p-form-field"><div class="p-form--label"><label></label></div><div class="p-form--input"><select><option value="a">one</option><option value="b" selected>two</option></select></div></div>',
+      '<div class="p-form__field"><div class="p-form__label"><label></label></div><div class="p-form__input"><select><option value="a">one</option><option value="b" selected>two</option></select></div></div>',
       $ele->getDecorator()->render()
     );
 
@@ -43,7 +43,7 @@ class EnumDataHandlerTest extends TestCase
     $this->assertTrue($ele->isValidValue('c'));
 
     $this->assertEquals(
-      '<div class="p-form-field"><div class="p-form--label"><label></label></div><div class="p-form--input"><select><option value="a">one</option><option value="b" selected>two</option><option value="c">three</option></select></div></div>',
+      '<div class="p-form__field"><div class="p-form__label"><label></label></div><div class="p-form__input"><select><option value="a">one</option><option value="b" selected>two</option><option value="c">three</option></select></div></div>',
       $ele->getDecorator()->render()
     );
 
@@ -52,7 +52,7 @@ class EnumDataHandlerTest extends TestCase
     /** @var SelectDecorator $dec */
     $ele->getDecorator()->getInput()->setId('mySelect');
     $this->assertEquals(
-      '<div class="p-form-field"><div class="p-form--label"><label for="mySelect"></label></div><div class="p-form--input"><select id="mySelect"><option value="a">one</option><option value="b" selected>two</option><option value="c">three</option></select></div></div>',
+      '<div class="p-form__field"><div class="p-form__label"><label for="mySelect"></label></div><div class="p-form__input"><select id="mySelect"><option value="a">one</option><option value="b" selected>two</option><option value="c">three</option></select></div></div>',
       $ele->getDecorator()->render()
     );
   }
@@ -65,7 +65,7 @@ class EnumDataHandlerTest extends TestCase
     $h->setOptions(['one' => 'First', 'two' => 'Second', 'three' => 'Third']);
     $h->validate();
     $this->assertRegExp(
-      '~<div class="p-form-field p-form-field--error"><div class="p-form--label"><label>Select One</label></div><div class="p-form--errors"><ul><li>must be an array</li></ul></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="one" /><label for="\1">First</label></div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="two" /><label for="\2">Second</label></div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="three" /><label for="\3">Third</label></div></div></div></div>~',
+      '~<div class="p-form__field p-form__field--error"><div class="p-form__label"><label>Select One</label></div><div class="p-form__errors"><ul><li>must be an array</li></ul></div><div class="p-form__input"><div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="one" /><label for="\1">First</label></div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="two" /><label for="\2">Second</label></div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="three" /><label for="\3">Third</label></div></div></div></div>~',
       $h->getDecorator()->render()
     );
 
@@ -76,7 +76,7 @@ class EnumDataHandlerTest extends TestCase
     $h->setValueFormatted('one');
     $h->validate();
     $this->assertRegExp(
-      '~<div class="p-form-field"><div class="p-form--label"><label>Select One</label></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="one" checked /><label for="\1">First</label></div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="two" /><label for="\2">Second</label></div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="three" /><label for="\3">Third</label></div></div></div></div>~',
+      '~<div class="p-form__field"><div class="p-form__label"><label>Select One</label></div><div class="p-form__input"><div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="one" checked /><label for="\1">First</label></div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="two" /><label for="\2">Second</label></div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="three" /><label for="\3">Third</label></div></div></div></div>~',
       $h->getDecorator()->render()
     );
 
@@ -87,7 +87,7 @@ class EnumDataHandlerTest extends TestCase
     $h->setValueFormatted(['one', 'three']);
     $h->validate();
     $this->assertRegExp(
-      '~<div class="p-form-field"><div class="p-form--label"><label>Select One</label></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="one" checked /><label for="\1">First</label></div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="two" /><label for="\2">Second</label></div><div class="p-form--checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="three" checked /><label for="\3">Third</label></div></div></div></div>~',
+      '~<div class="p-form__field"><div class="p-form__label"><label>Select One</label></div><div class="p-form__input"><div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="one" checked /><label for="\1">First</label></div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="two" /><label for="\2">Second</label></div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="three" checked /><label for="\3">Third</label></div></div></div></div>~',
       $h->getDecorator()->render()
     );
   }
@@ -102,7 +102,7 @@ class EnumDataHandlerTest extends TestCase
     $h->validate();
 
     $this->assertRegExp(
-      '~<div class="p-form-field p-form-field--error"><div class="p-form--label"><label>Select One</label></div><div class="p-form--errors"><ul><li>not a valid value</li></ul></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="one" /><label for="\1">First</label></div><div class="p-form--checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="two" /><label for="\2">Second</label></div><div class="p-form--checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="three" /><label for="\3">Third</label></div></div></div></div>~',
+      '~<div class="p-form__field p-form__field--error"><div class="p-form__label"><label>Select One</label></div><div class="p-form__errors"><ul><li>not a valid value</li></ul></div><div class="p-form__input"><div><div class="p-form__checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="one" /><label for="\1">First</label></div><div class="p-form__checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="two" /><label for="\2">Second</label></div><div class="p-form__checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="three" /><label for="\3">Third</label></div></div></div></div>~',
       $h->getDecorator()->render()
     );
 
@@ -115,7 +115,7 @@ class EnumDataHandlerTest extends TestCase
     $h->validate();
 
     $this->assertRegExp(
-      '~<div class="p-form-field"><div class="p-form--label"><label>Select One</label></div><div class="p-form--input"><div><div class="p-form--checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="one" checked /><label for="\1">First</label></div><div class="p-form--checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="two" /><label for="\2">Second</label></div><div class="p-form--checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="three" /><label for="\3">Third</label></div></div></div></div>~',
+      '~<div class="p-form__field"><div class="p-form__label"><label>Select One</label></div><div class="p-form__input"><div><div class="p-form__checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="one" checked /><label for="\1">First</label></div><div class="p-form__checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="two" /><label for="\2">Second</label></div><div class="p-form__checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="three" /><label for="\3">Third</label></div></div></div></div>~',
       $h->getDecorator()->render()
     );
   }
