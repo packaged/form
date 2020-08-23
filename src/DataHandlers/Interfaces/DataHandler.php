@@ -2,12 +2,16 @@
 namespace Packaged\Form\DataHandlers\Interfaces;
 
 use Exception;
-use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
+use Packaged\SafeHtml\ISafeHtmlProducer;
 use Packaged\Validate\IValidatable;
 use Packaged\Validate\ValidationException;
 
 interface DataHandler extends IValidatable
 {
+  public function getId(): ?string;
+
+  public function setId(string $id);
+
   /**
    * Validate the data, return true if valid, false if invalid
    *
@@ -62,8 +66,6 @@ interface DataHandler extends IValidatable
    */
   public function setValue($value);
 
-  public function getDecorator(): DataHandlerDecorator;
-
   public function getDefaultValue();
 
   /**
@@ -98,5 +100,5 @@ interface DataHandler extends IValidatable
    */
   public function clearErrors();
 
-  public function render(): string;
+  public function getInput(): ?ISafeHtmlProducer;
 }

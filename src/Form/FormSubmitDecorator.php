@@ -13,7 +13,7 @@ class FormSubmitDecorator extends AbstractDecorator
 
   public function __construct()
   {
-    $this->addClass('p-form-field');
+    $this->addClass('p-form__field');
   }
 
   public function setValue(string $value)
@@ -29,7 +29,7 @@ class FormSubmitDecorator extends AbstractDecorator
 
   protected function _getContentForRender()
   {
-    return Div::create($this->_input())->addClass('p-form--submit');
+    return Div::create($this->_input())->addClass('p-form__submit');
   }
 
   protected function _input()

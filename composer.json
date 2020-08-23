@@ -12,6 +12,7 @@
     "php": ">=7.1",
     "packaged/glimpse": "^2.6",
     "packaged/ui": "^1.0",
+    "packaged-ui/bem-component": "~1.2",
     "packaged/validate": "^2.1"
   },
   "require-dev": {

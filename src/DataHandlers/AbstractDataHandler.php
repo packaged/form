@@ -5,6 +5,8 @@ use Exception;
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
 use Packaged\Form\Decorators\AbstractDataHandlerDecorator;
 use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
+use Packaged\Helpers\Strings;
+use Packaged\SafeHtml\ISafeHtmlProducer;
 use Packaged\Validate\IValidator;
 use Packaged\Validate\ValidationException;
 use function array_merge;
@@ -251,30 +253,30 @@ abstract class AbstractDataHandler implements DataHandler
   abstract protected function _defaultDecorator(): DataHandlerDecorator;
 
   /**
-   * @return mixed
+   * @return string|null
    */
-  public function getId()
+  public function getId(): ?string
   {
     return $this->_id;
   }
 
   /**
-   * @param mixed $id
+   * @param string $id
    *
    * @return AbstractDataHandler
    */
-  public function setId($id)
+  public function setId(string $id)
   {
     $this->_id = $id;
     return $this;
   }
 
   /**
-   * @return mixed
+   * @return string
    */
   public function getLabel()
   {
-    return $this->_label;
+    return $this->_label ?? Strings::titleize(Strings::splitOnCamelCase($this->getName()));
   }
 
   /**
@@ -357,4 +359,10 @@ abstract class AbstractDataHandler implements DataHandler
     return $this->render();
   }
 
+  public function getInput(): ?ISafeHtmlProducer
+  {
+    $dec = $this->getDecorator();
+    $dec->render();
+    return $dec->getInput();
+  }
 }

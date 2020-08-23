@@ -1,11 +1,9 @@
 <?php
 namespace Packaged\Form\Csrf;
 
-use Packaged\Form\DataHandlers\AbstractDataHandler;
-use Packaged\Form\Decorators\HiddenInputDecorator;
-use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
+use Packaged\Form\DataHandlers\HiddenDataHandler;
 
-class CsrfDataHandler extends AbstractDataHandler
+class CsrfDataHandler extends HiddenDataHandler
 {
   const ERR_INVALID = 'Invalid or missing CSRF token';
   protected $_sessionSecret;
@@ -88,12 +86,5 @@ class CsrfDataHandler extends AbstractDataHandler
   protected function _setupValidator()
   {
     $this->addValidator(new CsrfValidator($this->_generatePassword(), $this->_expiryMins));
-  }
-
-  protected function _defaultDecorator(): DataHandlerDecorator
-  {
-    $decorator = new HiddenInputDecorator();
-    $decorator->setHandler($this);
-    return $decorator;
   }
 }

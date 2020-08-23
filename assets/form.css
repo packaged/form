@@ -1,15 +1,15 @@
-.p-form-field {
+.p-form__field {
   padding: 5px;
 }
 
-.p-form--label {
+.p-form__label {
   padding: 2px 4px;
 }
 
-.p-form--submit input,
-.p-form--submit button,
-.p-form--input input,
-.p-form--input select {
+.p-form__submit input,
+.p-form__submit button,
+.p-form__input input,
+.p-form__input select {
   line-height: 16px;
   font-size: 16px;
   padding: 10px 10px;
@@ -26,21 +26,25 @@
   background-color: white;
 }
 
-.p-form--submit input,
-.p-form--submit button {
+.p-form__submit input,
+.p-form__submit button {
   background-color: #c3c3c3;
   color: #313131;
   border: 1px solid #8c8c8c;
 }
 
-.p-form--submit input:active,
-.p-form--submit button:active {
+.p-form__submit input:active,
+.p-form__submit button:active {
   background-color: #c3c3c3;
   color: #313131;
   border: 1px solid #8c8c8c;
   box-shadow: inset 0px 0px 3px #313131;
 }
 
-.p-form--input .p-form--checkbox input {
+.p-form__input .p-form__checkbox input {
   height: 16px;
+}
+
+.p-form__errors--hidden {
+  display: none;
 }

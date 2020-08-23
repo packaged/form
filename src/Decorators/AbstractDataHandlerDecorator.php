@@ -130,6 +130,7 @@ abstract class AbstractDataHandlerDecorator extends AbstractDecorator implements
 
     if(!empty($id))
     {
+      $this->_handler->setId($id);
       $input->setId($id);
     }
 

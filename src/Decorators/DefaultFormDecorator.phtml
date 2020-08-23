@@ -5,5 +5,8 @@
 
 use Packaged\Form\Decorators\DefaultFormDecorator;
 
-?><?php foreach($this->getForm()->getDataHandlers() as $handler): ?><?= $handler->getDecorator(); ?><?php endforeach;
+?>
+<?php foreach($this->getForm()->getDataHandlers() as $handler):
+  ?><?= $this->renderHandler($handler)->produceSafeHTML();
+  ?><?php endforeach;
 ?><?= $this->getForm()->getSubmitDecorator(); ?>
