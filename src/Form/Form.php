@@ -159,7 +159,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
       if($ele instanceof DataHandler)
       {
         $value = $ele->formatValue($value);
-        $handlerErrors = $ele->clearErrors()->validateValue($value);
+        $handlerErrors = $ele->clearErrors()->validateValue($value, $this);
         if(empty($handlerErrors))
         {
           $ele->setValue($value);
