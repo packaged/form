@@ -17,7 +17,6 @@ use Packaged\Ui\Renderable;
 use Packaged\Validate\IValidatable;
 use Packaged\Validate\ValidationException;
 use function array_key_exists;
-use function array_merge;
 
 abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
 {
@@ -114,20 +113,16 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
    */
   public function validate(): array
   {
-    $errors = [];
+    $keyedErrors = [];
     foreach($this->_dataHandlers as $name => $handler)
     {
       $handlerErrors = $handler->validateValue($handler->getValue(), $this);
       if($handlerErrors)
       {
-        if(!isset($errors[$name]))
-        {
-          $errors[$name] = [];
-        }
-        $errors[$name] = array_merge($errors[$name], $handlerErrors);
+        $keyedErrors[$name] = $handlerErrors;
       }
     }
-    return $errors;
+    return $keyedErrors;
   }
 
   /**
@@ -152,22 +147,21 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   {
     $keyedHandlers = Objects::mpull($this->_dataHandlers, null, 'getName');
 
-    $errorKeys = [];
+    $keyedErrors = [];
     foreach($data as $name => $value)
     {
       $ele = Arrays::value($keyedHandlers, $name);
       if($ele instanceof DataHandler)
       {
         $value = $ele->formatValue($value);
-        $handlerErrors = $ele->clearErrors()->validateValue($value, $this);
+        $handlerErrors = $ele->validateValue($value, $this);
         if(empty($handlerErrors))
         {
           $ele->setValue($value);
         }
         else
         {
-          $ele->addError(...$handlerErrors);
-          $errorKeys[$name] = $handlerErrors;
+          $keyedErrors[$name] = $handlerErrors;
           if($hydrateInvalidValues)
           {
             $ele->setValue($value);
@@ -175,7 +169,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
         }
       }
     }
-    return $errorKeys;
+    return $keyedErrors;
   }
 
   public function __get($name)
