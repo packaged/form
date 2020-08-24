@@ -147,6 +147,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   {
     $keyedHandlers = Objects::mpull($this->_dataHandlers, null, 'getName');
 
+    $mergedFormData = array_merge($this->getFormData(), $data);
     $keyedErrors = [];
     foreach($data as $name => $value)
     {
@@ -154,7 +155,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
       if($ele instanceof DataHandler)
       {
         $value = $ele->formatValue($value);
-        $handlerErrors = $ele->validateValue($value, array_merge($this->getFormData(), $data));
+        $handlerErrors = $ele->validateValue($value, $mergedFormData);
         if(empty($handlerErrors))
         {
           $ele->setValue($value);
