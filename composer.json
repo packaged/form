@@ -13,7 +13,7 @@
     "packaged/glimpse": "^2.6",
     "packaged/ui": "^1.0",
     "packaged-ui/bem-component": "~1.2",
-    "packaged/validate": "^2.1"
+    "packaged/validate": "~2.6"
   },
   "require-dev": {
     "phpunit/phpunit": "7.5.*"

@@ -5,10 +5,13 @@ use Exception;
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
 use Packaged\Form\Decorators\AbstractDataHandlerDecorator;
 use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
+use Packaged\Form\Form\Form;
 use Packaged\Helpers\Strings;
 use Packaged\SafeHtml\ISafeHtmlProducer;
+use Packaged\Validate\IDataSetValidator;
 use Packaged\Validate\IValidator;
 use Packaged\Validate\ValidationException;
+use RuntimeException;
 use function array_merge;
 
 abstract class AbstractDataHandler implements DataHandler
@@ -165,7 +168,7 @@ abstract class AbstractDataHandler implements DataHandler
 
   public function validate(): array
   {
-    $this->clearErrors()->addError(...$this->validateValue($this->getValue()));
+    $this->validateValue($this->getValue());
     return $this->getErrors();
   }
 
@@ -178,11 +181,13 @@ abstract class AbstractDataHandler implements DataHandler
   /**
    * Validate the data, throwing an exception with the error
    *
-   * @param $value
+   * @param mixed     $value
+   * @param Form|null $form
    *
    * @return ValidationException[]
+   * @throws RuntimeException
    */
-  public function validateValue($value): array
+  public function validateValue($value, ?Form $form = null): array
   {
     $this->_initValidator();
     $errors = [];
@@ -190,9 +195,23 @@ abstract class AbstractDataHandler implements DataHandler
     {
       foreach($this->_validators as $validator)
       {
-        $errors = array_merge($errors, $validator->validate($value));
+        if($validator instanceof IDataSetValidator)
+        {
+          if(!$form)
+          {
+            throw new RuntimeException('no form provided to dataset validator');
+          }
+          $validatorErrors = $validator->validate($form->getFormData());
+        }
+        else
+        {
+          $validatorErrors = $validator->validate($value);
+        }
+
+        $errors = array_merge($errors, $validatorErrors);
       }
     }
+    $this->clearErrors()->addError(...$errors);
     return $errors;
   }
 
