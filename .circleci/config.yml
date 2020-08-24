@@ -34,7 +34,7 @@ jobs:
     <<: *defaults
     docker:
       - image: php:7.3-alpine
-  build-phpRC:
+  build-php74:
     <<: *defaults
     docker:
       - image: php:7.4-alpine
