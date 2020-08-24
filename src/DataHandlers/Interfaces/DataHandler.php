@@ -2,7 +2,6 @@
 namespace Packaged\Form\DataHandlers\Interfaces;
 
 use Exception;
-use Packaged\Form\Form\Form;
 use Packaged\SafeHtml\ISafeHtmlProducer;
 use Packaged\Validate\IValidatable;
 use Packaged\Validate\ValidationException;
@@ -25,12 +24,12 @@ interface DataHandler extends IValidatable
   /**
    * Validate the data, return array of errors
    *
-   * @param mixed     $value
-   * @param Form|null $form
+   * @param mixed $value
+   * @param array $data additional data that may be required by some validators, eg. form data
    *
    * @return array
    */
-  public function validateValue($value, ?Form $form = null): array;
+  public function validateValue($value, array $data = []): array;
 
   /**
    * Validate the data, throwing an exception with the error

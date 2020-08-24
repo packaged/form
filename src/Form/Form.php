@@ -116,7 +116,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     $keyedErrors = [];
     foreach($this->_dataHandlers as $name => $handler)
     {
-      $handlerErrors = $handler->validateValue($handler->getValue(), $this);
+      $handlerErrors = $handler->validateValue($handler->getValue(), $this->getFormData());
       if($handlerErrors)
       {
         $keyedErrors[$name] = $handlerErrors;
@@ -154,7 +154,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
       if($ele instanceof DataHandler)
       {
         $value = $ele->formatValue($value);
-        $handlerErrors = $ele->validateValue($value, $this);
+        $handlerErrors = $ele->validateValue($value, array_merge($this->getFormData(), $data));
         if(empty($handlerErrors))
         {
           $ele->setValue($value);

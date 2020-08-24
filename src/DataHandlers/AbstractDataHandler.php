@@ -5,7 +5,6 @@ use Exception;
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
 use Packaged\Form\Decorators\AbstractDataHandlerDecorator;
 use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
-use Packaged\Form\Form\Form;
 use Packaged\Helpers\Strings;
 use Packaged\SafeHtml\ISafeHtmlProducer;
 use Packaged\Validate\IDataSetValidator;
@@ -181,13 +180,13 @@ abstract class AbstractDataHandler implements DataHandler
   /**
    * Validate the data, throwing an exception with the error
    *
-   * @param mixed     $value
-   * @param Form|null $form
+   * @param mixed $value
+   * @param array $data
    *
    * @return ValidationException[]
    * @throws RuntimeException
    */
-  public function validateValue($value, ?Form $form = null): array
+  public function validateValue($value, array $data = []): array
   {
     $this->_initValidator();
     $errors = [];
@@ -197,11 +196,11 @@ abstract class AbstractDataHandler implements DataHandler
       {
         if($validator instanceof IDataSetValidator)
         {
-          if(!$form)
+          if(!$data)
           {
             throw new RuntimeException('no form provided to dataset validator');
           }
-          $validatorErrors = $validator->validate($form->getFormData());
+          $validatorErrors = $validator->validate($data);
         }
         else
         {
