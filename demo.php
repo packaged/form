@@ -38,6 +38,12 @@ class DemoForm extends Form
   <link type="text/css" rel="stylesheet" href="./assets/form.css"/>
 </head>
 <body>
+<div class="p-form__field">
+  <div class="p-form__label">Not a real field</div>
+  <div class="p-form__input">some placeholder text</div>
+</div>
 <?= (new DemoForm())->render() ?>
+
+
 </body>
 </html>

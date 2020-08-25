@@ -1,3 +1,9 @@
+:root {
+  --p-form-placeholder-color: 120, 120, 120;
+  --p-form-text-color: 49, 49, 49;
+  --p-form-padding: 5px 10px;
+}
+
 .p-form__field {
   padding: 5px;
 }
@@ -6,39 +12,77 @@
   padding: 2px 4px;
 }
 
-.p-form__submit input,
-.p-form__submit button,
-.p-form__input input,
-.p-form__input select {
-  line-height: 16px;
-  font-size: 16px;
-  padding: 10px 10px;
-  height: 36px;
+.p-form__submit,
+.p-form__input {
+  position: relative;
+  display: inline-block;
   box-sizing: border-box;
+  font-size: 16px;
 
-  color: #313131;
+  height: 36px;
+  line-height: 26px;
 
-  outline: none;
+  color: rgb(var(--p-form-placeholder-color));
+
+  border: 1px solid #c3c3c3;
+  padding: var(--p-form-padding);
 
   min-width: 200px;
   border-radius: 5px;
-  border: 1px solid #c3c3c3;
   background-color: white;
+  overflow: hidden;
 }
 
+.p-form__input input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgb(var(--p-form-placeholder-color));
+  opacity: 1; /* Firefox */
+}
+
+.p-form__input input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: rgb(var(--p-form-placeholder-color));
+}
+
+.p-form__input input::-ms-input-placeholder { /* Microsoft Edge */
+  color: rgb(var(--p-form-placeholder-color));
+}
+
+.p-form__submit button,
 .p-form__submit input,
-.p-form__submit button {
+.p-form__input button,
+.p-form__input input,
+.p-form__input select {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: transparent;
+  border: none;
+  height: 100%;
+  width: 100%;
+  font-size: 16px;
+  padding: var(--p-form-padding);
+
+  font-family: inherit;
+  border-radius: inherit;
+  font-weight: inherit;
+
+  color: rgb(var(--p-form-text-color));
+
+  line-height: 100%;
+  outline: none;
+}
+
+.p-form__submit,
+.p-form__submit {
   background-color: #c3c3c3;
   color: #313131;
-  border: 1px solid #8c8c8c;
+  border-color: #8c8c8c;
 }
 
 .p-form__submit input:active,
 .p-form__submit button:active {
-  background-color: #c3c3c3;
-  color: #313131;
-  border: 1px solid #8c8c8c;
-  box-shadow: inset 0px 0px 3px #313131;
+  box-shadow: inset 0 0 3px #8c8c8c;
 }
 
 .p-form__input .p-form__checkbox input {
