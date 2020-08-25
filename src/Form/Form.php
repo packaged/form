@@ -100,7 +100,8 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   {
     foreach($this->_dataHandlers as $name => $handler)
     {
-      if(!$handler->isValid())
+      $handlerErrors = $handler->validateValue($handler->getValue(), $this->getFormData());
+      if(!empty($handlerErrors))
       {
         return false;
       }
