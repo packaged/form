@@ -2,7 +2,7 @@
 namespace Packaged\Form\DataHandlers;
 
 use Packaged\Form\Decorators\InputDecorator;
-use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
+use Packaged\Form\Decorators\Interfaces\Decorator;
 use Packaged\Helpers\Strings;
 use Packaged\Helpers\ValueAs;
 
@@ -14,7 +14,7 @@ class TextDataHandler extends AbstractDataHandler
     return parent::formatValue(ValueAs::string($value));
   }
 
-  protected function _defaultDecorator(): DataHandlerDecorator
+  protected function _defaultDecorator(): Decorator
   {
     return new InputDecorator();
   }

@@ -5,6 +5,7 @@ use Exception;
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
 use Packaged\Form\Decorators\AbstractDataHandlerDecorator;
 use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
+use Packaged\Form\Decorators\Interfaces\Decorator;
 use Packaged\Helpers\Strings;
 use Packaged\SafeHtml\ISafeHtmlProducer;
 use Packaged\Validate\IDataSetValidator;
@@ -246,29 +247,31 @@ abstract class AbstractDataHandler implements DataHandler
     }
   }
 
-  public function getDecorator(): DataHandlerDecorator
+  public function getDecorator(): Decorator
   {
     if(!$this->_decorator)
     {
-      $this->_decorator = $this->_defaultDecorator();
-      $this->_decorator->setHandler($this);
+      $this->setDecorator($this->_defaultDecorator());
     }
     return $this->_decorator;
   }
 
   /**
-   * @param DataHandlerDecorator $decorator
+   * @param Decorator $decorator
    *
    * @return $this
    */
-  public function setDecorator(DataHandlerDecorator $decorator)
+  public function setDecorator(Decorator $decorator)
   {
-    $decorator->setHandler($this);
+    if($decorator instanceof DataHandlerDecorator)
+    {
+      $decorator->setHandler($this);
+    }
     $this->_decorator = $decorator;
     return $this;
   }
 
-  abstract protected function _defaultDecorator(): DataHandlerDecorator;
+  abstract protected function _defaultDecorator(): Decorator;
 
   /**
    * @return string|null
