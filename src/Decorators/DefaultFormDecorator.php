@@ -98,6 +98,11 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
     )->addClass($this->bem()->getElementName('label'));
   }
 
+  protected function _getErrorMessages(DataHandler $handler): array
+  {
+    return Objects::mpull($handler->getErrors(), 'getMessage');
+  }
+
   protected function _renderErrors(DataHandler $handler): ?ISafeHtmlProducer
   {
     $errors = $handler->getErrors();
@@ -106,11 +111,13 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
       return null;
     }
 
+    $renderableErrors = $this->_getErrorMessages($handler);
+
     return Div::create(
-      empty($errors) ? null :
-        UnorderedList::create()->setContent(ListItem::collection(Objects::mpull($errors, 'getMessage')))
+      empty($renderableErrors) ? null :
+        UnorderedList::create()->setContent(ListItem::collection($renderableErrors))
     )->addClass($this->bem()->getElementName('errors'))
-      ->addClass(empty($errors) ? $this->bem()->getModifier('hidden', 'errors') : null); //Hide when no errors
+      ->addClass(empty($renderableErrors) ? $this->bem()->getModifier('hidden', 'errors') : null); //Hide when no errors
   }
 
   protected function _renderInput(DataHandler $handler): ?ISafeHtmlProducer
