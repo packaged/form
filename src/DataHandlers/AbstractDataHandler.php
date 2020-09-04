@@ -384,6 +384,10 @@ abstract class AbstractDataHandler implements DataHandler
   {
     $dec = $this->getDecorator();
     $dec->render();
-    return $dec->getInput();
+    if($dec instanceof DataHandlerDecorator)
+    {
+      return $dec->getInput();
+    }
+    return null;
   }
 }
