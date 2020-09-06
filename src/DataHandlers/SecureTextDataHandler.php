@@ -1,7 +1,7 @@
 <?php
 namespace Packaged\Form\DataHandlers;
 
-use Packaged\Form\Decorators\Interfaces\Decorator;
+use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 use Packaged\Form\Decorators\PasswordInputDecorator;
 use Packaged\Helpers\Strings;
 use Packaged\Helpers\ValueAs;
@@ -14,7 +14,7 @@ class SecureTextDataHandler extends AbstractDataHandler
     return parent::formatValue(ValueAs::string($value));
   }
 
-  protected function _defaultDecorator(): Decorator
+  protected function _defaultDecorator(): DataHandlerDecorator
   {
     return new PasswordInputDecorator();
   }
