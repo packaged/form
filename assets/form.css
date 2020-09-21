@@ -50,6 +50,7 @@
 .p-form__submit input,
 .p-form__input button,
 .p-form__input input,
+.p-form__input .input,
 .p-form__input select {
   position: absolute;
   top: 0;
