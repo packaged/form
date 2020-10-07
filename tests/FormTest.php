@@ -27,6 +27,7 @@ class FormTest extends TestCase
     $this->assertTrue($form->isValid());
 
     $form->number->setValue('a');
+    $this->assertTrue($form->isValid(false));
     $this->assertFalse($form->isValid());
 
     $errors = $form->validate();
