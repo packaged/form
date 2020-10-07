@@ -94,17 +94,10 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   }
 
   /**
-   * @param bool $revalidate
-   *
    * @return bool
    */
-  public function isValid(bool $revalidate = true): bool
+  public function isValid(): bool
   {
-    if(!$revalidate)
-    {
-      return empty($handlerErrors);
-    }
-
     foreach($this->_dataHandlers as $name => $handler)
     {
       $handlerErrors = $handler->validateValue($handler->getValue(), $this->getFormData());
@@ -124,9 +117,11 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     $keyedErrors = [];
     foreach($this->_dataHandlers as $name => $handler)
     {
+      $handler->clearErrors();
       $handlerErrors = $handler->validateValue($handler->getValue(), $this->getFormData());
       if($handlerErrors)
       {
+        $handler->addError(...$handlerErrors);
         $keyedErrors[$name] = $handlerErrors;
       }
     }

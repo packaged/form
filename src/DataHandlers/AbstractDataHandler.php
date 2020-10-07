@@ -167,7 +167,9 @@ abstract class AbstractDataHandler implements DataHandler
 
   public function validate(): array
   {
-    $this->validateValue($this->getValue());
+    $this->clearErrors();
+    $errors = $this->validateValue($this->getValue());
+    $this->addError(...$errors);
     return $this->getErrors();
   }
 
@@ -210,7 +212,6 @@ abstract class AbstractDataHandler implements DataHandler
         $errors = array_merge($errors, $validatorErrors);
       }
     }
-    $this->clearErrors()->addError(...$errors);
     return $errors;
   }
 
