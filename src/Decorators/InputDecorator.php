@@ -4,6 +4,7 @@ namespace Packaged\Form\Decorators;
 use Packaged\Glimpse\Core\HtmlTag;
 use Packaged\Glimpse\Tags\Form\Input;
 use Packaged\Helpers\Strings;
+use Packaged\Helpers\ValueAs;
 use Packaged\Ui\Html\HtmlElement;
 
 class InputDecorator extends AbstractDataHandlerDecorator
@@ -47,7 +48,7 @@ class InputDecorator extends AbstractDataHandlerDecorator
       }
       if($val !== null)
       {
-        $input->setValue((string)$val);
+        $input->setValue(ValueAs::string($val));
       }
     }
   }
