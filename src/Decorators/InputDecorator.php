@@ -40,17 +40,14 @@ class InputDecorator extends AbstractDataHandlerDecorator
         );
       }
 
-      if($this->_handler->getValue() !== null)
+      $val = $this->_handler->getValue();
+      if($val === null)
       {
-        $input->setValue($this->_handler->getValue());
+        $val = $this->_handler->getDefaultValue();
       }
-      else
+      if($val !== null)
       {
-        $default = $this->_handler->getDefaultValue();
-        if($default !== null)
-        {
-          $input->setValue($default);
-        }
+        $input->setValue((string)$val);
       }
     }
   }
