@@ -1,12 +1,12 @@
 <?php
 namespace Packaged\Form\DataHandlers;
 
-use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
-use Packaged\Form\Decorators\PasswordInputDecorator;
+use Packaged\Glimpse\Tags\Form\Input;
 use Packaged\Helpers\Strings;
 use Packaged\Helpers\ValueAs;
+use Packaged\Ui\Html\HtmlElement;
 
-class SecureTextDataHandler extends AbstractDataHandler
+class SecureTextDataHandler extends TextDataHandler
 {
   public function formatValue($value)
   {
@@ -14,8 +14,15 @@ class SecureTextDataHandler extends AbstractDataHandler
     return parent::formatValue(ValueAs::string($value));
   }
 
-  protected function _defaultDecorator(): DataHandlerDecorator
+  protected function _createBaseElement(): HtmlElement
   {
-    return new PasswordInputDecorator();
+    return Input::create()->setType(Input::TYPE_PASSWORD);
   }
+
+  protected function _generateInput(): HtmlElement
+  {
+    //Always clear a default password
+    return parent::_generateInput()->setAttribute('value', '');
+  }
+
 }

@@ -3,10 +3,8 @@ namespace Packaged\Form\DataHandlers;
 
 use Exception;
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
-use Packaged\Form\Decorators\AbstractDataHandlerDecorator;
-use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 use Packaged\Helpers\Strings;
-use Packaged\SafeHtml\ISafeHtmlProducer;
+use Packaged\Ui\Html\HtmlElement;
 use Packaged\Validate\IDataSetValidator;
 use Packaged\Validate\IValidator;
 use Packaged\Validate\ValidationException;
@@ -22,14 +20,17 @@ abstract class AbstractDataHandler implements DataHandler
   protected $_placeholder;
   protected $_defaultValue;
 
-  /** @var DataHandlerDecorator */
-  protected $_decorator;
   protected $_errors = [];
   /**
    * @var IValidator[]
    */
   protected $_validators = [];
   private $_isValidatorSetUp = false;
+
+  /**
+   * @var HtmlElement
+   */
+  protected $_input;
 
   public static function i()
   {
@@ -38,12 +39,6 @@ abstract class AbstractDataHandler implements DataHandler
       return new static(...func_get_args());
     }
     return new static();
-  }
-
-  public function addError(ValidationException ...$errors)
-  {
-    $this->_errors = array_merge($this->_errors, $errors);
-    return $this;
   }
 
   /**
@@ -59,11 +54,82 @@ abstract class AbstractDataHandler implements DataHandler
    *
    * @return $this
    */
-  public function setName($name)
+  public function setName(string $name)
   {
     $this->_name = $name;
     return $this;
   }
+
+  //region Presentation
+
+  /**
+   * @return string|null
+   */
+  public function getId(): ?string
+  {
+    if(empty($this->_id) && $this->_name)
+    {
+      // create an id
+      $this->_id = strtolower(
+        str_replace(' ', '-', Strings::splitOnCamelCase($this->_name))
+        . '-' . base_convert(floor(microtime(true) * 1000), 10, 36)
+      );
+    }
+
+    return $this->_id;
+  }
+
+  /**
+   * @param string $id
+   *
+   * @return AbstractDataHandler
+   */
+  public function setId(string $id)
+  {
+    $this->_id = $id;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getLabel()
+  {
+    return $this->_label ?? Strings::titleize(Strings::splitOnCamelCase($this->getName()));
+  }
+
+  /**
+   * @param string $label
+   *
+   * @return AbstractDataHandler
+   */
+  public function setLabel(string $label)
+  {
+    $this->_label = $label;
+    return $this;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getPlaceholder()
+  {
+    return $this->_placeholder ?? Strings::titleize(Strings::splitOnCamelCase($this->getName()));
+  }
+
+  /**
+   * @param string $placeholder
+   *
+   * @return AbstractDataHandler
+   */
+  public function setPlaceholder(string $placeholder)
+  {
+    $this->_placeholder = $placeholder;
+    return $this;
+  }
+  //endregion
+
+  //region Value Handling
 
   /**
    * @param mixed $value
@@ -82,6 +148,46 @@ abstract class AbstractDataHandler implements DataHandler
     return $value;
   }
 
+  /**
+   * @return mixed
+   */
+  public function getValue()
+  {
+    return $this->_value;
+  }
+
+  /**
+   * @param mixed $value
+   *
+   * @return $this
+   */
+  public function setValue($value)
+  {
+    $this->_value = $value;
+    return $this;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getDefaultValue()
+  {
+    return $this->_defaultValue;
+  }
+
+  /**
+   * @param mixed $defaultValue
+   *
+   * @return AbstractDataHandler
+   */
+  public function setDefaultValue($defaultValue)
+  {
+    $this->_defaultValue = $defaultValue;
+    return $this;
+  }
+  //endregion
+
+  //region Validators
   /**
    * @param IValidator $validator
    *
@@ -104,39 +210,6 @@ abstract class AbstractDataHandler implements DataHandler
   {
   }
 
-  /**
-   * Validate the currently set value
-   *
-   * @return bool
-   */
-  public function isValid(): bool
-  {
-    return $this->isValidValue($this->getValue());
-  }
-
-  /**
-   * Validate a value against the current data handler
-   *
-   * @param $value
-   *
-   * @return bool
-   */
-  public function isValidValue($value): bool
-  {
-    $this->_initValidator();
-    if($this->_validators)
-    {
-      foreach($this->_validators as $validator)
-      {
-        if(!$validator->isValid($value))
-        {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
   private function _initValidator()
   {
     if(!$this->_isValidatorSetUp)
@@ -146,22 +219,20 @@ abstract class AbstractDataHandler implements DataHandler
     }
   }
 
-  /**
-   * @return mixed
-   */
-  public function getValue()
+  public function getErrors(): array
   {
-    return $this->_value;
+    return $this->_errors;
   }
 
-  /**
-   * @param mixed $value
-   *
-   * @return $this
-   */
-  public function setValue($value)
+  public function addError(ValidationException ...$errors)
   {
-    $this->_value = $value;
+    $this->_errors = array_merge($this->_errors, $errors);
+    return $this;
+  }
+
+  public function clearErrors()
+  {
+    $this->_errors = [];
     return $this;
   }
 
@@ -171,12 +242,6 @@ abstract class AbstractDataHandler implements DataHandler
     $errors = $this->validateValue($this->getValue());
     $this->addError(...$errors);
     return $this->getErrors();
-  }
-
-  public function clearErrors()
-  {
-    $this->_errors = [];
-    return $this;
   }
 
   /**
@@ -215,11 +280,6 @@ abstract class AbstractDataHandler implements DataHandler
     return $errors;
   }
 
-  public function getErrors(): array
-  {
-    return $this->_errors;
-  }
-
   /**
    * @throws ValidationException
    */
@@ -247,141 +307,54 @@ abstract class AbstractDataHandler implements DataHandler
     }
   }
 
-  public function getDecorator(): DataHandlerDecorator
+  /**
+   * Validate the currently set value
+   *
+   * @return bool
+   */
+  public function isValid(): bool
   {
-    if(!$this->_decorator)
+    return $this->isValidValue($this->getValue());
+  }
+
+  /**
+   * Validate a value against the current data handler
+   *
+   * @param $value
+   *
+   * @return bool
+   */
+  public function isValidValue($value): bool
+  {
+    $this->_initValidator();
+    if($this->_validators)
     {
-      $this->_decorator = $this->_defaultDecorator();
-      $this->_decorator->setHandler($this);
+      foreach($this->_validators as $validator)
+      {
+        if(!$validator->isValid($value))
+        {
+          return false;
+        }
+      }
     }
-    return $this->_decorator;
+    return true;
   }
 
-  /**
-   * @param DataHandlerDecorator $decorator
-   *
-   * @return $this
-   */
-  public function setDecorator(DataHandlerDecorator $decorator)
+  //endregion
+
+  abstract protected function _generateInput(): HtmlElement;
+
+  public function getInput(): HtmlElement
   {
-    $decorator->setHandler($this);
-    $this->_decorator = $decorator;
-    return $this;
+    if($this->_input === null)
+    {
+      $this->_input = $this->_generateInput();
+    }
+    return $this->_input;
   }
 
-  abstract protected function _defaultDecorator(): DataHandlerDecorator;
-
-  /**
-   * @return string|null
-   */
-  public function getId(): ?string
+  public function wrapInput(HtmlElement $input): HtmlElement
   {
-    return $this->_id;
-  }
-
-  /**
-   * @param string $id
-   *
-   * @return AbstractDataHandler
-   */
-  public function setId(string $id)
-  {
-    $this->_id = $id;
-    return $this;
-  }
-
-  /**
-   * @return string
-   */
-  public function getLabel()
-  {
-    return $this->_label ?? Strings::titleize(Strings::splitOnCamelCase($this->getName()));
-  }
-
-  /**
-   * @param mixed $label
-   *
-   * @return AbstractDataHandler
-   */
-  public function setLabel($label)
-  {
-    $this->_label = $label;
-    return $this;
-  }
-
-  /**
-   * @return mixed
-   */
-  public function getPlaceholder()
-  {
-    return $this->_placeholder;
-  }
-
-  /**
-   * @param mixed $placeholder
-   *
-   * @return AbstractDataHandler
-   */
-  public function setPlaceholder($placeholder)
-  {
-    $this->_placeholder = $placeholder;
-    return $this;
-  }
-
-  /**
-   * @return mixed
-   */
-  public function getDefaultValue()
-  {
-    return $this->_defaultValue;
-  }
-
-  /**
-   * @param mixed $defaultValue
-   *
-   * @return AbstractDataHandler
-   */
-  public function setDefaultValue($defaultValue)
-  {
-    $this->_defaultValue = $defaultValue;
-    return $this;
-  }
-
-  public function render(): string
-  {
-    return $this->getDecorator()->render();
-  }
-
-  public function renderInput(): string
-  {
-    return $this->_renderElement(DataHandlerDecorator::INPUT);
-  }
-
-  public function renderLabel(): string
-  {
-    return $this->_renderElement(DataHandlerDecorator::LABEL);
-  }
-
-  public function renderErrors(): string
-  {
-    return $this->_renderElement(DataHandlerDecorator::ERRORS);
-  }
-
-  protected function _renderElement($type): string
-  {
-    $dec = $this->getDecorator();
-    return $dec instanceof AbstractDataHandlerDecorator ? (string)$dec->getElement($type) : '';
-  }
-
-  public function __toString()
-  {
-    return $this->render();
-  }
-
-  public function getInput(): ?ISafeHtmlProducer
-  {
-    $dec = $this->getDecorator();
-    $dec->render();
-    return $dec->getInput();
+    return $input;
   }
 }

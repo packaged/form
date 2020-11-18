@@ -5,7 +5,6 @@ use Packaged\Form\DataHandlers\HiddenDataHandler;
 
 class CsrfDataHandler extends HiddenDataHandler
 {
-  const ERR_INVALID = 'Invalid or missing CSRF token';
   protected $_sessionSecret;
   protected $_formSecret;
   protected $_value;

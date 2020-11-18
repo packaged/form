@@ -16,17 +16,20 @@ class CsrfValidator extends AbstractValidator
     $this->_expiryMinutes = $expiryMinutes;
   }
 
+  protected $_expiredError = 'Anti-Forgery token expired';
+  protected $_invalidError = 'Anti-Forgery token missing or invalid';
+
   protected function _doValidate($value): Generator
   {
     $timestamp = base_convert(substr($value, 32), 36, 10);
     if($this->_expiryMinutes !== null && $timestamp < time() - ($this->_expiryMinutes * 60))
     {
-      yield new ValidationException('Anti-Forgery token expired');
+      yield new ValidationException($this->_expiredError);
     }
 
     if(CsrfDataHandler::generateHash($this->_password, $timestamp) !== $value)
     {
-      yield new ValidationException('Anti-Forgery token missing or invalid');
+      yield new ValidationException($this->_invalidError);
     }
   }
 }

@@ -1,13 +1,14 @@
 <?php
 namespace Packaged\Form\DataHandlers;
 
-use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
-use Packaged\Form\Decorators\ReadOnlyDecorator;
+use Packaged\Glimpse\Tags\Form\Input;
+use Packaged\Ui\Html\HtmlElement;
 
-class ReadOnlyDataHandler extends AbstractDataHandler
+class ReadOnlyDataHandler extends TextDataHandler
 {
-  protected function _defaultDecorator(): DataHandlerDecorator
+  protected function _createBaseElement(): HtmlElement
   {
-    return new ReadOnlyDecorator();
+    return Input::create()->setAttribute('readonly', true);
   }
+
 }

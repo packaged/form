@@ -1,13 +1,18 @@
 <?php
 namespace Packaged\Form\DataHandlers;
 
-use Packaged\Form\Decorators\HiddenInputDecorator;
-use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
+use Packaged\Glimpse\Tags\Form\Input;
+use Packaged\Ui\Html\HtmlElement;
 
-class HiddenDataHandler extends AbstractDataHandler
+class HiddenDataHandler extends TextDataHandler
 {
-  protected function _defaultDecorator(): DataHandlerDecorator
+  protected function _createBaseElement(): HtmlElement
   {
-    return new HiddenInputDecorator();
+    return Input::create()->setType(Input::TYPE_HIDDEN);
+  }
+
+  public function getLabel()
+  {
+    return '';
   }
 }

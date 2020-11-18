@@ -2,7 +2,7 @@
 namespace Packaged\Form\DataHandlers\Interfaces;
 
 use Exception;
-use Packaged\SafeHtml\ISafeHtmlProducer;
+use Packaged\Ui\Html\HtmlElement;
 use Packaged\Validate\IValidatable;
 use Packaged\Validate\ValidationException;
 
@@ -11,6 +11,56 @@ interface DataHandler extends IValidatable
   public function getId(): ?string;
 
   public function setId(string $id);
+
+  public function getName(): ?string;
+
+  /**
+   * @param string $name
+   *
+   * @return DataHandler
+   */
+  public function setName(string $name);
+
+  /**
+   * Format a value into a safe value for the handler, throwing an exception if not compatible
+   *
+   * @param mixed $value the value to be formatted
+   *
+   * @return mixed the formatted value
+   */
+  public function formatValue($value);
+
+  public function getValue();
+
+  /**
+   * @param mixed $value
+   *
+   * @return DataHandler
+   */
+  public function setValue($value);
+
+  public function getDefaultValue();
+
+  /**
+   * @param string $placeholder
+   *
+   * @return DataHandler
+   */
+  public function setPlaceholder(string $placeholder);
+
+  public function getPlaceholder();
+
+  /**
+   * @param string $label
+   *
+   * @return DataHandler
+   */
+  public function setLabel(string $label);
+
+  public function getLabel();
+
+
+  //Validation
 
   /**
    * Validate the data, return true if valid, false if invalid
@@ -40,53 +90,6 @@ interface DataHandler extends IValidatable
    */
   public function assertValue($value);
 
-  /**
-   * Format a value into a safe value for the handler, throwing an exception if not compatible
-   *
-   * @param $value
-   *
-   * @return mixed
-   */
-  public function formatValue($value);
-
-  public function getName(): ?string;
-
-  /**
-   * @param string $name
-   *
-   * @return DataHandler
-   */
-  public function setName($name);
-
-  public function getValue();
-
-  /**
-   * @param mixed $value
-   *
-   * @return DataHandler
-   */
-  public function setValue($value);
-
-  public function getDefaultValue();
-
-  /**
-   * @param string $placeholder
-   *
-   * @return DataHandler
-   */
-  public function setPlaceholder($placeholder);
-
-  public function getPlaceholder();
-
-  /**
-   * @param string $label
-   *
-   * @return DataHandler
-   */
-  public function setLabel($label);
-
-  public function getLabel();
-
   public function getErrors(): array;
 
   /**
@@ -101,5 +104,8 @@ interface DataHandler extends IValidatable
    */
   public function clearErrors();
 
-  public function getInput(): ?ISafeHtmlProducer;
+  public function getInput(): HtmlElement;
+
+  //Allows the input to be wrapped by the data handler
+  public function wrapInput(HtmlElement $input): HtmlElement;
 }

@@ -6,10 +6,12 @@
 
 .p-form__field {
   padding: 5px;
+  display: flex;
 }
 
 .p-form__label {
   padding: 2px 4px;
+  flex-basis: 150px;
 }
 
 .p-form__submit,
@@ -72,6 +74,22 @@
 
   line-height: 100%;
   outline: none;
+}
+
+.p-form__input--multi-value-enum {
+  height: 72px;
+}
+
+.p-form__input--boolean {
+  border: none;
+  padding: 0;
+  overflow: visible;
+}
+
+.p-form__input input[type=checkbox] {
+  position: relative;
+  width: auto;
+  height: auto;
 }
 
 .p-form__submit,
