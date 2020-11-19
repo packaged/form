@@ -56,26 +56,27 @@ class DemoForm extends Form
       ->setDefaultValue($this->selection);
     $this->greedySelect = new MultiValueEnumDataHandler(Arrays::fuse(['apple', 'orange', 'pear']));
     $this->password = new SecureTextDataHandler();
-    $this->secret = new HiddenDataHandler();
+    $this->secret = HiddenDataHandler::i()->setValue('Form displayed at ' . date("Y-m-d H:i:s"));
     $this->agree = BooleanDataHandler::i()->setPlaceholder('Do you agree?');
-    $this->youCantTouchThis = ReadOnlyDataHandler::i();
+    $this->youCantTouchThis = ReadOnlyDataHandler::i()->setValue('Dare You');
   }
 }
 
+$data = $_POST;
 $form = new DemoForm();
-$form->hydrate($_REQUEST);
+$form->hydrate($data);
 ?>
 <html>
 <head>
   <link type="text/css" rel="stylesheet" href="./assets/form.css"/>
 </head>
 <body>
-<?php if(!empty($_REQUEST)): ?>
-  <h2>Request Data</h2>
-  <pre><?php print_r($_REQUEST); ?></pre>
+<?php if(!empty($data)): ?>
+  <h2>POST Data</h2>
+  <pre><?php print_r($data); ?></pre>
   <br/>
 <?php endif; ?>
-<h2>Form</h2>
+<h2>Example Form</h2>
 <?= $form->render() ?>
 
 

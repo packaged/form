@@ -1,7 +1,6 @@
 <?php
 namespace Packaged\Form\Decorators;
 
-use Packaged\Form\DataHandlers\HiddenDataHandler;
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
 use Packaged\Form\Form\Form;
 use Packaged\Form\Form\Interfaces\FormDecorator;
@@ -67,24 +66,6 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
     return array_unique([get_class($this->getForm()), $this->_getTemplatedPhtmlClass(), self::class]);
   }
 
-  public function renderHandler(DataHandler $handler): ISafeHtmlProducer
-  {
-    if($handler instanceof HiddenDataHandler)
-    {
-      return $handler->getInput();
-    }
-
-    //Pre render input, as the ID may be generated in this stage
-    $input = $this->_renderInput($handler)->produceSafeHTML();
-
-    return Div::create(
-      $this->_renderLabel($handler),
-      $this->_renderErrors($handler),
-      $input
-    )->addClass($this->bem()->getElementName('field'))
-      ->addClass(empty($handler->getErrors()) ? null : $this->bem()->getModifier('error', 'field'));
-  }
-
   protected function _renderLabel(DataHandler $handler): ?ISafeHtmlProducer
   {
     $label = $handler->getLabel();
@@ -93,9 +74,8 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
       return null;
     }
 
-    return Div::create(
-      Label::create($label)->setAttribute('for', $handler->getId())
-    )->addClass($this->bem()->getElementName('label'));
+    return Div::create(Label::create($label)->setAttribute('for', $handler->getId()))
+      ->addClass($this->bem()->getElementName('label'));
   }
 
   protected function _getErrorMessages(DataHandler $handler): array
@@ -105,19 +85,17 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
 
   protected function _renderErrors(DataHandler $handler): ?ISafeHtmlProducer
   {
-    $errors = $handler->getErrors();
-    if(empty($errors))
+    if(empty($handler->getErrors()))
     {
       return null;
     }
 
-    $renderableErrors = $this->_getErrorMessages($handler);
-
+    $errorMessages = $this->_getErrorMessages($handler);
     return Div::create(
-      empty($renderableErrors) ? null :
-        UnorderedList::create()->setContent(ListItem::collection($renderableErrors))
-    )->addClass($this->bem()->getElementName('errors'))
-      ->addClass(empty($renderableErrors) ? $this->bem()->getModifier('hidden', 'errors') : null); //Hide when no errors
+      empty($errorMessages) ? null : UnorderedList::create()->setContent(ListItem::collection($errorMessages))
+    )
+      ->addClass($this->bem()->getElementName('errors'))
+      ->addClass(empty($errorMessages) ? $this->bem()->getModifier('hidden', 'errors') : null); //Hide when no errors
   }
 
   protected function _renderInput(DataHandler $handler): ?ISafeHtmlProducer
