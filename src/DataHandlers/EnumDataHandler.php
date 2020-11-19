@@ -13,20 +13,30 @@ use Packaged\Ui\Html\HtmlElement;
 
 class EnumDataHandler extends AbstractDataHandler
 {
-  const INPUT_STYLE_SINGLE = 'single';
+  const INPUT_STYLE_COMBINED = 'single';
   const INPUT_STYLE_SPLIT = 'split';
 
   protected $_options = [];
-  protected $_inputStyle = self::INPUT_STYLE_SINGLE;
+  protected $_inputStyle = self::INPUT_STYLE_COMBINED;
 
-  public function __construct(array $options = null, $inputStyle = self::INPUT_STYLE_SINGLE)
+  public function __construct(array $options = null)
   {
-    $this->_inputStyle = $inputStyle;
-
     if($options !== null)
     {
       $this->setOptions($options);
     }
+  }
+
+  public function styleSplit()
+  {
+    $this->_inputStyle = self::INPUT_STYLE_SPLIT;
+    return $this;
+  }
+
+  public function styleCombined()
+  {
+    $this->_inputStyle = self::INPUT_STYLE_COMBINED;
+    return $this;
   }
 
   public function setOptions(array $value)
