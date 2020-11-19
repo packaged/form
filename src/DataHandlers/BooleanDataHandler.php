@@ -27,7 +27,7 @@ class BooleanDataHandler extends AbstractDataHandler
     $checkbox->setType(Input::TYPE_CHECKBOX);
     $checkbox->setName($this->getName());
     $checkbox->setValue('true');
-    if(($this->getValue() ?? $this->getDefaultValue()) === true)
+    if($this->getValueWithDefault() === true)
     {
       $checkbox->setAttribute('checked', true);
     }

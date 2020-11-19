@@ -30,14 +30,16 @@ interface DataHandler extends IValidatable
    */
   public function formatValue($value);
 
-  public function getValue();
-
   /**
    * @param mixed $value
    *
    * @return DataHandler
    */
   public function setValue($value);
+
+  public function getValue();
+
+  public function getValueWithDefault($default = null);
 
   public function getDefaultValue();
 
@@ -105,6 +107,11 @@ interface DataHandler extends IValidatable
   public function clearErrors();
 
   public function getInput(): HtmlElement;
+
+  /**
+   * @return string Input class modifier (will be prefixed with p-form__input-- up the chain)
+   */
+  public function getInputClass(): string;
 
   //Allows the input to be wrapped by the data handler
   public function wrapInput(HtmlElement $input): HtmlElement;

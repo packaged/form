@@ -62,13 +62,21 @@ class DemoForm extends Form
   }
 }
 
+$form = new DemoForm();
+$form->hydrate($_REQUEST);
 ?>
 <html>
 <head>
   <link type="text/css" rel="stylesheet" href="./assets/form.css"/>
 </head>
 <body>
-<?= (new DemoForm())->render() ?>
+<?php if(!empty($_REQUEST)): ?>
+  <h2>Request Data</h2>
+  <pre><?php print_r($_REQUEST); ?></pre>
+  <br/>
+<?php endif; ?>
+<h2>Form</h2>
+<?= $form->render() ?>
 
 
 </body>

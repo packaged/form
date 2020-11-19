@@ -51,7 +51,7 @@
 .p-form__submit button,
 .p-form__submit input,
 .p-form__input button,
-.p-form__input input,
+.p-form__input > input,
 .p-form__input .input,
 .p-form__input select {
   position: absolute;
@@ -76,11 +76,16 @@
   outline: none;
 }
 
-.p-form__input--multi-value-enum {
+
+.p-form__input--multi-value-enum-single {
   height: 72px;
 }
 
-.p-form__input--boolean {
+.p-form__input--multi-value-enum-split, .p-form__input--enum-split {
+  height: auto;
+}
+
+.p-form__input--boolean, .p-form__input--enum-split, .p-form__input--multi-value-enum-split {
   border: none;
   padding: 0;
   overflow: visible;

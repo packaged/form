@@ -3,6 +3,7 @@ namespace Packaged\Form\DataHandlers;
 
 use Exception;
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
+use Packaged\Helpers\Objects;
 use Packaged\Helpers\Strings;
 use Packaged\Ui\Html\HtmlElement;
 use Packaged\Validate\IDataSetValidator;
@@ -149,14 +150,6 @@ abstract class AbstractDataHandler implements DataHandler
   }
 
   /**
-   * @return mixed
-   */
-  public function getValue()
-  {
-    return $this->_value;
-  }
-
-  /**
    * @param mixed $value
    *
    * @return $this
@@ -165,6 +158,16 @@ abstract class AbstractDataHandler implements DataHandler
   {
     $this->_value = $value;
     return $this;
+  }
+
+  public function getValue()
+  {
+    return $this->_value;
+  }
+
+  public function getValueWithDefault($default = null)
+  {
+    return $this->_value ?? ($default ?? $this->getDefaultValue());
   }
 
   /**
@@ -351,6 +354,13 @@ abstract class AbstractDataHandler implements DataHandler
       $this->_input = $this->_generateInput();
     }
     return $this->_input;
+  }
+
+  public function getInputClass(): string
+  {
+    return Strings::urlize(
+      Strings::splitOnCamelCase(str_replace('DataHandler', '', Objects::classShortname($this)))
+    );
   }
 
   public function wrapInput(HtmlElement $input): HtmlElement

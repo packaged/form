@@ -10,7 +10,6 @@ use Packaged\Glimpse\Tags\Form\Label;
 use Packaged\Glimpse\Tags\Lists\ListItem;
 use Packaged\Glimpse\Tags\Lists\UnorderedList;
 use Packaged\Helpers\Objects;
-use Packaged\Helpers\Strings;
 use Packaged\SafeHtml\ISafeHtmlProducer;
 use Packaged\Ui\Html\HtmlElement;
 use PackagedUi\BemComponent\Bem;
@@ -123,11 +122,7 @@ class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
 
   protected function _renderInput(DataHandler $handler): ?ISafeHtmlProducer
   {
-    $input = $handler->wrapInput($handler->getInput());
-    $inputClass = Strings::urlize(
-      Strings::splitOnCamelCase(str_replace('DataHandler', '', Objects::classShortname($handler)))
-    );
-    return Div::create($input)
-      ->addClass($this->bem()->getElementName('input'), $this->bem()->getModifier($inputClass, 'input'));
+    return Div::create($handler->wrapInput($handler->getInput()))
+      ->addClass($this->bem()->getElementName('input'), $this->bem()->getModifier($handler->getInputClass(), 'input'));
   }
 }
