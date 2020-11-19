@@ -5,7 +5,9 @@ namespace Packaged\Form\Form;
 use Exception;
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
 use Packaged\Form\DataHandlers\ReadOnlyDataHandler;
+use Packaged\Form\Decorators\DefaultDataHandlerDecorator;
 use Packaged\Form\Decorators\DefaultFormDecorator;
+use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 use Packaged\Form\Decorators\Interfaces\Decorator;
 use Packaged\Form\Form\Interfaces\FormDecorator;
 use Packaged\Helpers\Arrays;
@@ -28,6 +30,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   protected $_dataHandlers = [];
 
   protected $_decorator;
+  protected $_handlerDecorator;
   protected $_submitDecorator;
 
   protected $_action = '';
@@ -251,16 +254,24 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     return new DefaultFormDecorator();
   }
 
-  public function getHandlersByDecorator($decoratorClass)
+  public function getHandlerDecorator(): DataHandlerDecorator
   {
-    $handlers = [];
-    foreach($this->getDataHandlers() as $handler)
+    if(!$this->_handlerDecorator)
     {
-      if($handler->getDecorator() instanceof $decoratorClass)
-      {
-        $handlers[] = $handler;
-      }
+      $this->_handlerDecorator = $this->_defaultHandlerDecorator();
     }
-    return $handlers;
+    return $this->_handlerDecorator;
   }
+
+  public function setHandlerDecorator(DataHandlerDecorator $decorator)
+  {
+    $this->_handlerDecorator = $decorator;
+    return $this;
+  }
+
+  protected function _defaultHandlerDecorator(): DataHandlerDecorator
+  {
+    return new DefaultDataHandlerDecorator();
+  }
+
 }

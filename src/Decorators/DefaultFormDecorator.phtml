@@ -3,21 +3,11 @@
  * @var $this DefaultFormDecorator
  */
 
-use Packaged\Form\DataHandlers\HiddenDataHandler;
 use Packaged\Form\Decorators\DefaultFormDecorator;
 
+$dhd = $this->getForm()->getHandlerDecorator();
 ?>
 <?php foreach($this->getForm()->getDataHandlers() as $handler): ?>
-  <?php $hasErrors = !empty($handler->getErrors()); ?>
-  <?php if($handler instanceof HiddenDataHandler):
-    echo $handler->getInput()->render();
-    continue;
-  endif;
-  ?>
-  <div class="p-form__field<?php echo $hasErrors ? ' p-form__field--error' : '' ?>">
-    <?php echo $this->_renderLabel($handler); ?>
-    <?php echo $this->_renderErrors($handler); ?>
-    <?php echo $this->_renderInput($handler); ?>
-  </div>
+  <?php echo $dhd->setHandler($handler)->render(); ?>
 <?php endforeach; ?>
 <?= $this->getForm()->getSubmitDecorator(); ?>

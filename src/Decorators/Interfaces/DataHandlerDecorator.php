@@ -2,8 +2,6 @@
 namespace Packaged\Form\Decorators\Interfaces;
 
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
-use Packaged\Glimpse\Core\HtmlTag;
-use Packaged\Ui\Html\HtmlElement;
 
 /**
  * DataHandlerDecorator are responsible for creating display elements from DataHandler
@@ -12,18 +10,7 @@ use Packaged\Ui\Html\HtmlElement;
  */
 interface DataHandlerDecorator extends Decorator
 {
-  const LABEL = 'label';
-  const INPUT = 'input';
-  const ERRORS = 'errors';
+  public function setHandler(DataHandler $handler): DataHandlerDecorator;
 
-  /**
-   * @param DataHandler $handler
-   *
-   * @return $this
-   */
-  public function setHandler(DataHandler $handler);
-
-  public function getInput(): HtmlElement;
-
-  public function getLabel(): ?HtmlTag;
+  public function getHandler(): DataHandler;
 }
