@@ -11,7 +11,7 @@ use Packaged\Form\DataHandlers\TextDataHandler;
 use Packaged\Form\Form\Form;
 use Packaged\Helpers\Arrays;
 
-require('vendor/autoload.php');
+require('../vendor/autoload.php');
 
 class DemoForm extends Form
 {
@@ -68,7 +68,7 @@ $form->hydrate($data);
 ?>
 <html>
 <head>
-  <link type="text/css" rel="stylesheet" href="./assets/form.css"/>
+  <link type="text/css" rel="stylesheet" href="assets/form.css"/>
 </head>
 <body>
 <?php if(!empty($data)): ?>
