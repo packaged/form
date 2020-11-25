@@ -108,8 +108,14 @@ export function validateField(form, fieldName, errorOnPotentiallyValid = false) 
   const validators = JSON.parse(base64.decode(container.getAttribute('validation')));
   validators.forEach(
     (validatorObj) => {
-      const validator = Validator.fromJsonObject(validatorObj);
-      result.combine(validator.validate(fieldValue));
+      try
+      {
+        const validator = Validator.fromJsonObject(validatorObj);
+        result.combine(validator.validate(fieldValue));
+      }
+      catch(e)
+      {
+      }
     }
   );
 
