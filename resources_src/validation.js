@@ -1,7 +1,8 @@
 import base64 from 'base-64';
 import {ValidationResponse, Validator} from '@packaged/validate';
 
-function _getEleValue(ele) {
+function _getEleValue(ele)
+{
   if((!(ele.type === 'checkbox' || ele.type === 'radio')) || ele instanceof HTMLSelectElement || ele.checked)
   {
     return ele.value;
@@ -9,22 +10,39 @@ function _getEleValue(ele) {
   return null;
 }
 
-function _getFieldValue(form, fieldName) {
+function _getHandlerScope(form, handlerName)
+{
+  return form.querySelector(`.p-form__field[name="${handlerName}"]`);
+}
+
+function _getHandlerValue(form, handlerName)
+{
   let fieldValue = null;
-  const inputs = form.querySelectorAll(`[name="${fieldName}"]`);
-  if(inputs.length > 1)
+  const handlerScope = _getHandlerScope(form, handlerName);
+  if(!handlerScope)
+  {
+    return fieldValue;
+  }
+
+  const inputs = handlerScope.querySelectorAll(`:scope [name="${handlerName}"],[name^="${handlerName}["]`);
+  if(inputs.length === 1)
+  {
+    fieldValue = _getEleValue(inputs[0]);
+  }
+  else if(inputs.length > 1)
   {
     fieldValue = [];
     inputs.forEach(
-      ele => {
+      ele =>
+      {
         const eleVal = _getEleValue(ele);
         if(eleVal === null)
         {
           return;
         }
-        if(fieldName.substr(-1) === ']')
+        if(ele.getAttribute('name').substr(-1) === ']')
         {
-          if(fieldValue.constructor.name !== 'Array')
+          if(!fieldValue || fieldValue.constructor.name !== 'Array')
           {
             fieldValue = [];
           }
@@ -37,23 +55,24 @@ function _getFieldValue(form, fieldName) {
       }
     );
   }
-  else if(inputs.length === 1)
-  {
-    fieldValue = _getEleValue(inputs[0]);
-  }
   return fieldValue;
 }
 
 /**
  *
  * @param {HTMLFormElement} form
- * @param {String} name
+ * @param {String} handlerName
  * @param {ValidationResponse} result
  * @param {Boolean} errorOnPotentiallyValid
  * @private
  */
-function _updateValidationState(form, name, result, errorOnPotentiallyValid = false) {
-  const container = form.querySelector(`.p-form__field[name="${name}"]`);
+function _updateValidationState(form, handlerName, result, errorOnPotentiallyValid = false)
+{
+  const handlerScope = _getHandlerScope(form, handlerName);
+  if(!handlerScope)
+  {
+    return;
+  }
   let state = 'valid';
   if(result.errors.length > 0)
   {
@@ -66,27 +85,29 @@ function _updateValidationState(form, name, result, errorOnPotentiallyValid = fa
       state = 'invalid';
     }
   }
-  container.setAttribute('validation-state', state);
+  handlerScope.setAttribute('validation-state', state);
 }
 
 /**
  * @param {HTMLFormElement} form
- * @param {String} name
+ * @param {String} handlerName
  * @param {String[]} errors
  */
-export function addErrors(form, name, errors = []) {
+export function addErrors(form, handlerName, errors = [])
+{
   if(errors.length <= 0)
   {
     return;
   }
-  const errContainer = form.querySelector(`.p-form__field[name="${name}"] .p-form__errors`);
+  const errContainer = form.querySelector(`.p-form__field[name="${handlerName}"] .p-form__errors`);
   if(errContainer === undefined || errContainer === null)
   {
     return;
   }
   const errUl = errContainer.querySelector(':scope > ul') || document.createElement('ul');
   errors.forEach(
-    (err) => {
+    (err) =>
+    {
       const errEle = document.createElement('li');
       errEle.innerText = err;
       errUl.append(errEle);
@@ -97,35 +118,43 @@ export function addErrors(form, name, errors = []) {
 
 /**
  * @param {HTMLFormElement} form
- * @param {String} name
+ * @param {String} handlerName
  */
-export function clearErrors(form, name) {
-  const errContainer = form.querySelector(`.p-form__field[name="${name}"] .p-form__errors`);
+export function clearErrors(form, handlerName)
+{
+  const errContainer = form.querySelector(`.p-form__field[name="${handlerName}"] .p-form__errors`);
   if(errContainer !== undefined && errContainer !== null)
   {
     errContainer.innerHTML = '';
   }
 }
 
-export function validateField(form, fieldName, errorOnPotentiallyValid = false) {
-  let fieldValue = _getFieldValue(form, fieldName);
-  const container = form.querySelector(`.p-form__field[name="${fieldName}"]`);
+export function validateHandler(form, handlerName, errorOnPotentiallyValid = false)
+{
+  const fieldValue = _getHandlerValue(form, handlerName);
+  const handlerScope = _getHandlerScope(form, handlerName);
   const result = ValidationResponse.success();
-  const validators = JSON.parse(base64.decode(container.getAttribute('validation')));
-  validators.forEach(
-    (validatorObj) => {
-      try
+  if(!handlerScope)
+  {
+    return result;
+  }
+
+  try
+  {
+    const validators = JSON.parse(base64.decode(handlerScope.getAttribute('validation')));
+    validators.forEach(
+      (validatorObj) =>
       {
         const validator = Validator.fromJsonObject(validatorObj);
         result.combine(validator.validate(fieldValue));
       }
-      catch(e)
-      {
-      }
-    }
-  );
+    );
+  }
+  catch(e)
+  {
+  }
 
-  _updateValidationState(form, fieldName, result, errorOnPotentiallyValid);
+  _updateValidationState(form, handlerName, result, errorOnPotentiallyValid);
   return result;
 }
 
@@ -133,7 +162,8 @@ export function validateField(form, fieldName, errorOnPotentiallyValid = false) 
  * @param {HTMLFormElement} form
  * @return {Map<String,ValidationResponse>}
  */
-export function validateForm(form) {
+export function validateForm(form)
+{
   const fullResult = new Map();
   if(!form instanceof HTMLFormElement)
   {
@@ -143,10 +173,11 @@ export function validateForm(form) {
 
   const fields = form.querySelectorAll('.p-form__field[validation]');
   fields.forEach(
-    (container) => {
-      const fieldName = container.getAttribute('name');
-      const result = validateField(form, fieldName, true);
-      fullResult.set(fieldName, result);
+    (container) =>
+    {
+      const handlerName = container.getAttribute('name');
+      const result = validateHandler(form, handlerName, true);
+      fullResult.set(handlerName, result);
     }
   );
 
