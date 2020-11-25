@@ -93,13 +93,20 @@ if(!empty($data))
       font-size: 13px;
     }
 
+    table {
+      margin: 0 20px 0 0;
+      padding: 0;
+      border-collapse: collapse;
+    }
+
     th {
       text-align: right;
     }
 
     th, td {
-      padding: 5px;
+      padding: 8px;
       border: 1px solid #ccc;
+      margin: 0;
     }
   </style>
 </head>
