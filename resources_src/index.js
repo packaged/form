@@ -1,12 +1,10 @@
-import {validateField, validateForm} from './validation';
+import {addErrors, clearErrors, validateField, validateForm} from './validation';
 
 document.addEventListener(
-  'submit', e =>
-  {
+  'submit', e => {
     const results = validateForm(e.target);
     results.forEach(
-      (result, fieldName) =>
-      {
+      (result, fieldName) => {
         // show errors if necessary
         const errContainer = e.target.querySelector(`.p-form__field[name="${fieldName}"] .p-form__errors`);
         if(errContainer)
@@ -22,8 +20,7 @@ document.addEventListener(
   }
 );
 
-document.addEventListener('input', e =>
-{
+document.addEventListener('input', e => {
   const inputEle = e.target;
   const fieldName = inputEle.getAttribute('name');
   if(fieldName)
@@ -33,9 +30,15 @@ document.addEventListener('input', e =>
     {
       const result = validateField(form, fieldName);
       const errContainer = form.querySelector(`.p-form__field[name="${fieldName}"] .p-form__errors`);
-      if(errContainer)
+      if(errContainer && result.errors.length === 0)
       {
-        errContainer.classList.toggle('p-form__errors--hidden', result.errors.length === 0);
+        clearErrors(form, fieldName);
+        errContainer.classList.add('p-form__errors--hidden');
+      }
+      else if(!result.potentiallyValid)
+      {
+        clearErrors(form, fieldName);
+        addErrors(form, fieldName, result.errors);
       }
     }
   }

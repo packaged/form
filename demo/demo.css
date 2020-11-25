@@ -2,10 +2,23 @@
   --p-form-placeholder-color: 120, 120, 120;
   --p-form-text-color: 49, 49, 49;
   --p-form-padding: 5px 10px;
+
+  --p-form-error-color: 178, 0, 0;
 }
 
 .p-form__field {
   padding: 5px;
+}
+
+.p-form__errors {
+  border: 1px solid rgb(var(--p-form-error-color));
+  color: rgb(var(--p-form-error-color));
+  background: rgba(var(--p-form-error-color), 0.1);
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.p-form__field__contain {
   display: flex;
 }
 
@@ -117,14 +130,6 @@
   display: none;
 }
 
-.p-form__field[validation-state="valid"] .p-form__input {
-  border: forestgreen 1px solid;
-}
-
-.p-form__field[validation-state="potentially-valid"] .p-form__input:focus-within {
-  border: dodgerblue 1px solid;
-}
-
-.p-form__field[validation-state="invalid"] .p-form__input {
-  border: red 1px solid;
+.p-form__field[validation-state="invalid"] .p-form__input:not(.p-form__input--boolean):not(.p-form__input--enum-split) {
+  border: 1px solid rgb(var(--p-form-error-color));
 }

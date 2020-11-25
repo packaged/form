@@ -11,6 +11,7 @@ use Packaged\Glimpse\Tags\Lists\ListItem;
 use Packaged\Glimpse\Tags\Lists\UnorderedList;
 use Packaged\Helpers\Objects;
 use Packaged\SafeHtml\ISafeHtmlProducer;
+use Packaged\SafeHtml\SafeHtml;
 use PackagedUi\BemComponent\Bem;
 
 class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandlerDecorator
@@ -41,28 +42,28 @@ class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandl
     return $this->_handler;
   }
 
-  protected function _renderLabel(DataHandler $handler): ?ISafeHtmlProducer
+  public function renderLabel(): ?ISafeHtmlProducer
   {
-    $label = $handler->getLabel();
+    $label = $this->getHandler()->getLabel();
     if($label === null || $label === '')
     {
       return null;
     }
 
-    return Div::create(Label::create($label)->setAttribute('for', $handler->getId()))
+    return Div::create(Label::create($label)->setAttribute('for', $this->getHandler()->getId()))
       ->addClass($this->bem()->getElementName('label'));
   }
 
-  protected function _getErrorMessages(DataHandler $handler): array
+  public function getErrorMessages(): array
   {
-    return Objects::mpull($handler->getErrors(), 'getMessage');
+    return Objects::mpull($this->getHandler()->getErrors(), 'getMessage');
   }
 
-  protected function _renderErrors(DataHandler $handler): ?ISafeHtmlProducer
+  public function renderErrors(): ?ISafeHtmlProducer
   {
     $container = Div::create()->addClass($this->bem()->getElementName('errors'));
 
-    $errorMessages = $this->_getErrorMessages($handler);
+    $errorMessages = $this->getErrorMessages();
     if(empty($errorMessages))
     {
       $container->addClass($this->bem()->getModifier('hidden', 'errors'));
@@ -74,10 +75,14 @@ class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandl
     return $container;
   }
 
-  protected function _renderInput(DataHandler $handler): ?ISafeHtmlProducer
+  public function renderInput(): ?ISafeHtmlProducer
   {
+    $handler = $this->getHandler();
     return Div::create($handler->wrapInput($handler->getInput()))
-      ->addClass($this->bem()->getElementName('input'), $this->bem()->getModifier($handler->getInputClass(), 'input'));
+      ->addClass(
+        $this->bem()->getElementName('input'),
+        $this->bem()->getModifier($handler->getInputClass(), 'input')
+      );
   }
 
   protected function _getContentForRender()
@@ -88,8 +93,9 @@ class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandl
       return $handler->getInput();
     }
 
-    //Pre render input, as the ID may be generated in this stage
-    $input = $this->_renderInput($handler)->produceSafeHTML();
+    $div = Div::create(new SafeHtml($this->_renderTemplate()))
+      ->setAttribute('name', $handler->getName())
+      ->addClass($this->bem()->getElementName('field'));
 
     $validators = null;
     if($handler instanceof AbstractDataHandler)
@@ -97,18 +103,15 @@ class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandl
       $validators = $handler->getValidators();
     }
 
-    $div = Div::create($this->_renderLabel($handler), $this->_renderErrors($handler), $input)
-      ->setAttribute('name', $handler->getName())
-      ->addClass($this->bem()->getElementName('field'));
     if($validators)
     {
       $div->setAttribute('validation', base64_encode(json_encode($validators)));
     }
+
     if(!empty($handler->getErrors()))
     {
       $div->addClass($this->bem()->getModifier('error', 'field'));
     }
-
     return $div;
   }
 
