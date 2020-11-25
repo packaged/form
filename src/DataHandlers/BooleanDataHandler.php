@@ -12,7 +12,7 @@ class BooleanDataHandler extends AbstractDataHandler
 {
   public function formatValue($value)
   {
-    return parent::formatValue(ValueAs::bool($value));
+    return ValueAs::bool($value);
   }
 
   protected function _setupValidators()

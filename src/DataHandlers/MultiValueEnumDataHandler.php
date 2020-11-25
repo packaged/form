@@ -13,11 +13,24 @@ class MultiValueEnumDataHandler extends EnumDataHandler
 {
   public function formatValue($value)
   {
+    $return = [];
     if($value === null)
     {
-      return [];
+      return $return;
     }
-    return parent::formatValue(is_array($value) ? $value : [$value]);
+    else if(is_array($value))
+    {
+      foreach($value as $k => $v)
+      {
+        $return[$k] = parent::formatValue($v);
+      }
+    }
+    else
+    {
+      $return[] = parent::formatValue($value);
+    }
+
+    return $return;
   }
 
   public function getDefaultValue()

@@ -197,7 +197,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     $data = [];
     foreach($this->_dataHandlers as $name => $handler)
     {
-      $data[$name] = $handler->getValueWithDefault();
+      $data[$name] = $handler->getFormattedValue();
     }
     return $data;
   }

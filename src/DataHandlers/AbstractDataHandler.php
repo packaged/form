@@ -170,6 +170,11 @@ abstract class AbstractDataHandler implements DataHandler
     return $this->_value ?? ($default ?? $this->getDefaultValue());
   }
 
+  public function getFormattedValue($withDefault = true, $default = null)
+  {
+    return $this->formatValue($withDefault ? $this->getValueWithDefault($default) : $this->getValue());
+  }
+
   /**
    * @return mixed
    */
