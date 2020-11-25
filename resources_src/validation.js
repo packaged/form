@@ -91,6 +91,19 @@ function _updateValidationState(form, handlerName, result, errorOnPotentiallyVal
 /**
  * @param {HTMLFormElement} form
  * @param {String} handlerName
+ */
+export function clearErrors(form, handlerName)
+{
+  const errContainer = form.querySelector(`.p-form__field[name="${handlerName}"] .p-form__errors`);
+  if(errContainer)
+  {
+    errContainer.innerHTML = '';
+  }
+}
+
+/**
+ * @param {HTMLFormElement} form
+ * @param {String} handlerName
  * @param {String[]} errors
  */
 export function addErrors(form, handlerName, errors = [])
@@ -100,10 +113,12 @@ export function addErrors(form, handlerName, errors = [])
     return;
   }
   const errContainer = form.querySelector(`.p-form__field[name="${handlerName}"] .p-form__errors`);
-  if(errContainer === undefined || errContainer === null)
+  if(!errContainer)
   {
+    console.error('validation error:', `"${handlerName}"`, errors);
     return;
   }
+
   const errUl = errContainer.querySelector(':scope > ul') || document.createElement('ul');
   errors.forEach(
     (err) =>
@@ -114,19 +129,6 @@ export function addErrors(form, handlerName, errors = [])
     }
   );
   errContainer.append(errUl);
-}
-
-/**
- * @param {HTMLFormElement} form
- * @param {String} handlerName
- */
-export function clearErrors(form, handlerName)
-{
-  const errContainer = form.querySelector(`.p-form__field[name="${handlerName}"] .p-form__errors`);
-  if(errContainer !== undefined && errContainer !== null)
-  {
-    errContainer.innerHTML = '';
-  }
 }
 
 export function validateHandler(form, handlerName, errorOnPotentiallyValid = false)
