@@ -2,7 +2,7 @@
 
 namespace Packaged\Tests\Form\Decorators;
 
-use Packaged\Form\Form\FormSubmitDecorator;
+use Packaged\Form\Decorators\FormSubmitDecorator;
 use PHPUnit\Framework\TestCase;
 
 class FormSubmitDecoratorTest extends TestCase

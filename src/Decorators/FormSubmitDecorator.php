@@ -1,12 +1,12 @@
 <?php
-namespace Packaged\Form\Form;
+namespace Packaged\Form\Decorators;
 
-use Packaged\Form\Decorators\AbstractDecorator;
+use Packaged\Form\Decorators\Interfaces\Decorator;
 use Packaged\Glimpse\Tags\Div;
 use Packaged\Glimpse\Tags\Form\Input;
-use Packaged\Ui\Html\HtmlElement;
+use Packaged\Ui\Html\TemplatedHtmlElement;
 
-class FormSubmitDecorator extends AbstractDecorator
+class FormSubmitDecorator extends TemplatedHtmlElement implements Decorator
 {
   protected $_tag = 'div';
   private $_value = 'Submit';
@@ -35,10 +35,5 @@ class FormSubmitDecorator extends AbstractDecorator
   protected function _input()
   {
     return Input::create()->setType(Input::TYPE_SUBMIT)->setValue($this->_getValue());
-  }
-
-  protected function _prepareForProduce(): HtmlElement
-  {
-    return parent::_prepareForProduce();
   }
 }

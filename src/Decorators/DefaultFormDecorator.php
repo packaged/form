@@ -1,8 +1,8 @@
 <?php
 namespace Packaged\Form\Decorators;
 
+use Packaged\Form\Decorators\Interfaces\FormDecorator;
 use Packaged\Form\Form\Form;
-use Packaged\Form\Form\Interfaces\FormDecorator;
 use Packaged\Ui\Html\HtmlElement;
 
 class DefaultFormDecorator extends AbstractDecorator implements FormDecorator
