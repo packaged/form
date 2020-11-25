@@ -5,8 +5,10 @@ use Packaged\Form\Decorators\DefaultDataHandlerDecorator;
 
 ?>
 
-<?php echo $this->renderErrors(); ?>
 <div class="<?= $this->bem()->getElementName('field', 'contain'); ?>">
   <?php echo $this->renderLabel(); ?>
-  <?php echo $this->renderInput(); ?>
+  <div>
+    <?php echo $this->renderInput(); ?>
+    <?php echo $this->renderErrors(); ?>
+  </div>
 </div>

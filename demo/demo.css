@@ -6,20 +6,31 @@
   --p-form-error-color: 178, 0, 0;
 }
 
+.p-form {
+  max-width: 600px;
+}
+
 .p-form__field {
   padding: 5px;
 }
 
 .p-form__errors {
-  border: 1px solid rgb(var(--p-form-error-color));
   color: rgb(var(--p-form-error-color));
-  background: rgba(var(--p-form-error-color), 0.1);
-  padding: 5px;
-  margin-bottom: 10px;
+}
+
+.p-form__errors ul {
+  list-style-type: none;
+  margin: 1px 0 0 0;
+  padding: 3px;
+  font-size: 90%;
 }
 
 .p-form__field__contain {
   display: flex;
+}
+
+.p-form__field__contain div:not(.p-form__label) {
+  flex-grow: 1;
 }
 
 .p-form__label {
@@ -43,9 +54,15 @@
   padding: var(--p-form-padding);
 
   min-width: 200px;
+  width: 100%;
   border-radius: 5px;
   background-color: white;
   overflow: hidden;
+}
+
+.p-form__input.p-form__input--boolean {
+  display: flex;
+  align-items: center;
 }
 
 .p-form__input input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
