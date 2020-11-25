@@ -4,6 +4,7 @@ use Packaged\Form\DataHandlers\BooleanDataHandler;
 use Packaged\Form\DataHandlers\EmailDataHandler;
 use Packaged\Form\DataHandlers\EnumDataHandler;
 use Packaged\Form\DataHandlers\HiddenDataHandler;
+use Packaged\Form\DataHandlers\IntegerDataHandler;
 use Packaged\Form\DataHandlers\MultiValueEnumDataHandler;
 use Packaged\Form\DataHandlers\ReadOnlyDataHandler;
 use Packaged\Form\DataHandlers\SecureTextDataHandler;
@@ -49,6 +50,7 @@ class DemoForm extends Form
    * @var ReadOnlyDataHandler
    */
   public $youCantTouchThis;
+  public $age;
 
   protected function _initDataHandlers()
   {
@@ -63,6 +65,7 @@ class DemoForm extends Form
     $this->secret = HiddenDataHandler::i()->setValue('Form displayed at ' . date("Y-m-d H:i:s"));
     $this->agree = BooleanDataHandler::i()->setPlaceholder('Do you agree?');
     $this->youCantTouchThis = ReadOnlyDataHandler::i()->setValue('Dare You');
+    $this->age = IntegerDataHandler::i()->setLabel('How old are you?');
   }
 }
 
