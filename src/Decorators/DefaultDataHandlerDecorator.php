@@ -1,6 +1,7 @@
 <?php
 namespace Packaged\Form\Decorators;
 
+use Packaged\Form\DataHandlers\AbstractDataHandler;
 use Packaged\Form\DataHandlers\HiddenDataHandler;
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
 use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
@@ -59,17 +60,18 @@ class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandl
 
   protected function _renderErrors(DataHandler $handler): ?ISafeHtmlProducer
   {
-    if(empty($handler->getErrors()))
-    {
-      return null;
-    }
+    $container = Div::create()->addClass($this->bem()->getElementName('errors'));
 
     $errorMessages = $this->_getErrorMessages($handler);
-    return Div::create(
-      empty($errorMessages) ? null : UnorderedList::create()->setContent(ListItem::collection($errorMessages))
-    )
-      ->addClass($this->bem()->getElementName('errors'))
-      ->addClass(empty($errorMessages) ? $this->bem()->getModifier('hidden', 'errors') : null); //Hide when no errors
+    if(empty($errorMessages))
+    {
+      $container->addClass($this->bem()->getModifier('hidden', 'errors'));
+    }
+    else
+    {
+      $container->appendContent(UnorderedList::create()->setContent(ListItem::collection($errorMessages)));
+    }
+    return $container;
   }
 
   protected function _renderInput(DataHandler $handler): ?ISafeHtmlProducer
@@ -89,12 +91,25 @@ class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandl
     //Pre render input, as the ID may be generated in this stage
     $input = $this->_renderInput($handler)->produceSafeHTML();
 
-    return Div::create(
-      $this->_renderLabel($handler),
-      $this->_renderErrors($handler),
-      $input
-    )->addClass($this->bem()->getElementName('field'))
-      ->addClass(empty($handler->getErrors()) ? null : $this->bem()->getModifier('error', 'field'));
+    $validators = null;
+    if($handler instanceof AbstractDataHandler)
+    {
+      $validators = $handler->getValidators();
+    }
+
+    $div = Div::create($this->_renderLabel($handler), $this->_renderErrors($handler), $input)
+      ->setAttribute('name', $handler->getName())
+      ->addClass($this->bem()->getElementName('field'));
+    if($validators)
+    {
+      $div->setAttribute('validation', base64_encode(json_encode($validators)));
+    }
+    if(!empty($handler->getErrors()))
+    {
+      $div->addClass($this->bem()->getModifier('error', 'field'));
+    }
+
+    return $div;
   }
 
 }

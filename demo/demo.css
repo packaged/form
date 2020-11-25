@@ -116,3 +116,15 @@
 .p-form__errors--hidden {
   display: none;
 }
+
+.p-form__field[validation-state="valid"] .p-form__input {
+  border: forestgreen 1px solid;
+}
+
+.p-form__field[validation-state="potentially-valid"] .p-form__input:focus-within {
+  border: dodgerblue 1px solid;
+}
+
+.p-form__field[validation-state="invalid"] .p-form__input {
+  border: red 1px solid;
+}

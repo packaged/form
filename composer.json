@@ -10,6 +10,7 @@
   ],
   "require": {
     "php": ">=7.2",
+    "ext-json": "*",
     "packaged/glimpse": "^2.6",
     "packaged/ui": "^1.0",
     "packaged-ui/bem-component": "~1.2",

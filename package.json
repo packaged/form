@@ -1,0 +1,19 @@
+{
+  "name": "@packaged/form",
+  "version": "0.1.0",
+  "main": "resources_src/index.js",
+  "repository": "git@github.com:packaged/form",
+  "author": "Tom Kay <oridan82@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@packaged/validate": "https://github.com/packaged/validate#js-validate",
+    "base-64": "^1.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^13.0.0",
+    "@rollup/plugin-node-resolve": "^8.0.1",
+    "core-js": "3",
+    "rollup": "^2.15.0",
+    "rollup-plugin-terser": "^6.1.0"
+  }
+}

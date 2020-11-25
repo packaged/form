@@ -42,6 +42,11 @@ abstract class AbstractDataHandler implements DataHandler
     return new static();
   }
 
+  public function __construct()
+  {
+    $this->_initValidator();
+  }
+
   /**
    * @return string
    */
@@ -209,6 +214,11 @@ abstract class AbstractDataHandler implements DataHandler
     return $this;
   }
 
+  public function getValidators()
+  {
+    return $this->_validators;
+  }
+
   protected function _setupValidator()
   {
   }
@@ -258,7 +268,6 @@ abstract class AbstractDataHandler implements DataHandler
    */
   public function validateValue($value, array $data = []): array
   {
-    $this->_initValidator();
     $errors = [];
     if($this->_validators)
     {
@@ -300,7 +309,6 @@ abstract class AbstractDataHandler implements DataHandler
    */
   public function assertValue($value)
   {
-    $this->_initValidator();
     if($this->_validators)
     {
       foreach($this->_validators as $validator)
@@ -329,7 +337,6 @@ abstract class AbstractDataHandler implements DataHandler
    */
   public function isValidValue($value): bool
   {
-    $this->_initValidator();
     if($this->_validators)
     {
       foreach($this->_validators as $validator)

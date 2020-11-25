@@ -6,7 +6,7 @@ use Packaged\Glimpse\Tags\Form\Input;
 use Packaged\Glimpse\Tags\Form\Label;
 use Packaged\Helpers\ValueAs;
 use Packaged\Ui\Html\HtmlElement;
-use Packaged\Validate\Validators\BoolValidator;
+use Packaged\Validate\Validators\RequiredValidator;
 
 class BooleanDataHandler extends AbstractDataHandler
 {
@@ -17,7 +17,7 @@ class BooleanDataHandler extends AbstractDataHandler
 
   protected function _setupValidator()
   {
-    $this->addValidator(new BoolValidator());
+    $this->addValidator(new RequiredValidator());
   }
 
   protected function _generateInput(): HtmlElement
@@ -43,5 +43,4 @@ class BooleanDataHandler extends AbstractDataHandler
     }
     return parent::wrapInput($input);
   }
-
 }
