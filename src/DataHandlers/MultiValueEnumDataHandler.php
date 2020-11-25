@@ -13,10 +13,19 @@ class MultiValueEnumDataHandler extends EnumDataHandler
 {
   public function formatValue($value)
   {
+    if($value === null)
+    {
+      return [];
+    }
     return parent::formatValue(is_array($value) ? $value : [$value]);
   }
 
-  protected function _setupValidator()
+  public function getDefaultValue()
+  {
+    return [];
+  }
+
+  protected function _setupValidators()
   {
     $this->addValidator(new ArrayValidator(new HandlerEnumValidator($this)));
   }

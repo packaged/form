@@ -42,11 +42,6 @@ abstract class AbstractDataHandler implements DataHandler
     return new static();
   }
 
-  public function __construct()
-  {
-    $this->_initValidator();
-  }
-
   /**
    * @return string
    */
@@ -207,29 +202,33 @@ abstract class AbstractDataHandler implements DataHandler
     return $this;
   }
 
-  public function clearValidators()
+  public function clearValidators($restoreDefaults = true)
   {
     $this->_validators = [];
-    $this->_setupValidator();
+    if($restoreDefaults)
+    {
+      $this->_setupValidators();
+    }
     return $this;
   }
 
-  public function getValidators()
-  {
-    return $this->_validators;
-  }
-
-  protected function _setupValidator()
+  protected function _setupValidators()
   {
   }
 
-  private function _initValidator()
+  private function _initValidators()
   {
     if(!$this->_isValidatorSetUp)
     {
       $this->_isValidatorSetUp = true;
-      $this->_setupValidator();
+      $this->_setupValidators();
     }
+  }
+
+  public function getValidators()
+  {
+    $this->_initValidators();
+    return $this->_validators;
   }
 
   public function getErrors(): array
@@ -252,7 +251,7 @@ abstract class AbstractDataHandler implements DataHandler
   public function validate(): array
   {
     $this->clearErrors();
-    $errors = $this->validateValue($this->getValue());
+    $errors = $this->validateValue($this->getValueWithDefault());
     $this->addError(...$errors);
     return $this->getErrors();
   }
@@ -268,6 +267,7 @@ abstract class AbstractDataHandler implements DataHandler
    */
   public function validateValue($value, array $data = []): array
   {
+    $this->_initValidators();
     $errors = [];
     if($this->_validators)
     {
@@ -297,7 +297,7 @@ abstract class AbstractDataHandler implements DataHandler
    */
   public function assert()
   {
-    $this->assertValue($this->getValue());
+    $this->assertValue($this->getValueWithDefault());
   }
 
   /**
@@ -309,6 +309,7 @@ abstract class AbstractDataHandler implements DataHandler
    */
   public function assertValue($value)
   {
+    $this->_initValidators();
     if($this->_validators)
     {
       foreach($this->_validators as $validator)
@@ -325,7 +326,7 @@ abstract class AbstractDataHandler implements DataHandler
    */
   public function isValid(): bool
   {
-    return $this->isValidValue($this->getValue());
+    return $this->isValidValue($this->getValueWithDefault());
   }
 
   /**
@@ -337,6 +338,7 @@ abstract class AbstractDataHandler implements DataHandler
    */
   public function isValidValue($value): bool
   {
+    $this->_initValidators();
     if($this->_validators)
     {
       foreach($this->_validators as $validator)

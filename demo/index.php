@@ -54,7 +54,7 @@ class DemoForm extends Form
 
   protected function _initDataHandlers()
   {
-    $this->name = TextDataHandler::i()->addValidator(new StringValidator(5, 7));
+    $this->name = TextDataHandler::i()->addValidator(new StringValidator(2, 20));
     $this->email = new EmailDataHandler();
     $this->selection = (new EnumDataHandler(Arrays::fuse(['test1', 'test2', 'test3'])))
       ->setDefaultValue($this->selection)->addValidator(new EqualValidator('test3'));
@@ -84,8 +84,14 @@ if(!empty($data))
 </head>
 <body>
 <?php if(!empty($data)): ?>
-  <h2>POST Data</h2>
-  <pre><?php print_r($data); ?></pre>
+  <div style="display: flex">
+    <div><h2>POST Data</h2>
+      <pre><?php print_r($data); ?></pre>
+    </div>
+    <div><h2>Form Data</h2>
+      <pre><?php print_r($form->getFormData()); ?></pre>
+    </div>
+  </div>
   <br/>
 <?php endif; ?>
 <h2>Example Form</h2>

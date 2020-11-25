@@ -56,7 +56,7 @@ class EnumDataHandler extends AbstractDataHandler
     return $this->_options;
   }
 
-  protected function _setupValidator()
+  protected function _setupValidators()
   {
     $this->addValidator(new HandlerEnumValidator($this));
   }

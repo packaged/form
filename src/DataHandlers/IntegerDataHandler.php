@@ -18,7 +18,7 @@ class IntegerDataHandler extends TextDataHandler
     return Input::create()->setType(Input::TYPE_NUMBER);
   }
 
-  protected function _setupValidator()
+  protected function _setupValidators()
   {
     $this->addValidator(new IntegerValidator());
   }

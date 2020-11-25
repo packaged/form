@@ -82,7 +82,7 @@ class CsrfDataHandler extends HiddenDataHandler
     return $this;
   }
 
-  protected function _setupValidator()
+  protected function _setupValidators()
   {
     $this->addValidator(new CsrfValidator($this->_generatePassword(), $this->_expiryMins));
   }

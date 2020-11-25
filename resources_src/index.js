@@ -11,8 +11,12 @@ document.addEventListener(
         {
           errContainer.classList.toggle('p-form__errors--hidden', result.errors.length === 0);
         }
+        console.log(result.errors);
+
         if(result.errors.length > 0)
         {
+          clearErrors(e.target, fieldName);
+          addErrors(e.target, fieldName, result.errors);
           e.preventDefault();
         }
       }

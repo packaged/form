@@ -103,7 +103,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   {
     foreach($this->_dataHandlers as $name => $handler)
     {
-      $handlerErrors = $handler->validateValue($handler->getValue(), $this->getFormData());
+      $handlerErrors = $handler->validateValue($handler->getValueWithDefault(), $this->getFormData());
       if(!empty($handlerErrors))
       {
         return false;
@@ -121,7 +121,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     foreach($this->_dataHandlers as $name => $handler)
     {
       $handler->clearErrors();
-      $handlerErrors = $handler->validateValue($handler->getValue(), $this->getFormData());
+      $handlerErrors = $handler->validateValue($handler->getValueWithDefault(), $this->getFormData());
       if($handlerErrors)
       {
         $handler->addError(...$handlerErrors);
@@ -197,7 +197,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     $data = [];
     foreach($this->_dataHandlers as $name => $handler)
     {
-      $data[$name] = $handler->getValue();
+      $data[$name] = $handler->getValueWithDefault();
     }
     return $data;
   }

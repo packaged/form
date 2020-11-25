@@ -12,7 +12,7 @@ class EmailDataHandler extends TextDataHandler
     return Input::create()->setType(Input::TYPE_EMAIL);
   }
 
-  protected function _setupValidator()
+  protected function _setupValidators()
   {
     $this->addValidator(new EmailValidator());
   }

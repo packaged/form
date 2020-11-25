@@ -15,7 +15,7 @@ class BooleanDataHandler extends AbstractDataHandler
     return parent::formatValue(ValueAs::bool($value));
   }
 
-  protected function _setupValidator()
+  protected function _setupValidators()
   {
     $this->addValidator(new RequiredValidator());
   }

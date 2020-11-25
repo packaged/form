@@ -103,7 +103,6 @@ export function clearErrors(form, name) {
 export function validateField(form, fieldName, errorOnPotentiallyValid = false) {
   let fieldValue = _getFieldValue(form, fieldName);
   const container = form.querySelector(`.p-form__field[name="${fieldName}"]`);
-
   const result = ValidationResponse.success();
   const validators = JSON.parse(base64.decode(container.getAttribute('validation')));
   validators.forEach(

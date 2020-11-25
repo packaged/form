@@ -10,7 +10,7 @@ use Packaged\Validate\Validators\NullableValidator;
 
 class TestIntegerDataHandler extends AbstractDataHandler
 {
-  protected function _setupValidator()
+  protected function _setupValidators()
   {
     $this->addValidator(new NullableValidator(new IntegerValidator()));
   }
