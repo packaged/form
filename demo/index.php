@@ -9,9 +9,11 @@ use Packaged\Form\DataHandlers\MultiValueEnumDataHandler;
 use Packaged\Form\DataHandlers\ReadOnlyDataHandler;
 use Packaged\Form\DataHandlers\SecureTextDataHandler;
 use Packaged\Form\DataHandlers\TextDataHandler;
+use Packaged\Form\Decorators\InputOnlyDataHandlerDecorator;
 use Packaged\Form\Form\Form;
 use Packaged\Helpers\Arrays;
 use Packaged\Validate\Validators\EqualValidator;
+use Packaged\Validate\Validators\RequiredValidator;
 use Packaged\Validate\Validators\StringValidator;
 
 require('../vendor/autoload.php');
@@ -39,10 +41,6 @@ class DemoForm extends Form
    */
   public $secret;
   /**
-   * @var BooleanDataHandler
-   */
-  public $agree;
-  /**
    * @var EnumDataHandler
    */
   public $greedySelect;
@@ -53,6 +51,10 @@ class DemoForm extends Form
 
   /** @var IntegerDataHandler */
   public $age;
+  /**
+   * @var BooleanDataHandler
+   */
+  public $agree;
 
   protected function _initDataHandlers()
   {
@@ -66,9 +68,10 @@ class DemoForm extends Form
     $this->greedySelect = MultiValueEnumDataHandler::i(Arrays::fuse(['apple', 'orange', 'pear']))->styleSplit();
     $this->password = SecureTextDataHandler::i();
     $this->secret = HiddenDataHandler::i()->setValue('Form displayed at ' . date("Y-m-d H:i:s"));
-    $this->agree = BooleanDataHandler::i()->setPlaceholder('Do you agree?');
+    $this->agree = BooleanDataHandler::i()->setPlaceholder('Do you agree?')->addValidator(new RequiredValidator());
     $this->youCantTouchThis = ReadOnlyDataHandler::i()->setValue('Dare You');
     $this->age = IntegerDataHandler::i()->setLabel('How old are you?');
+    $this->setHandlerDecorator(new InputOnlyDataHandlerDecorator(), 'agree');
   }
 }
 

@@ -2,23 +2,20 @@
 namespace Packaged\Tests\Form\Supporting\DataHandlers;
 
 use Packaged\Form\DataHandlers\AbstractDataHandler;
-use Packaged\Form\Decorators\InputDecorator;
-use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
 use Packaged\Glimpse\Tags\Form\Input;
+use Packaged\Ui\Html\HtmlElement;
 use Packaged\Validate\Validators\IntegerValidator;
 use Packaged\Validate\Validators\NullableValidator;
 
 class TestIntegerDataHandler extends AbstractDataHandler
 {
+  protected function _generateInput(): HtmlElement
+  {
+    return Input::create()->setType(Input::TYPE_NUMBER);
+  }
+
   protected function _setupValidators()
   {
     $this->addValidator(new NullableValidator(new IntegerValidator()));
-  }
-
-  protected function _defaultDecorator(): DataHandlerDecorator
-  {
-    $decorator = new InputDecorator();
-    $decorator->getInput()->setAttribute('type', Input::TYPE_NUMBER);
-    return $decorator;
   }
 }

@@ -11,7 +11,6 @@ document.addEventListener(
         {
           errContainer.classList.toggle('p-form__errors--hidden', result.errors.length === 0);
         }
-        console.log(result.errors);
 
         if(result.errors.length > 0)
         {

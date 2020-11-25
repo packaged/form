@@ -80,6 +80,10 @@ export function addErrors(form, name, errors = []) {
     return;
   }
   const errContainer = form.querySelector(`.p-form__field[name="${name}"] .p-form__errors`);
+  if(errContainer === undefined || errContainer === null)
+  {
+    return;
+  }
   const errUl = errContainer.querySelector(':scope > ul') || document.createElement('ul');
   errors.forEach(
     (err) => {
@@ -97,7 +101,10 @@ export function addErrors(form, name, errors = []) {
  */
 export function clearErrors(form, name) {
   const errContainer = form.querySelector(`.p-form__field[name="${name}"] .p-form__errors`);
-  errContainer.innerHTML = '';
+  if(errContainer !== undefined && errContainer !== null)
+  {
+    errContainer.innerHTML = '';
+  }
 }
 
 export function validateField(form, fieldName, errorOnPotentiallyValid = false) {

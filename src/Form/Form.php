@@ -32,6 +32,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
 
   protected $_decorator;
   protected $_handlerDecorator;
+  protected $_defaultHandlerDecorator;
   protected $_submitDecorator;
 
   protected $_action = '';
@@ -255,24 +256,31 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     return new DefaultFormDecorator();
   }
 
-  public function getHandlerDecorator(): DataHandlerDecorator
+  public function getHandlerDecorator($fieldName = null): DataHandlerDecorator
   {
-    if(!$this->_handlerDecorator)
-    {
-      $this->_handlerDecorator = $this->_defaultHandlerDecorator();
-    }
-    return $this->_handlerDecorator;
+    return $this->_handlerDecorator[$fieldName] ?? $this->_defaultHandlerDecorator();
   }
 
-  public function setHandlerDecorator(DataHandlerDecorator $decorator)
+  public function setHandlerDecorator(DataHandlerDecorator $decorator, string $field = null)
   {
-    $this->_handlerDecorator = $decorator;
+    if($field === null)
+    {
+      $this->_defaultHandlerDecorator = $decorator;
+    }
+    else
+    {
+      $this->_handlerDecorator[$field] = $decorator;
+    }
     return $this;
   }
 
   protected function _defaultHandlerDecorator(): DataHandlerDecorator
   {
-    return new DefaultDataHandlerDecorator();
+    if($this->_defaultHandlerDecorator === null)
+    {
+      $this->_defaultHandlerDecorator = new DefaultDataHandlerDecorator();
+    }
+    return $this->_defaultHandlerDecorator;
   }
 
 }
