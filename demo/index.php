@@ -85,8 +85,8 @@ if(!empty($data))
 ?>
 <html>
 <head>
-  <link type="text/css" rel="stylesheet" href="demo.css"/>
-  <script type="module" src="assets/demo.min.js"></script>
+  <link type="text/css" rel="stylesheet" href="../resources/form.min.css"/>
+  <script type="module" src="../resources/form.min.js"></script>
   <style>
     body {
       font-family: "Helvetica Neue", Helvetica, Arial;
