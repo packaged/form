@@ -12,7 +12,7 @@ function _getEleValue(ele)
 
 function _getHandlerScope(form, handlerName)
 {
-  return form.querySelector(`.p-form__field[name="${handlerName}"]`);
+  return form.querySelector(`.p-form__field[handler-name="${handlerName}"]`);
 }
 
 function _getHandlerValue(form, handlerName)
@@ -94,7 +94,7 @@ function _updateValidationState(form, handlerName, result, errorOnPotentiallyVal
  */
 export function clearErrors(form, handlerName)
 {
-  const errContainer = form.querySelector(`.p-form__field[name="${handlerName}"] .p-form__errors`);
+  const errContainer = form.querySelector(`.p-form__field[handler-name="${handlerName}"] .p-form__errors`);
   if(errContainer)
   {
     errContainer.innerHTML = '';
@@ -112,7 +112,7 @@ export function addErrors(form, handlerName, errors = [])
   {
     return;
   }
-  const errContainer = form.querySelector(`.p-form__field[name="${handlerName}"] .p-form__errors`);
+  const errContainer = form.querySelector(`.p-form__field[handler-name="${handlerName}"] .p-form__errors`);
   if(!errContainer)
   {
     console.error('validation error:', `"${handlerName}"`, errors);
@@ -177,7 +177,7 @@ export function validateForm(form)
   fields.forEach(
     (container) =>
     {
-      const handlerName = container.getAttribute('name');
+      const handlerName = container.getAttribute('handler-name');
       const result = validateHandler(form, handlerName, true);
       fullResult.set(handlerName, result);
     }

@@ -53,7 +53,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
       if($value === null)
       {
         // use read only handler if none have been specified
-        $value = new ReadOnlyDataHandler();
+        $value = ReadOnlyDataHandler::i();
       }
       $this->addDataHandler($property, $value);
       //Unset the public properties to avoid data handler modification
@@ -105,7 +105,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   {
     foreach($this->_dataHandlers as $name => $handler)
     {
-      $handlerErrors = $handler->validateValue($handler->getValueWithDefault(), $this->getFormData());
+      $handlerErrors = $handler->validateValue($handler->getValue(), $this->getFormData());
       if(!empty($handlerErrors))
       {
         return false;
@@ -123,7 +123,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     foreach($this->_dataHandlers as $name => $handler)
     {
       $handler->clearErrors();
-      $handlerErrors = $handler->validateValue($handler->getValueWithDefault(), $this->getFormData());
+      $handlerErrors = $handler->validateValue($handler->getValue(), $this->getFormData());
       if($handlerErrors)
       {
         $handler->addError(...$handlerErrors);
@@ -199,7 +199,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     $data = [];
     foreach($this->_dataHandlers as $name => $handler)
     {
-      $data[$name] = $handler->getFormattedValue();
+      $data[$name] = $handler->getValue();
     }
     return $data;
   }

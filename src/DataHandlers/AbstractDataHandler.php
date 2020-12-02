@@ -1,7 +1,6 @@
 <?php
 namespace Packaged\Form\DataHandlers;
 
-use Exception;
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
 use Packaged\Helpers\Objects;
 use Packaged\Helpers\Strings;
@@ -132,18 +131,6 @@ abstract class AbstractDataHandler implements DataHandler
 
   //region Value Handling
 
-  /**
-   * @param mixed $value
-   *
-   * @return $this
-   * @throws Exception
-   */
-  public function setValueFormatted($value)
-  {
-    $this->_value = $this->formatValue($value);
-    return $this;
-  }
-
   public function formatValue($value)
   {
     return $value;
@@ -151,28 +138,20 @@ abstract class AbstractDataHandler implements DataHandler
 
   /**
    * @param mixed $value
+   * @param bool  $formatValue
    *
    * @return $this
    */
-  public function setValue($value)
+  public function setValue($value, $formatValue = true)
   {
-    $this->_value = $value;
+    $this->_value = $formatValue ? $this->formatValue($value) : $value;
     return $this;
   }
 
-  public function getValue()
+  public function getValue($default = null, $withDefault = true, $formatValue = true)
   {
-    return $this->_value;
-  }
-
-  public function getValueWithDefault($default = null)
-  {
-    return $this->_value ?? ($default ?? $this->getDefaultValue());
-  }
-
-  public function getFormattedValue($withDefault = true, $default = null)
-  {
-    return $this->formatValue($withDefault ? $this->getValueWithDefault($default) : $this->getValue());
+    $value = $withDefault ? ($this->_value ?? ($default ?? $this->getDefaultValue())) : $this->_value;
+    return $formatValue ? $this->formatValue($value) : $value;
   }
 
   /**
@@ -256,7 +235,7 @@ abstract class AbstractDataHandler implements DataHandler
   public function validate(): array
   {
     $this->clearErrors();
-    $errors = $this->validateValue($this->getValueWithDefault());
+    $errors = $this->validateValue($this->getValue());
     $this->addError(...$errors);
     return $this->getErrors();
   }
@@ -302,7 +281,7 @@ abstract class AbstractDataHandler implements DataHandler
    */
   public function assert()
   {
-    $this->assertValue($this->getValueWithDefault());
+    self::assertValue($this->getValue());
   }
 
   /**
@@ -331,7 +310,7 @@ abstract class AbstractDataHandler implements DataHandler
    */
   public function isValid(): bool
   {
-    return $this->isValidValue($this->getValueWithDefault());
+    return $this->isValidValue($this->getValue());
   }
 
   /**

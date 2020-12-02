@@ -21,11 +21,11 @@ class BooleanDataHandler extends AbstractDataHandler
   protected function _generateInput(): HtmlElement
   {
     $checkbox = new Input();
-    $checkbox->setId($this->getId());
     $checkbox->setType(Input::TYPE_CHECKBOX);
     $checkbox->setName($this->getName());
+    $checkbox->setId($this->getId());
     $checkbox->setValue('true');
-    if($this->getValueWithDefault() === true)
+    if($this->getValue() === true)
     {
       $checkbox->setAttribute('checked', true);
     }

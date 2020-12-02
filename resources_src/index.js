@@ -12,7 +12,7 @@ document.addEventListener(
       (result, handlerName) =>
       {
         // show errors if necessary
-        const errContainer = e.target.querySelector(`.p-form__field[name="${handlerName}"] .p-form__errors`);
+        const errContainer = e.target.querySelector(`.p-form__field[handler-name="${handlerName}"] .p-form__errors`);
         if(errContainer)
         {
           errContainer.classList.toggle('p-form__errors--hidden', result.errors.length === 0);
@@ -33,11 +33,11 @@ document.addEventListener('input', e =>
 {
   const inputEle = e.target;
   const handlerContainer = inputEle.closest('.p-form__field');
-  if(!handlerContainer || !handlerContainer.hasAttribute('name'))
+  if(!handlerContainer || !handlerContainer.hasAttribute('handler-name'))
   {
     return;
   }
-  const handlerName = handlerContainer.getAttribute('name');
+  const handlerName = handlerContainer.getAttribute('handler-name');
 
   const form = inputEle.closest('form');
   if(!form)
@@ -46,7 +46,7 @@ document.addEventListener('input', e =>
   }
 
   const result = validateHandler(form, handlerName);
-  const errContainer = form.querySelector(`.p-form__field[name="${handlerName}"] .p-form__errors`);
+  const errContainer = form.querySelector(`.p-form__field[handler-name="${handlerName}"] .p-form__errors`);
   if(errContainer && result.errors.length === 0)
   {
     clearErrors(form, handlerName);

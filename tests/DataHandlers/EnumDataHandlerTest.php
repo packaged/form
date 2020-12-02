@@ -4,119 +4,114 @@ namespace Packaged\Tests\Form\DataHandlers;
 
 use Packaged\Form\DataHandlers\EnumDataHandler;
 use Packaged\Form\DataHandlers\MultiValueEnumDataHandler;
-use Packaged\Form\Decorators\RadioDecorator;
-use Packaged\Form\Decorators\SelectDecorator;
 use PHPUnit\Framework\TestCase;
 
 class EnumDataHandlerTest extends TestCase
 {
-  public function testGetElement()
+  public function testCombined()
   {
     $ele = new EnumDataHandler();
-    $this->assertEquals(
-      '<div class="p-form__field"><div class="p-form__label"><label></label></div><div class="p-form__input"><select></select></div></div>',
-      $ele->getDecorator()->render()
+    self::assertEquals(
+      '<select></select>',
+      $ele->getInput()->render()
     );
 
     $ele = new EnumDataHandler();
     $ele->setOptions(['a' => 'one', 'b' => 'two']);
-    $ele->validate();
-    $this->assertEquals(
-      '<div class="p-form__field p-form__field--error"><div class="p-form__label"><label></label></div><div class="p-form__errors"><ul><li>not a valid value</li></ul></div><div class="p-form__input"><select><option value="a">one</option><option value="b">two</option></select></div></div>',
-      $ele->getDecorator()->render()
-    );
-
-    $ele = new EnumDataHandler();
-    $ele->setOptions(['a' => 'one', 'b' => 'two']);
-    $ele->setValue('b');
-    $ele->validate();
-    $this->assertEquals(
-      '<div class="p-form__field"><div class="p-form__label"><label></label></div><div class="p-form__input"><select><option value="a">one</option><option value="b" selected>two</option></select></div></div>',
-      $ele->getDecorator()->render()
+    self::assertFalse($ele->isValid());
+    self::assertEquals(
+      '<select><option value="a">one</option><option value="b">two</option></select>',
+      $ele->getInput()->render()
     );
 
     $ele = new EnumDataHandler();
     $ele->setOptions(['a' => 'one', 'b' => 'two']);
     $ele->setValue('b');
-    $this->assertFalse($ele->isValidValue('c'));
+    self::assertTrue($ele->isValid());
+    self::assertEquals(
+      '<select><option value="a">one</option><option value="b" selected>two</option></select>',
+      $ele->getInput()->render()
+    );
+
+    $ele = new EnumDataHandler();
+    $ele->setOptions(['a' => 'one', 'b' => 'two']);
+    $ele->setValue('b');
+    self::assertFalse($ele->isValidValue('c'));
     $ele->addOption('c', "three");
-    $this->assertTrue($ele->isValidValue('c'));
+    self::assertTrue($ele->isValidValue('c'));
 
-    $this->assertEquals(
-      '<div class="p-form__field"><div class="p-form__label"><label></label></div><div class="p-form__input"><select><option value="a">one</option><option value="b" selected>two</option><option value="c">three</option></select></div></div>',
-      $ele->getDecorator()->render()
+    self::assertEquals(
+      '<select><option value="a">one</option><option value="b" selected>two</option><option value="c">three</option></select>',
+      $ele->getInput()->render()
     );
 
-    $this->assertFalse($ele->isValidValue('d'));
+    self::assertFalse($ele->isValidValue('d'));
 
-    /** @var SelectDecorator $dec */
-    $ele->getDecorator()->getInput()->setId('mySelect');
-    $this->assertEquals(
-      '<div class="p-form__field"><div class="p-form__label"><label for="mySelect"></label></div><div class="p-form__input"><select id="mySelect"><option value="a">one</option><option value="b" selected>two</option><option value="c">three</option></select></div></div>',
-      $ele->getDecorator()->render()
+    self::assertEquals(
+      '<select><option value="a">one</option><option value="b" selected>two</option><option value="c">three</option></select>',
+      $ele->getInput()->render()
     );
   }
 
-  public function testCheckboxEnum()
+  public function testSplit()
   {
-    $h = new MultiValueEnumDataHandler();
+    $h = new EnumDataHandler();
+    $h->styleSplit();
     $h->setName('mychoice');
     $h->setLabel('Select One');
     $h->setOptions(['one' => 'First', 'two' => 'Second', 'three' => 'Third']);
-    $h->validate();
-    $this->assertRegExp(
-      '~<div class="p-form__field p-form__field--error"><div class="p-form__label"><label>Select One</label></div><div class="p-form__errors"><ul><li>must be an array</li></ul></div><div class="p-form__input"><div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="one" /><label for="\1">First</label></div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="two" /><label for="\2">Second</label></div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="three" /><label for="\3">Third</label></div></div></div></div>~',
-      $h->getDecorator()->render()
+
+    self::assertMatchesRegularExpression(
+      '~<div class="p-form__labeled-input"><input type="radio" name="mychoice" id="(mychoice-.+)" value="one" /><label for="\1">First</label></div><div class="p-form__labeled-input"><input type="radio" name="mychoice" id="(mychoice-.+)" value="two" /><label for="\2">Second</label></div><div class="p-form__labeled-input"><input type="radio" name="mychoice" id="(mychoice-.+)" value="three" /><label for="\3">Third</label></div>~',
+      $h->getInput()->render()
     );
 
-    $h = new MultiValueEnumDataHandler();
+    $h = new EnumDataHandler();
+    $h->styleSplit();
     $h->setName('mychoice');
     $h->setLabel('Select One');
     $h->setOptions(['one' => 'First', 'two' => 'Second', 'three' => 'Third']);
-    $h->setValueFormatted('one');
-    $h->validate();
-    $this->assertRegExp(
-      '~<div class="p-form__field"><div class="p-form__label"><label>Select One</label></div><div class="p-form__input"><div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="one" checked /><label for="\1">First</label></div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="two" /><label for="\2">Second</label></div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="three" /><label for="\3">Third</label></div></div></div></div>~',
-      $h->getDecorator()->render()
-    );
+    $h->setValue('one');
 
-    $h = new MultiValueEnumDataHandler();
-    $h->setName('mychoice');
-    $h->setLabel('Select One');
-    $h->setOptions(['one' => 'First', 'two' => 'Second', 'three' => 'Third']);
-    $h->setValueFormatted(['one', 'three']);
-    $h->validate();
-    $this->assertRegExp(
-      '~<div class="p-form__field"><div class="p-form__label"><label>Select One</label></div><div class="p-form__input"><div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="one" checked /><label for="\1">First</label></div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="two" /><label for="\2">Second</label></div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice\[\]" value="three" checked /><label for="\3">Third</label></div></div></div></div>~',
-      $h->getDecorator()->render()
+    self::assertMatchesRegularExpression(
+      '~<div class="p-form__labeled-input"><input type="radio" name="mychoice" id="(mychoice-.+)" value="one" checked /><label for="\1">First</label></div><div class="p-form__labeled-input"><input type="radio" name="mychoice" id="(mychoice-.+)" value="two" /><label for="\2">Second</label></div><div class="p-form__labeled-input"><input type="radio" name="mychoice" id="(mychoice-.+)" value="three" /><label for="\3">Third</label></div>~',
+      $h->getInput()->render()
     );
   }
 
-  public function testRadioEnum()
+  public function testMultiEnum()
   {
-    $h = new EnumDataHandler();
+    $h = new MultiValueEnumDataHandler();
+    $h->styleSplit();
     $h->setName('mychoice');
     $h->setLabel('Select One');
     $h->setOptions(['one' => 'First', 'two' => 'Second', 'three' => 'Third']);
-    $h->setDecorator(new RadioDecorator());
     $h->validate();
-
-    $this->assertRegExp(
-      '~<div class="p-form__field p-form__field--error"><div class="p-form__label"><label>Select One</label></div><div class="p-form__errors"><ul><li>not a valid value</li></ul></div><div class="p-form__input"><div><div class="p-form__checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="one" /><label for="\1">First</label></div><div class="p-form__checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="two" /><label for="\2">Second</label></div><div class="p-form__checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="three" /><label for="\3">Third</label></div></div></div></div>~',
-      $h->getDecorator()->render()
+    self::assertMatchesRegularExpression(
+      '~<div class="p-form__labeled-input"><input type="checkbox" name="mychoice\[\]" id="(mychoice-.+)" value="one" /><label for="\1">First</label></div><div class="p-form__labeled-input"><input type="checkbox" name="mychoice\[\]" id="(mychoice-.+)" value="two" /><label for="\2">Second</label></div><div class="p-form__labeled-input"><input type="checkbox" name="mychoice\[\]" id="(mychoice-.+)" value="three" /><label for="\3">Third</label></div>~',
+      $h->getInput()->render()
     );
 
-    $h = new EnumDataHandler();
+    $h = new MultiValueEnumDataHandler();
     $h->setName('mychoice');
     $h->setLabel('Select One');
     $h->setOptions(['one' => 'First', 'two' => 'Second', 'three' => 'Third']);
-    $h->setDecorator(new RadioDecorator());
     $h->setValue('one');
     $h->validate();
+    self::assertMatchesRegularExpression(
+      '~<select name="mychoice\[\]" id="mychoice-.+" multiple><option value="one" selected>First</option><option value="two">Second</option><option value="three">Third</option></select>~',
+      $h->getInput()->render()
+    );
 
-    $this->assertRegExp(
-      '~<div class="p-form__field"><div class="p-form__label"><label>Select One</label></div><div class="p-form__input"><div><div class="p-form__checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="one" checked /><label for="\1">First</label></div><div class="p-form__checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="two" /><label for="\2">Second</label></div><div class="p-form__checkbox"><input type="radio" id="(mychoice-...-...)" name="mychoice" value="three" /><label for="\3">Third</label></div></div></div></div>~',
-      $h->getDecorator()->render()
+    $h = new MultiValueEnumDataHandler();
+    $h->setName('mychoice');
+    $h->setLabel('Select One');
+    $h->setOptions(['one' => 'First', 'two' => 'Second', 'three' => 'Third']);
+    $h->setValue(['one', 'three']);
+    $h->validate();
+    self::assertMatchesRegularExpression(
+      '~<select name="mychoice\[\]" id="mychoice-.+" multiple><option value="one" selected>First</option><option value="two">Second</option><option value="three" selected>Third</option></select>~',
+      $h->getInput()->render()
     );
   }
 }

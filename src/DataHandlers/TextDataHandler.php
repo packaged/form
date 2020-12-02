@@ -24,9 +24,9 @@ class TextDataHandler extends AbstractDataHandler
     $ele = $this->_createBaseElement();
     $ele->addAttributes(
       [
-        'value'       => $this->formatValue($this->getValueWithDefault()),
-        'id'          => $this->getId(),
         'name'        => $this->getName(),
+        'id'          => $this->getId(),
+        'value'       => $this->formatValue($this->getValue()),
         'placeholder' => $this->getPlaceholder(),
       ]
     );

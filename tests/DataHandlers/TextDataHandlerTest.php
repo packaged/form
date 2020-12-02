@@ -3,10 +3,8 @@
 namespace Packaged\Tests\Form\DataHandlers;
 
 use InvalidArgumentException;
+use Packaged\Form\DataHandlers\HiddenDataHandler;
 use Packaged\Form\DataHandlers\TextDataHandler;
-use Packaged\Form\Decorators\InputDecorator;
-use Packaged\Form\Decorators\Interfaces\DataHandlerDecorator;
-use Packaged\Glimpse\Tags\Form\Input;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -17,26 +15,9 @@ class TextDataHandlerTest extends TestCase
     $text = new TextDataHandler();
     $text->setName('test');
     $text->setValue('my text');
-    $this->assertRegExp(
-      '~<div class="p-form__field"><div class="p-form__label"><label for="test-(...)">Test</label></div><div class="p-form__input"><input type="text" id="test-\1" name="test" placeholder="Test" value="my text" /></div></div>~',
-      $text->getDecorator()->render()
-    );
-    $text->getDecorator()->getLabel()->setContent('changed label');
-    $this->assertRegExp(
-      '~<div class="p-form__field"><div class="p-form__label"><label for="test-(...)">changed label</label></div><div class="p-form__input"><input type="text" id="test-\1" name="test" placeholder="Test" value="my text" /></div></div>~',
-      $text->getDecorator()->render()
-    );
-  }
-
-  public function testElementOrder()
-  {
-    $text = new TextDataHandler();
-    $text->setName('test');
-    $text->setValue('my text');
-    $text->getDecorator()->setElementOrder([DataHandlerDecorator::INPUT, DataHandlerDecorator::LABEL]);
-    $this->assertRegExp(
-      '~<div class="p-form__field"><div class="p-form__input"><input type="text" id="(test-...)" name="test" placeholder="Test" value="my text" /></div><div class="p-form__label"><label for="\1">Test</label></div></div>~',
-      $text->getDecorator()->render()
+    self::assertMatchesRegularExpression(
+      '~<input type="text" name="test" id="test-.+" value="my text" placeholder="Test" />~',
+      $text->getInput()->render()
     );
   }
 
@@ -50,23 +31,19 @@ class TextDataHandlerTest extends TestCase
   public function testFormatValue()
   {
     $text = new TextDataHandler();
-    $text->setValueFormatted(true);
-    $this->assertEquals('true', $text->getValue());
-    $text->setValueFormatted(false);
-    $this->assertEquals('false', $text->getValue());
+    $text->setValue(true);
+    self::assertEquals('true', $text->getValue());
+    $text->setValue(false);
+    self::assertEquals('false', $text->getValue());
   }
 
   public function testHidden()
   {
-    $dec = new InputDecorator();
-    $dec->getInput()->setAttribute('type', Input::TYPE_HIDDEN);
-
-    $text = new TextDataHandler();
+    $text = new HiddenDataHandler();
     $text->setName('text');
-    $text->setDecorator($dec);
-    $this->assertRegExp(
-      '~<div class="p-form__field"><div class="p-form__label"><label for="(text-...)">Text</label></div><div class="p-form__input"><input type="hidden" id="\1" name="text" /></div></div>~',
-      $text->getDecorator()->render()
+    self::assertMatchesRegularExpression(
+      '~<input type="hidden" name="text" id="text-.+" />~',
+      $text->getInput()->render()
     );
   }
 }

@@ -39,8 +39,6 @@ interface DataHandler extends IValidatable
 
   public function getValue();
 
-  public function getValueWithDefault($default = null);
-
   public function getDefaultValue();
 
   /**

@@ -55,7 +55,7 @@ class MultiValueEnumDataHandler extends EnumDataHandler
 
   protected function _isSelectedOption($option): bool
   {
-    return in_array($option, (array)$this->getValueWithDefault());
+    return in_array($option, (array)$this->getValue());
   }
 
   protected function _generateInput(): HtmlElement

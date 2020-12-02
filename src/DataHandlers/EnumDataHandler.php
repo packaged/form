@@ -14,7 +14,7 @@ use Packaged\Ui\Html\HtmlElement;
 class EnumDataHandler extends AbstractDataHandler
 {
   const INPUT_STYLE_COMBINED = 'single';
-  const INPUT_STYLE_SPLIT = 'split';
+  const INPUT_STYLE_SPLIT    = 'split';
 
   protected $_options = [];
   protected $_inputStyle = self::INPUT_STYLE_COMBINED;
@@ -77,9 +77,9 @@ class EnumDataHandler extends AbstractDataHandler
     $radio = Input::create()->setType($this->_inputType());
     $radio->addAttributes(
       [
-        'value' => $key,
-        'id'    => $this->getId() . $subId,
         'name'  => $this->_inputName(),
+        'id'    => $this->getId() . $subId,
+        'value' => $key,
       ]
     );
     if($selected)
@@ -91,7 +91,7 @@ class EnumDataHandler extends AbstractDataHandler
 
   protected function _isSelectedOption($option): bool
   {
-    return $option === $this->getValueWithDefault();
+    return $option === $this->getValue();
   }
 
   protected function _generateInput(): HtmlElement
@@ -121,8 +121,8 @@ class EnumDataHandler extends AbstractDataHandler
     $ele = Select::create($options);
     $ele->addAttributes(
       [
-        'id'   => $this->getId(),
         'name' => $this->_inputName(),
+        'id'   => $this->getId(),
       ]
     );
     return $ele;

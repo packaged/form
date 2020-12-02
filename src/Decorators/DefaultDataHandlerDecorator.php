@@ -94,7 +94,7 @@ class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandl
     }
 
     $div = Div::create(new SafeHtml($this->_renderTemplate()))
-      ->setAttribute('name', $handler->getName())
+      ->setAttribute('handler-name', $handler->getName())
       ->addClass($this->bem()->getElementName('field'));
 
     $validators = null;

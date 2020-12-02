@@ -11,6 +11,11 @@ class HiddenDataHandler extends TextDataHandler
     return Input::create()->setType(Input::TYPE_HIDDEN);
   }
 
+  public function getPlaceholder()
+  {
+    return '';
+  }
+
   public function getLabel()
   {
     return '';

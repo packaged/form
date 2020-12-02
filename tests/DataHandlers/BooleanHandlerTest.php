@@ -3,7 +3,6 @@
 namespace Packaged\Tests\Form\DataHandlers;
 
 use Packaged\Form\DataHandlers\BooleanDataHandler;
-use Packaged\Form\Decorators\CheckboxDecorator;
 use PHPUnit\Framework\TestCase;
 
 class BooleanHandlerTest extends TestCase
@@ -11,34 +10,27 @@ class BooleanHandlerTest extends TestCase
   public function testCheckbox()
   {
     $h = new BooleanDataHandler();
-    /** @var CheckboxDecorator $decorator */
-    $decorator = $h->getDecorator();
-    $h->setName('mychoice');
+    self::assertFalse($h->getValue());
+
     $h->setValue('sgfsafhasdg');
-    $this->assertFalse($h->isValid());
-    $this->assertFalse($decorator->isRequired());
+    self::assertFalse($h->getValue());
 
-    $h->setValueFormatted('false');
-    $h->setLabel('Do You Agree?');
-    $this->assertTrue($h->isValid());
+    $h->setValue('no');
+    self::assertFalse($h->getValue());
 
-    $this->assertRegExp(
-      '~<div class="p-form__field"><div class="p-form__input"><div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice" value="true" /><label for="\1">Do You Agree\?</label></div></div></div></div>~',
-      $decorator->render()
+    $h->setName('mychoice');
+    self::assertMatchesRegularExpression(
+      '~<input type="checkbox" name="mychoice" id="mychoice-.+" value="true" />~',
+      $h->getInput()->render()
     );
 
-    $h->setValueFormatted('yes');
-    $this->assertTrue($h->isValid());
-    $this->assertRegExp(
-      '~<div class="p-form__field"><div class="p-form__input"><div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice" value="true" checked /><label for="\1">Do You Agree\?</label></div></div></div></div>~',
-      $decorator->render()
-    );
+    $h = new BooleanDataHandler();
+    $h->setValue('yes');
+    self::assertTrue($h->getValue());
 
-    $decorator->setRequired(true);
-    $this->assertTrue($decorator->isRequired());
-    $this->assertRegExp(
-      '~<div class="p-form__field"><div class="p-form__input"><div><div class="p-form__checkbox"><input type="checkbox" id="(mychoice-...-...)" name="mychoice" value="true" checked required /><label for="\1">Do You Agree\?</label></div></div></div></div>~',
-      $decorator->render()
+    self::assertEquals(
+      '<input type="checkbox" value="true" checked />',
+      $h->getInput()->render()
     );
   }
 }

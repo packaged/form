@@ -13,23 +13,23 @@ class CsrfFormTest extends TestCase
     $form->csrfToken->applyNewToken();
     $formValue = $form->csrfToken->getValue();
 
-    $this->assertTrue($form->csrfToken->isValid());
-    $this->assertTrue($form->csrfToken->isValidValue($formValue));
+    self::assertTrue($form->csrfToken->isValid());
+    self::assertTrue($form->csrfToken->isValidValue($formValue));
 
     $form->csrfToken->applyNewToken();
     $formValue = $form->csrfToken->getValue();
-    $this->assertTrue($form->csrfToken->isValid());
-    $this->assertTrue($form->csrfToken->isValidValue($formValue));
+    self::assertTrue($form->csrfToken->isValid());
+    self::assertTrue($form->csrfToken->isValidValue($formValue));
     $form->csrfToken = $formValue;
-    $this->assertTrue($form->csrfToken->isValid());
+    self::assertTrue($form->csrfToken->isValid());
 
     $form = new CsrfForm($secret);
     $form->csrfToken->setValue($formValue);
-    $this->assertTrue($form->csrfToken->isValid());
+    self::assertTrue($form->csrfToken->isValid());
 
     $form = new CsrfForm($secret);
     $form->csrfToken->setValue('invalidToken');
-    $this->assertFalse($form->csrfToken->isValid());
+    self::assertFalse($form->csrfToken->isValid());
   }
 
   public function testRender()
@@ -37,8 +37,8 @@ class CsrfFormTest extends TestCase
     $secret = 'user-secret';
     $form = new CsrfForm($secret);
     $html = $form->render();
-    $this->assertRegExp(
-      '/<form class="p-form" method="post"><input type="hidden" name="csrfToken" value=".*" \/><div class="p-form__field"><div class="p-form__submit"><input type="submit" value="Submit" \/><\/div><\/div><\/form>/',
+    self::assertMatchesRegularExpression(
+      '/<form class="p-form" method="post">  <input type="hidden" name="csrfToken" id=".+" value=".*" \/><div class="p-form__field"><div class="p-form__submit"><input type="submit" value="Submit" \/><\/div><\/div><\/form>/',
       $html
     );
   }

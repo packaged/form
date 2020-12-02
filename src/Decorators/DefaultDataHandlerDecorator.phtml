@@ -6,9 +6,9 @@ use Packaged\Form\Decorators\DefaultDataHandlerDecorator;
 ?>
 
 <div class="<?= $this->bem()->getElementName('field', 'contain'); ?>">
-  <?php echo $this->renderLabel(); ?>
+  <?php echo $this->renderLabel()->produceSafeHTML(); ?>
   <div>
-    <?php echo $this->renderInput(); ?>
-    <?php echo $this->renderErrors(); ?>
+    <?php echo $this->renderInput()->produceSafeHTML(); ?>
+    <?php echo $this->renderErrors()->produceSafeHTML(); ?>
   </div>
 </div>
