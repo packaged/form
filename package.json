@@ -6,7 +6,7 @@
   "author": "Tom Kay <oridan82@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@packaged/validate": "https://github.com/packaged/validate#js-validate",
+    "@packaged/validate": "^2.7.0",
     "base-64": "^1.0.0"
   },
   "devDependencies": {
