@@ -261,7 +261,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
    *
    * @return Decorator|FormDecorator|DataHandlerDecorator
    */
-  public function decorator($for): Decorator
+  public function decorate($for): Decorator
   {
     if($for instanceof Form)
     {
