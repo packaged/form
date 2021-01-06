@@ -256,6 +256,32 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     return new DefaultFormDecorator();
   }
 
+  /**
+   * @param $for
+   *
+   * @return Decorator|FormDecorator|DataHandlerDecorator
+   */
+  public function decorator($for): Decorator
+  {
+    if($for instanceof Form)
+    {
+      return $for->getDecorator();
+    }
+    else if($for instanceof DataHandler)
+    {
+      $decorator = $this->getHandlerDecorator($for->getName());
+      $decorator->setHandler($for);
+      return $decorator;
+    }
+    else if(is_string($for) && isset($this->_dataHandlers[$for]))
+    {
+      $decorator = $this->getHandlerDecorator($for);
+      $decorator->setHandler($this->_dataHandlers[$for]);
+      return $decorator;
+    }
+    return $this->getDecorator();
+  }
+
   public function getHandlerDecorator($fieldName = null): DataHandlerDecorator
   {
     return $this->_handlerDecorator[$fieldName] ?? $this->_defaultHandlerDecorator();
