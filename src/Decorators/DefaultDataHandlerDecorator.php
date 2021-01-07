@@ -85,15 +85,11 @@ class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandl
       );
   }
 
-  protected function _getContentForRender()
+  public function wrapField(SafeHtml $content)
   {
     $handler = $this->getHandler();
-    if($handler instanceof HiddenDataHandler)
-    {
-      return $handler->getInput();
-    }
 
-    $div = Div::create(new SafeHtml($this->_renderTemplate()))
+    $div = Div::create($content)
       ->setAttribute('handler-name', $handler->getName())
       ->addClass($this->bem()->getElementName('field'));
 
@@ -113,6 +109,17 @@ class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandl
       $div->addClass($this->bem()->getModifier('error', 'field'));
     }
     return $div;
+  }
+
+  protected function _getContentForRender()
+  {
+    $handler = $this->getHandler();
+    if($handler instanceof HiddenDataHandler)
+    {
+      return $handler->getInput();
+    }
+
+    $this->wrapField(new SafeHtml($this->_renderTemplate()));
   }
 
 }
