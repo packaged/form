@@ -119,7 +119,7 @@ class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandl
       return $handler->getInput();
     }
 
-    $this->wrapField(new SafeHtml($this->_renderTemplate()));
+    return $this->wrapField(new SafeHtml($this->_renderTemplate()));
   }
 
 }
