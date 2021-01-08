@@ -3,6 +3,7 @@
 namespace Packaged\Form\Form;
 
 use Exception;
+use Packaged\Form\DataHandlers\FileDataHandler;
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
 use Packaged\Form\DataHandlers\ReadOnlyDataHandler;
 use Packaged\Form\Decorators\DefaultDataHandlerDecorator;
@@ -68,6 +69,12 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     {
       $this->_dataHandlers[$property]->setName($property);
     }
+
+    if($handler instanceof FileDataHandler)
+    {
+      $this->setAttribute('enctype', 'multipart/form-data');
+    }
+
     return $this;
   }
 

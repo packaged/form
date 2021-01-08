@@ -3,6 +3,7 @@
 use Packaged\Form\DataHandlers\BooleanDataHandler;
 use Packaged\Form\DataHandlers\EmailDataHandler;
 use Packaged\Form\DataHandlers\EnumDataHandler;
+use Packaged\Form\DataHandlers\FileDataHandler;
 use Packaged\Form\DataHandlers\HiddenDataHandler;
 use Packaged\Form\DataHandlers\IntegerDataHandler;
 use Packaged\Form\DataHandlers\MultiValueEnumDataHandler;
@@ -51,6 +52,9 @@ class DemoForm extends Form
 
   /** @var IntegerDataHandler */
   public $age;
+
+  /** @var FileDataHandler */
+  public $profilePicture;
   /**
    * @var BooleanDataHandler
    */
@@ -71,17 +75,19 @@ class DemoForm extends Form
     $this->agree = BooleanDataHandler::i()->setPlaceholder('Do you agree?')->addValidator(new RequiredValidator());
     $this->youCantTouchThis = ReadOnlyDataHandler::i()->setValue('Dare You');
     $this->age = IntegerDataHandler::i()->setLabel('How old are you?');
+    $this->profilePicture = FileDataHandler::i()->setLabel("Profile Picture");
     $this->setHandlerDecorator(new InputOnlyDataHandlerDecorator(), 'agree');
   }
 }
 
-$data = $_POST;
+$data = array_merge($_POST, $_FILES);
 $form = new DemoForm();
 if(!empty($data))
 {
   $form->hydrate($data);
   $form->validate();
 }
+
 ?>
 <html>
 <head>
@@ -135,6 +141,20 @@ if(!empty($data))
             <td><?php var_dump($v); ?></td>
           </tr>
         <?php endforeach; ?>
+        <?php if($form->profilePicture->hasUpload()): ?>
+          <tr>
+            <th>File:</th>
+            <td>
+              <h4><?= $form->profilePicture->getFileName(); ?></h4>
+              <?php $content = file_get_contents($form->profilePicture->getFileLocation()); ?>
+              <?php if(substr($form->profilePicture->getFileType(), 0, 5) == 'image'): ?>
+                <img src="data:<?= $form->profilePicture->getFileType() ?>;base64,<?= base64_encode($content); ?>">
+              <?php else: ?>
+                <textarea><?= $content; ?></textarea>
+              <?php endif; ?>
+            </td>
+          </tr>
+        <?php endif; ?>
       </table>
     </div>
   </div>
