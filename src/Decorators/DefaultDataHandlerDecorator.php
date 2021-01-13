@@ -85,7 +85,7 @@ class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandl
       );
   }
 
-  public function wrapField(SafeHtml $content)
+  public function wrapField(ISafeHtmlProducer $content)
   {
     $handler = $this->getHandler();
 
