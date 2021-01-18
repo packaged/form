@@ -1,0 +1,18 @@
+.p-form__errors {
+  color: rgb(var(--p-form-error-color));
+}
+
+.p-form__errors ul {
+  list-style-type: none;
+  margin: 1px 0 0 0;
+  padding: 3px;
+  font-size: 90%;
+}
+
+.p-form__errors--hidden {
+  display: none;
+}
+
+.p-form__field[validation-state="invalid"] .p-form__input:not(.p-form__input--boolean):not(.p-form__input--enum-split) {
+  border: 1px solid rgb(var(--p-form-error-color));
+}

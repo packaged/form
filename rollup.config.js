@@ -7,29 +7,25 @@ import postcssPresetEnv from 'postcss-preset-env/index.js';
 
 process.chdir(__dirname);
 
-const defaultBrowsers = ['defaults', 'not ie > 0'];
-
-const defaultCfg = {
+module.exports = {
   input: './index.js',
   output: {
     file: './resources/form.min.js',
-    name: 'Pagelets',
+    name: 'form',
     format: 'iife',
   },
   plugins: [
-    //css
     postcss(
       {
         extract: true,
         minimize: true,
         plugins: [
-          postcssPresetEnv({browsers: defaultBrowsers}),
+          postcssPresetEnv({browsers: ['defaults', 'not ie > 0']}),
         ],
       }),
     resolve({browser: true, preferBuiltins: false}),
     commonjs(),
     terser(),
-
     babel(
       {
         babelHelpers: 'bundled',
@@ -42,12 +38,10 @@ const defaultCfg = {
               corejs: 3,
               modules: false,
               useBuiltIns: 'usage',
-              targets: defaultBrowsers,
+              targets: ['defaults', 'not ie > 0'],
             },
           ],
         ],
       }),
   ]
 };
-
-export default [defaultCfg];
