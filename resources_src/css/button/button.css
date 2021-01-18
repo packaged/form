@@ -1,0 +1,55 @@
+.p-form__submit {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  font-size: 16px;
+
+  height: 36px;
+  line-height: 26px;
+
+  color: rgb(var(--p-form-placeholder-color));
+
+  border: 1px solid #c3c3c3;
+  padding: var(--p-form-padding);
+
+  min-width: 200px;
+  width: 100%;
+  border-radius: 5px;
+  background-color: white;
+  overflow: hidden;
+}
+
+.p-form__submit button,
+.p-form__submit input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: transparent;
+  border: none;
+  height: 100%;
+  width: 100%;
+  font-size: 16px;
+  padding: var(--p-form-padding);
+
+  font-family: inherit;
+  border-radius: inherit;
+  font-weight: inherit;
+
+  color: rgb(var(--p-form-text-color));
+
+  line-height: 100%;
+  outline: none;
+}
+
+.p-form__submit {
+  background-color: #c3c3c3;
+  color: #313131;
+  border-color: #8c8c8c;
+}
+
+.p-form__submit input:active,
+.p-form__submit button:active {
+  box-shadow: inset 0 0 3px #8c8c8c;
+}

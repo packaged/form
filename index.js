@@ -1,2 +1,2 @@
 import './resources_src/index';
-import './resources_src/styles';
+import './resources_src/css/styles'

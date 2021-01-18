@@ -1,0 +1,15 @@
+:root {
+  --p-form-placeholder-color: 120, 120, 120;
+  --p-form-text-color: 49, 49, 49;
+  --p-form-padding: 5px 10px;
+
+  --p-form-error-color: 178, 0, 0;
+}
+
+.p-form {
+  max-width: 600px;
+}
+
+.p-form__field {
+  padding: 5px;
+}
