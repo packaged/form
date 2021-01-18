@@ -4,6 +4,7 @@ namespace Packaged\Form\DataHandlers;
 use Packaged\Form\DataHandlers\Interfaces\DataHandler;
 use Packaged\Helpers\Objects;
 use Packaged\Helpers\Strings;
+use Packaged\SafeHtml\ISafeHtmlProducer;
 use Packaged\Ui\Html\HtmlElement;
 use Packaged\Validate\IDataSetValidator;
 use Packaged\Validate\IValidator;
@@ -99,11 +100,11 @@ abstract class AbstractDataHandler implements DataHandler
   }
 
   /**
-   * @param string $label
+   * @param string|ISafeHtmlProducer $label
    *
    * @return AbstractDataHandler
    */
-  public function setLabel(string $label)
+  public function setLabel($label)
   {
     $this->_label = $label;
     return $this;
