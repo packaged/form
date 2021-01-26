@@ -10,7 +10,6 @@ use Packaged\Form\DataHandlers\MultiValueEnumDataHandler;
 use Packaged\Form\DataHandlers\ReadOnlyDataHandler;
 use Packaged\Form\DataHandlers\SecureTextDataHandler;
 use Packaged\Form\DataHandlers\TextDataHandler;
-use Packaged\Form\Decorators\InputOnlyDataHandlerDecorator;
 use Packaged\Form\Form\Form;
 use Packaged\Helpers\Arrays;
 use Packaged\Validate\Validators\EqualValidator;
@@ -72,11 +71,13 @@ class DemoForm extends Form
     $this->greedySelect = MultiValueEnumDataHandler::i(Arrays::fuse(['apple', 'orange', 'pear']))->styleSplit();
     $this->password = SecureTextDataHandler::i();
     $this->secret = HiddenDataHandler::i()->setValue('Form displayed at ' . date("Y-m-d H:i:s"));
-    $this->agree = BooleanDataHandler::i()->setPlaceholder('Do you agree?')->addValidator(new RequiredValidator());
+    $this->agree = BooleanDataHandler::i()->setPlaceholder('Do you agree to our Terms & Conditions?')
+      ->setLabel("")
+      ->addValidator(new RequiredValidator());
     $this->youCantTouchThis = ReadOnlyDataHandler::i()->setValue('Dare You');
     $this->age = IntegerDataHandler::i()->setLabel('How old are you?');
     $this->profilePicture = FileDataHandler::i()->setLabel("Profile Picture");
-    $this->setHandlerDecorator(new InputOnlyDataHandlerDecorator(), 'agree');
+    //$this->setHandlerDecorator(new InputOnlyDataHandlerDecorator(), 'agree');
   }
 }
 
