@@ -5,7 +5,7 @@ use Packaged\Form\DataHandlers\BooleanDataHandler;
 use Packaged\Form\Decorators\DefaultDataHandlerDecorator;
 
 $handler = $this->getHandler();
-$showGuidance = $handler instanceof BooleanDataHandler && $handler->showGuidance();
+$showGuidance = !$handler instanceof BooleanDataHandler || $handler->showGuidance();
 ?>
 <div class="<?= $this->bem()->getElementName('field', 'contain'); ?>">
   <?php echo $this->renderLabel()->produceSafeHTML(); ?>
