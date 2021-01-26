@@ -119,11 +119,11 @@ abstract class AbstractDataHandler implements DataHandler
   }
 
   /**
-   * @param string $placeholder
+   * @param string|ISafeHtmlProducer $placeholder
    *
    * @return AbstractDataHandler
    */
-  public function setPlaceholder(string $placeholder)
+  public function setPlaceholder($placeholder)
   {
     $this->_placeholder = $placeholder;
     return $this;
