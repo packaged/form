@@ -12,6 +12,7 @@ use Packaged\Form\DataHandlers\SecureTextDataHandler;
 use Packaged\Form\DataHandlers\TextDataHandler;
 use Packaged\Form\Form\Form;
 use Packaged\Helpers\Arrays;
+use Packaged\SafeHtml\SafeHtml;
 use Packaged\Validate\Validators\EqualValidator;
 use Packaged\Validate\Validators\RequiredValidator;
 use Packaged\Validate\Validators\StringValidator;
@@ -69,14 +70,16 @@ class DemoForm extends Form
       ->addValidator(new EqualValidator('test3'));
 
     $this->greedySelect = MultiValueEnumDataHandler::i(Arrays::fuse(['apple', 'orange', 'pear']))->styleSplit();
-    $this->password = SecureTextDataHandler::i();
+    $this->password = SecureTextDataHandler::i()->setGuidance("(Min. 8 characters, 1 number, case-sensitive)");
     $this->secret = HiddenDataHandler::i()->setValue('Form displayed at ' . date("Y-m-d H:i:s"));
-    $this->agree = BooleanDataHandler::i()->setPlaceholder('Do you agree to our Terms & Conditions?')
-      ->setLabel("")
+    $this->agree = BooleanDataHandler::i()
+      ->setGuidance(new SafeHtml('<a href="#">Terms & Conditions</a>'))
+      ->setPlaceholder("Do you agree to our Terms?")
+      ->setLabel("Accept Terms")
       ->addValidator(new RequiredValidator());
     $this->youCantTouchThis = ReadOnlyDataHandler::i()->setValue('Dare You');
     $this->age = IntegerDataHandler::i()->setLabel('How old are you?');
-    $this->profilePicture = FileDataHandler::i()->setLabel("Profile Picture");
+    $this->profilePicture = FileDataHandler::i()->setLabel("Profile Picture")->setGuidance('120px X 120px png or jpg');
     //$this->setHandlerDecorator(new InputOnlyDataHandlerDecorator(), 'agree');
   }
 }

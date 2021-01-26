@@ -32,12 +32,22 @@ class BooleanDataHandler extends AbstractDataHandler
     return $checkbox;
   }
 
+  public function getPlaceholder()
+  {
+    return $this->_placeholder;
+  }
+
+  public function showGuidance()
+  {
+    return !empty($this->getPlaceholder());
+  }
+
   public function wrapInput(HtmlElement $input): HtmlElement
   {
-    $placeholder = $this->getPlaceholder();
-    if(!empty($placeholder))
+    $displayText = $this->getPlaceholder() ?: $this->getGuidance();
+    if(!empty($displayText))
     {
-      return AbstractContainerTag::create($input, Label::create($placeholder)->setAttribute('for', $this->getId()));
+      return AbstractContainerTag::create($input, Label::create($displayText)->setAttribute('for', $this->getId()));
     }
     return parent::wrapInput($input);
   }
