@@ -1,14 +1,18 @@
 <?php
 /** @var $this DefaultDataHandlerDecorator */
 
+use Packaged\Form\DataHandlers\BooleanDataHandler;
 use Packaged\Form\Decorators\DefaultDataHandlerDecorator;
 
+$handler = $this->getHandler();
+$showGuidance = !$handler instanceof BooleanDataHandler || $handler->showGuidance();
 ?>
-
 <div class="<?= $this->bem()->getElementName('field', 'contain'); ?>">
   <?php echo $this->renderLabel()->produceSafeHTML(); ?>
   <div>
     <?php echo $this->renderInput()->produceSafeHTML(); ?>
+    <?php $guide = $showGuidance ? $this->renderGuidance() : null;
+    echo $guide ? $guide->produceSafeHTML() : '' ?>
     <?php echo $this->renderErrors()->produceSafeHTML(); ?>
   </div>
 </div>

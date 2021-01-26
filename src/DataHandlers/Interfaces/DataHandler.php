@@ -51,6 +51,15 @@ interface DataHandler extends IValidatable
   public function getPlaceholder();
 
   /**
+   * @param string $guidance
+   *
+   * @return DataHandler
+   */
+  public function setGuidance(string $guidance);
+
+  public function getGuidance();
+
+  /**
    * @param string $label
    *
    * @return DataHandler

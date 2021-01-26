@@ -20,6 +20,7 @@ abstract class AbstractDataHandler implements DataHandler
   protected $_label;
   protected $_placeholder;
   protected $_defaultValue;
+  protected $_guidance;
 
   protected $_errors = [];
   /**
@@ -128,6 +129,26 @@ abstract class AbstractDataHandler implements DataHandler
     $this->_placeholder = $placeholder;
     return $this;
   }
+
+  /**
+   * @return string|ISafeHtmlProducer
+   */
+  public function getGuidance()
+  {
+    return $this->_guidance;
+  }
+
+  /**
+   * @param string|ISafeHtmlProducer $guidance
+   *
+   * @return AbstractDataHandler
+   */
+  public function setGuidance($guidance)
+  {
+    $this->_guidance = $guidance;
+    return $this;
+  }
+
   //endregion
 
   //region Value Handling

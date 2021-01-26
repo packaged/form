@@ -42,6 +42,12 @@ class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandl
     return $this->_handler;
   }
 
+  public function renderGuidance(): ?ISafeHtmlProducer
+  {
+    $guidance = $this->getHandler()->getGuidance();
+    return $guidance ? Div::create($guidance)->addClass($this->bem()->getElementName('guidance')) : null;
+  }
+
   public function renderLabel(): ?ISafeHtmlProducer
   {
     $label = $this->getHandler()->getLabel();
