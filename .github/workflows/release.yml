@@ -21,19 +21,20 @@ jobs:
         id: release
         uses: justincy/github-action-npm-release@2.0.2
 
-      - if: steps.release.outputs.released != 'true'
-        run: exit 1
-
       - uses: actions/setup-node@v2
+        if: steps.release.outputs.released == 'true'
         with:
           registry-url: https://registry.npmjs.org/
       - run: npm publish
+        if: steps.release.outputs.released == 'true'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - uses: actions/setup-node@v2
+        if: steps.release.outputs.released == 'true'
         with:
           registry-url: https://npm.pkg.github.com/
       - run: npm publish
+        if: steps.release.outputs.released == 'true'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
