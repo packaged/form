@@ -5,6 +5,11 @@
   "repository": "git@github.com:packaged/form",
   "author": "Tom Kay <oridan82@gmail.com>",
   "license": "MIT",
+  "files": [
+    "resources",
+    "resources_src",
+    "index.js"
+  ],
   "dependencies": {
     "@packaged/validate": "^2.7.1",
     "base-64": "^1.0.0"
