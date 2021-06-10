@@ -329,5 +329,4 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   {
     return $this->_errors;
   }
-
 }
