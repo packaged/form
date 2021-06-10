@@ -39,6 +39,8 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   protected $_action = '';
   protected $_method = 'post';
 
+  protected $_errors = [];
+
   public function __construct()
   {
     $this->_initDataHandlers();
@@ -122,11 +124,11 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   }
 
   /**
-   * @return ValidationException[][]
+   * @return array<string,ValidationException[]>
    */
   public function validate(): array
   {
-    $keyedErrors = [];
+    $this->_errors = [];
     foreach($this->_dataHandlers as $name => $handler)
     {
       $handler->clearErrors();
@@ -134,10 +136,10 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
       if($handlerErrors)
       {
         $handler->addError(...$handlerErrors);
-        $keyedErrors[$name] = $handlerErrors;
+        $this->_errors[$name] = $handlerErrors;
       }
     }
-    return $keyedErrors;
+    return $this->_errors;
   }
 
   /**
@@ -318,6 +320,14 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
       $this->_defaultHandlerDecorator = new DefaultDataHandlerDecorator();
     }
     return $this->_defaultHandlerDecorator;
+  }
+
+  /**
+   * @return array
+   */
+  public function getErrors(): array
+  {
+    return $this->_errors;
   }
 
 }
