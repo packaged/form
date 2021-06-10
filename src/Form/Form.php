@@ -276,13 +276,15 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     {
       return $for->getDecorator();
     }
-    else if($for instanceof DataHandler)
+
+    if($for instanceof DataHandler)
     {
       $decorator = $this->getHandlerDecorator($for->getName());
       $decorator->setHandler($for);
       return $decorator;
     }
-    else if(is_string($for) && isset($this->_dataHandlers[$for]))
+
+    if(is_string($for) && isset($this->_dataHandlers[$for]))
     {
       $decorator = $this->getHandlerDecorator($for);
       $decorator->setHandler($this->_dataHandlers[$for]);
@@ -323,7 +325,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   }
 
   /**
-   * @return array
+   * @return array<string,ValidationException[]>
    */
   public function getErrors(): array
   {
