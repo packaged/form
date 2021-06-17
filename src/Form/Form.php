@@ -45,9 +45,12 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
   {
     $this->_initDataHandlers();
     $this->_preparePublicProperties();
+    $this->_configureDataHandlers();
   }
 
   abstract protected function _initDataHandlers();
+
+  protected function _configureDataHandlers() { }
 
   final protected function _preparePublicProperties()
   {
