@@ -367,8 +367,28 @@ abstract class AbstractDataHandler implements DataHandler
     if($this->_input === null)
     {
       $this->_input = $this->_generateInput();
+      if(is_callable($this->_postGenerateInput))
+      {
+        $func = $this->_postGenerateInput;
+        $this->_input = $func($this->_input);
+      }
     }
     return $this->_input;
+  }
+
+  protected $_postGenerateInput;
+
+  /**
+   * Allow modification of the input after its generator has executed
+   *
+   * @param callable $func func(HtmlElement): HtmlElement
+   *
+   * @return $this
+   */
+  public function mutateInput(callable $func)
+  {
+    $this->_postGenerateInput = $func;
+    return $this;
   }
 
   public function getInputClass(): string
