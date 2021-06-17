@@ -367,16 +367,16 @@ abstract class AbstractDataHandler implements DataHandler
     if($this->_input === null)
     {
       $this->_input = $this->_generateInput();
-      if(is_callable($this->_postGenerateInput))
+      if(is_callable($this->_postInputMutator))
       {
-        $func = $this->_postGenerateInput;
+        $func = $this->_postInputMutator;
         $this->_input = $func($this->_input);
       }
     }
     return $this->_input;
   }
 
-  protected $_postGenerateInput;
+  protected $_postInputMutator;
 
   /**
    * Allow modification of the input after its generator has executed
@@ -387,7 +387,7 @@ abstract class AbstractDataHandler implements DataHandler
    */
   public function mutateInput(callable $func)
   {
-    $this->_postGenerateInput = $func;
+    $this->_postInputMutator = $func;
     return $this;
   }
 
