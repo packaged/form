@@ -1,91 +1,21 @@
 <?php
-
-use Packaged\Form\DataHandlers\BooleanDataHandler;
-use Packaged\Form\DataHandlers\EmailDataHandler;
-use Packaged\Form\DataHandlers\EnumDataHandler;
-use Packaged\Form\DataHandlers\FileDataHandler;
-use Packaged\Form\DataHandlers\HiddenDataHandler;
-use Packaged\Form\DataHandlers\IntegerDataHandler;
-use Packaged\Form\DataHandlers\MultiValueEnumDataHandler;
-use Packaged\Form\DataHandlers\ReadOnlyDataHandler;
-use Packaged\Form\DataHandlers\SecureTextDataHandler;
-use Packaged\Form\DataHandlers\TextDataHandler;
-use Packaged\Form\Form\Form;
-use Packaged\Helpers\Arrays;
-use Packaged\SafeHtml\SafeHtml;
-use Packaged\Validate\Validators\EqualValidator;
-use Packaged\Validate\Validators\RequiredValidator;
-use Packaged\Validate\Validators\StringValidator;
-
 require('../vendor/autoload.php');
 
-class DemoForm extends Form
-{
-  /**
-   * @var TextDataHandler
-   */
-  public $name;
-  /**
-   * @var EmailDataHandler
-   */
-  public $email;
-  /**
-   * @var EnumDataHandler
-   */
-  public $selection = 'test2';
-  /**
-   * @var SecureTextDataHandler
-   */
-  public $password;
-  /**
-   * @var HiddenDataHandler
-   */
-  public $secret;
-  /**
-   * @var EnumDataHandler
-   */
-  public $greedySelect;
-  /**
-   * @var ReadOnlyDataHandler
-   */
-  public $youCantTouchThis;
-
-  /** @var IntegerDataHandler */
-  public $age;
-
-  /** @var FileDataHandler */
-  public $profilePicture;
-  /**
-   * @var BooleanDataHandler
-   */
-  public $agree;
-
-  protected function _initDataHandlers()
-  {
-    $this->name = TextDataHandler::i()->addValidator(new StringValidator(2, 20));
-    $this->email = EmailDataHandler::i();
-    $this->selection = EnumDataHandler::i(Arrays::fuse(['test1', 'test2', 'test3']))
-      ->setDefaultValue($this->selection)
-      ->styleSplit()
-      ->addValidator(new EqualValidator('test3'));
-
-    $this->greedySelect = MultiValueEnumDataHandler::i(Arrays::fuse(['apple', 'orange', 'pear']))->styleSplit();
-    $this->password = SecureTextDataHandler::i()->setGuidance("(Min. 8 characters, 1 number, case-sensitive)");
-    $this->secret = HiddenDataHandler::i()->setValue('Form displayed at ' . date("Y-m-d H:i:s"));
-    $this->agree = BooleanDataHandler::i()
-      ->setGuidance(new SafeHtml('<a href="#">Terms & Conditions</a>'))
-      ->setPlaceholder("Do you agree to our Terms?")
-      ->setLabel("Accept Terms")
-      ->addValidator(new RequiredValidator());
-    $this->youCantTouchThis = ReadOnlyDataHandler::i()->setValue('Dare You');
-    $this->age = IntegerDataHandler::i()->setLabel('How old are you?');
-    $this->profilePicture = FileDataHandler::i()->setLabel("Profile Picture")->setGuidance('120px X 120px png or jpg');
-    //$this->setHandlerDecorator(new InputOnlyDataHandlerDecorator(), 'agree');
-  }
-}
+use Demo\Form\ExampleForm;
 
 $data = array_merge($_POST, $_FILES);
-$form = new DemoForm();
+$form = new ExampleForm('secrets');
+
+$form->carModel->setOptions(
+  [
+    'Ford',
+    'Mercedes',
+    'Audi',
+    'Jaguar',
+    'Pontiac',
+  ]
+);
+
 if(!empty($data))
 {
   $form->hydrate($data);
