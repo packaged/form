@@ -27,6 +27,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: npm publish
         if: steps.release.outputs.released == 'true'
+        continue-on-error: true
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -36,5 +37,6 @@ jobs:
           registry-url: https://npm.pkg.github.com/
       - run: npm publish
         if: steps.release.outputs.released == 'true'
+        continue-on-error: true
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
