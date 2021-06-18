@@ -1,6 +1,6 @@
 {
   "name": "@packaged/form",
-  "version": "3.6.1",
+  "version": "3.6.2",
   "main": "resources_src/index.js",
   "repository": "git@github.com:packaged/form",
   "author": "Tom Kay <oridan82@gmail.com>",
