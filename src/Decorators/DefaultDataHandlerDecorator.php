@@ -51,10 +51,8 @@ class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandl
   public function renderLabel(): ?ISafeHtmlProducer
   {
     $label = $this->getHandler()->getLabel();
-
-    return $label ? Div::create(Label::create($label)->setAttribute('for', $this->getHandler()->getId()))->addClass(
-      $this->bem()->getElementName('label')
-    ) : null;
+    return $label ? Div::create(Label::create($label)->setAttribute('for', $this->getHandler()->getId()))
+      ->addClass($this->bem()->getElementName('label')) : null;
   }
 
   public function getErrorMessages(): array
@@ -81,19 +79,20 @@ class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandl
   public function renderInput(): ?ISafeHtmlProducer
   {
     $handler = $this->getHandler();
-    return Div::create($handler->wrapInput($handler->getInput()))->addClass(
-      $this->bem()->getElementName('input'),
-      $this->bem()->getModifier($handler->getInputClass(), 'input')
-    );
+    return Div::create($handler->wrapInput($handler->getInput()))
+      ->addClass(
+        $this->bem()->getElementName('input'),
+        $this->bem()->getModifier($handler->getInputClass(), 'input')
+      );
   }
 
   public function wrapField(SafeHtml $content)
   {
     $handler = $this->getHandler();
 
-    $div = Div::create($content)->setAttribute('handler-name', $handler->getName())->addClass(
-      $this->bem()->getElementName('field')
-    );
+    $div = Div::create($content)
+      ->setAttribute('handler-name', $handler->getName())
+      ->addClass($this->bem()->getElementName('field'));
 
     $validators = null;
     if($handler instanceof AbstractDataHandler)
