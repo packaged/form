@@ -75,7 +75,7 @@ class DemoForm extends Form
     $this->agree = BooleanDataHandler::i()
       ->setGuidance(new SafeHtml('<a href="#">Terms & Conditions</a>'))
       ->setPlaceholder("Do you agree to our Terms?")
-      ->setLabel("Accept Terms")
+      ->setLabel(false)
       ->addValidator(new RequiredValidator());
     $this->youCantTouchThis = ReadOnlyDataHandler::i()->setValue('Dare You');
     $this->age = IntegerDataHandler::i()->setLabel('How old are you?');
