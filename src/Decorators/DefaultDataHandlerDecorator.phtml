@@ -10,7 +10,7 @@ $showGuidance = !$handler instanceof BooleanDataHandler || $handler->showGuidanc
 <div class="<?= $this->bem()->getElementName('field', 'contain'); ?>">
   <?php echo $this->renderLabel()->produceSafeHTML(); ?>
   <div class="<?= $this->bem()->getElementName('input', 'wrap') ?>">
-    <?php echo $this->renderInput()->produceSafeHTML(); ?>
+    <?php echo $this->renderInput() ? $this->renderInput()->produceSafeHTML() : ''; ?>
     <?php $guide = $showGuidance ? $this->renderGuidance() : null;
     echo $guide ? $guide->produceSafeHTML() : '' ?>
     <?php echo $this->renderErrors()->produceSafeHTML(); ?>
