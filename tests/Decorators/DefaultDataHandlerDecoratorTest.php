@@ -31,11 +31,6 @@ class DefaultDataHandlerDecoratorTest extends TestCase
       $dec->render()
     );
 
-    self::assertStringContainsString(
-      'p-form__input',
-      $dec->render()
-    );
-
     $dh->setLabel('Example Label');
     self::assertStringContainsString(
       'label for="hello-world',
