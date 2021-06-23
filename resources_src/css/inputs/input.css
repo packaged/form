@@ -23,6 +23,7 @@
   color: rgb(var(--p-form-placeholder-color));
 
   border: 1px solid #c3c3c3;
+  padding: var(--p-form-padding);
 
   min-width: 200px;
   width: 100%;
@@ -71,6 +72,7 @@
   color: rgb(var(--p-form-text-color));
 
   line-height: 100%;
+  outline: none;
 }
 
 .p-form__input--multi-value-enum-single {
@@ -113,4 +115,5 @@
   border: 1px solid #c3c3c3;
   font-size: 16px;
   font-family: inherit;
+  outline: none;
 }
