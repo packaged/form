@@ -6,6 +6,7 @@ use Packaged\Form\DataHandlers\EnumDataHandler;
 use Packaged\Form\DataHandlers\FileDataHandler;
 use Packaged\Form\DataHandlers\HiddenDataHandler;
 use Packaged\Form\DataHandlers\IntegerDataHandler;
+use Packaged\Form\DataHandlers\MultiLineTextDataHandler;
 use Packaged\Form\DataHandlers\MultiValueEnumDataHandler;
 use Packaged\Form\DataHandlers\ReadOnlyDataHandler;
 use Packaged\Form\DataHandlers\SecureTextDataHandler;
@@ -60,6 +61,9 @@ class DemoForm extends Form
    */
   public $agree;
 
+  /** @var \Packaged\Form\DataHandlers\MultiLineTextDataHandler */
+  public $comments;
+
   protected function _initDataHandlers()
   {
     $this->name = TextDataHandler::i()->addValidator(new StringValidator(2, 20));
@@ -75,11 +79,14 @@ class DemoForm extends Form
     $this->agree = BooleanDataHandler::i()
       ->setGuidance(new SafeHtml('<a href="#">Terms & Conditions</a>'))
       ->setPlaceholder("Do you agree to our Terms?")
-      ->setLabel(false)
       ->addValidator(new RequiredValidator());
     $this->youCantTouchThis = ReadOnlyDataHandler::i()->setValue('Dare You');
     $this->age = IntegerDataHandler::i()->setLabel('How old are you?');
     $this->profilePicture = FileDataHandler::i()->setLabel("Profile Picture")->setGuidance('120px X 120px png or jpg');
+    $this->comments = MultiLineTextDataHandler::i()
+      ->setLabel("Any Comments?")
+      ->setGuidance("Required")
+      ->addValidator(new RequiredValidator());
     //$this->setHandlerDecorator(new InputOnlyDataHandlerDecorator(), 'agree');
   }
 }

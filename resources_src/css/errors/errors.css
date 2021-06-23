@@ -13,6 +13,7 @@
   display: none;
 }
 
-.p-form__field[validation-state="invalid"] .p-form__input:not(.p-form__input--boolean):not(.p-form__input--enum-split) {
+.p-form__field[validation-state="invalid"] .p-form__input:not(.p-form__input--boolean):not(.p-form__input--enum-split):not(.p-form__input--multi-line-text),
+.p-form__field[validation-state="invalid"] .p-form__input--multi-line-text textarea {
   border: 1px solid rgb(var(--p-form-error-color));
 }
