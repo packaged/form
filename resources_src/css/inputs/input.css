@@ -97,7 +97,7 @@
   height: 16px;
 }
 
-.p-form__input--text-area {
+.p-form__input--multi-line-text {
   border: 0;
   height: unset;
   padding-left: 0;

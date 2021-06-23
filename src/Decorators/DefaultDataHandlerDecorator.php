@@ -51,7 +51,7 @@ class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandl
   public function renderLabel(): ?ISafeHtmlProducer
   {
     $label = $this->getHandler()->getLabel();
-    return $label ? Div::create(Label::create($label)->setAttribute('for', $this->getHandler()->getId()))
+    return $label !== false ? Div::create(Label::create($label)->setAttribute('for', $this->getHandler()->getId()))
       ->addClass($this->bem()->getElementName('label')) : null;
   }
 
