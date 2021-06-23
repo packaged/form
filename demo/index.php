@@ -9,6 +9,7 @@ use Packaged\Form\DataHandlers\IntegerDataHandler;
 use Packaged\Form\DataHandlers\MultiValueEnumDataHandler;
 use Packaged\Form\DataHandlers\ReadOnlyDataHandler;
 use Packaged\Form\DataHandlers\SecureTextDataHandler;
+use Packaged\Form\DataHandlers\TextAreaDataHandler;
 use Packaged\Form\DataHandlers\TextDataHandler;
 use Packaged\Form\Form\Form;
 use Packaged\Helpers\Arrays;
@@ -60,6 +61,9 @@ class DemoForm extends Form
    */
   public $agree;
 
+  /** @var \Packaged\Form\DataHandlers\TextAreaDataHandler */
+  public $comments;
+
   protected function _initDataHandlers()
   {
     $this->name = TextDataHandler::i()->addValidator(new StringValidator(2, 20));
@@ -80,6 +84,10 @@ class DemoForm extends Form
     $this->youCantTouchThis = ReadOnlyDataHandler::i()->setValue('Dare You');
     $this->age = IntegerDataHandler::i()->setLabel('How old are you?');
     $this->profilePicture = FileDataHandler::i()->setLabel("Profile Picture")->setGuidance('120px X 120px png or jpg');
+    $this->comments = TextAreaDataHandler::i()
+      ->setLabel("Any Comments?")
+      ->setGuidance("Required")
+      ->addValidator(new RequiredValidator());
     //$this->setHandlerDecorator(new InputOnlyDataHandlerDecorator(), 'agree');
   }
 }

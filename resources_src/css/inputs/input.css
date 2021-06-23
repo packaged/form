@@ -23,7 +23,6 @@
   color: rgb(var(--p-form-placeholder-color));
 
   border: 1px solid #c3c3c3;
-  padding: var(--p-form-padding);
 
   min-width: 200px;
   width: 100%;
@@ -72,7 +71,6 @@
   color: rgb(var(--p-form-text-color));
 
   line-height: 100%;
-  outline: none;
 }
 
 .p-form__input--multi-value-enum-single {
@@ -97,4 +95,22 @@
 
 .p-form__input .p-form__checkbox input {
   height: 16px;
+}
+
+.p-form__input--text-area {
+  border: 0;
+  height: unset;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.p-form__input textarea {
+  resize: none;
+  width: 100%;
+  padding: var(--p-form-padding);
+  border-radius: 5px;
+  background-color: #fff;
+  border: 1px solid #c3c3c3;
+  font-size: 16px;
+  font-family: inherit;
 }
