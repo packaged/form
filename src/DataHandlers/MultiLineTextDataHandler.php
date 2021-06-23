@@ -6,7 +6,6 @@ use Packaged\Ui\Html\HtmlElement;
 
 class MultiLineTextDataHandler extends TextDataHandler
 {
-
   protected $_rows;
 
   public function setRows(int $rows): MultiLineTextDataHandler
