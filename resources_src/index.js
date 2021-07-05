@@ -23,6 +23,7 @@ document.addEventListener(
           clearErrors(form, handlerName);
           addErrors(form, handlerName, result.errors);
           e.preventDefault();
+          e.stopImmediatePropagation()
         }
       }
     );

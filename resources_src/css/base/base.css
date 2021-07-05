@@ -1,4 +1,4 @@
-:root {
+:root, :host {
   --p-form-placeholder-color: 120, 120, 120;
   --p-form-text-color: 49, 49, 49;
   --p-form-padding: 5px 10px;
