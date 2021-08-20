@@ -32,6 +32,7 @@
   width: 100%;
   font-size: 16px;
   padding: var(--p-form-padding);
+  box-sizing: border-box;
 
   font-family: inherit;
   border-radius: inherit;
