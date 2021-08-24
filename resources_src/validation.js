@@ -94,7 +94,14 @@ function _updateValidationState(form, handlerName, result, errorOnPotentiallyVal
  */
 export function clearErrors(form, handlerName)
 {
-  const errContainer = form.querySelector(`.p-form__field[handler-name="${handlerName}"] .p-form__errors`);
+  const handlerScope = _getHandlerScope(form, handlerName);
+  if(!handlerScope)
+  {
+    return;
+  }
+  handlerScope.removeAttribute('validation-state');
+
+  const errContainer = handlerScope.querySelector(`.p-form__errors`);
   if(errContainer)
   {
     errContainer.innerHTML = '';
@@ -119,6 +126,7 @@ export function addErrors(form, handlerName, errors = [])
     return;
   }
 
+  _updateValidationState(form, handlerName, ValidationResponse.error(errors));
   const errUl = errContainer.querySelector(':scope > ul') || document.createElement('ul');
   errors.forEach(
     (err) =>
