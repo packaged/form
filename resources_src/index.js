@@ -30,6 +30,18 @@ document.addEventListener(
   },
 );
 
+document.addEventListener(
+  'reset', e =>
+  {
+    /**
+     * @type {HTMLFormElement}
+     */
+    const form = e.path && e.path[0] || e.target;
+    form.querySelectorAll('.p-form__field[handler-name]')
+        .forEach((ele) => clearErrors(form, ele.getAttribute('handler-name')));
+  }
+);
+
 document.addEventListener('input', e =>
 {
   const inputEle = e.path && e.path[0] || e.target;
