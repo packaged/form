@@ -24,7 +24,7 @@ function _getHandlerValue(form, handlerName)
     return fieldValue;
   }
 
-  const inputs = handlerScope.querySelectorAll(`:scope [name="${handlerName}"],[name^="${handlerName}["]`);
+  const inputs = handlerScope.querySelectorAll(`:scope [name="${handlerName}"], :scope [name^="${handlerName}["]`);
   if(inputs.length === 1)
   {
     fieldValue = _getEleValue(inputs[0]);
