@@ -11,7 +11,7 @@
   </coverage>
   <testsuites>
     <testsuite name="common">
-      <directory>tests</directory>
+      <directory>php/tests</directory>
     </testsuite>
   </testsuites>
 </phpunit>
