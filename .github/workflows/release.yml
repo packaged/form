@@ -22,10 +22,13 @@ jobs:
           fetch-depth: 0
 
       - name: Composer
-        uses: php-actions/composer@v5
+        uses: php-actions/composer@v6
+        with:
+          php_version: ${{ matrix.php }}
       - name: PHPUnit
         uses: php-actions/phpunit@v3
         with:
+          php_version: ${{ matrix.php }}
           configuration: phpunit.xml
 
   release:
