@@ -3,7 +3,6 @@
 namespace Packaged\Tests\Form;
 
 use Packaged\Form\DataHandlers\TextDataHandler;
-use Packaged\Form\Decorators\ReadOnlyDecorator;
 use Packaged\Tests\Form\Supporting\CustomDecoratorForm;
 use Packaged\Tests\Form\Supporting\EmptyForm;
 use Packaged\Tests\Form\Supporting\TestForm;

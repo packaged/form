@@ -3,7 +3,6 @@ namespace Packaged\Tests\Form\DataHandlers;
 
 use Packaged\Form\DataHandlers\ReadOnlyDataHandler;
 use Packaged\Form\DataHandlers\TextDataHandler;
-use Packaged\Form\Decorators\InputDecorator;
 use Packaged\Tests\Form\Supporting\DataHandlers\TestIntegerDataHandler;
 use PHPUnit\Framework\TestCase;
 

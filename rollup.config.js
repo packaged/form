@@ -10,9 +10,9 @@ process.chdir(__dirname);
 module.exports = {
   input: './index.js',
   output: {
-    file: './resources/form.min.js',
-    name: 'form',
-    format: 'iife',
+    file: './js/dist/form.min.js',
+    name: 'Form',
+    format: 'umd'
   },
   plugins: [
     postcss(

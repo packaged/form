@@ -100,13 +100,14 @@ if(!empty($data))
 }
 
 ?>
-<html>
+<html lang="en">
 <head>
-  <link type="text/css" rel="stylesheet" href="../resources/form.min.css"/>
-  <script type="module" src="../resources/form.min.js"></script>
+  <title>Form Demo</title>
+  <link type="text/css" rel="stylesheet" href="../js/dist/form.min.css"/>
+  <script type="module" src="../js/dist/form.min.js"></script>
   <style>
     body {
-      font-family: "Helvetica Neue", Helvetica, Arial;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-size: 13px;
     }
 
@@ -161,7 +162,7 @@ if(!empty($data))
               <?php if(substr($form->profilePicture->getFileType(), 0, 5) == 'image'): ?>
                 <img src="data:<?= $form->profilePicture->getFileType() ?>;base64,<?= base64_encode($content); ?>">
               <?php else: ?>
-                <textarea><?= $content; ?></textarea>
+                <pre><?= $content; ?></pre>
               <?php endif; ?>
             </td>
           </tr>

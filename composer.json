@@ -21,12 +21,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Packaged\\Form\\": "src"
+      "Packaged\\Form\\": "php/src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Packaged\\Tests\\Form\\": "tests"
+      "Packaged\\Tests\\Form\\": "php/tests"
     }
   }
 }
