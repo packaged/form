@@ -15,32 +15,20 @@ jobs:
     strategy:
       matrix:
         php: [ 7.3, 7.4, 8.0 ]
-        phpunit: [ 9 ]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Composer Cache
-        uses: actions/cache@v2
+      - name: Setup PHP with PECL extension
+        uses: shivammathur/setup-php@v2
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          php-version: ${{ matrix.php }}
       - name: Composer Install
-        uses: php-actions/composer@v6
-        with:
-          php_version: ${{ matrix.php }}
+        run: composer install --prefer-dist --no-progress
       - name: PHPUnit
-        uses: php-actions/phpunit@v3
-        with:
-          version: ${{ matrix.phpunit }}
-          php_version: ${{ matrix.php }}
-          configuration: phpunit.xml
+        run: vendor/bin/phpunit
 
   release:
     name: Release
