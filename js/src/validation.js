@@ -175,7 +175,7 @@ export function validateHandler(form, handlerName, errorOnPotentiallyValid = fal
 export function validateForm(form)
 {
   const fullResult = new Map();
-  if(!form instanceof HTMLFormElement)
+  if(!(form instanceof HTMLFormElement))
   {
     console.error('not a form element');
     return fullResult;
