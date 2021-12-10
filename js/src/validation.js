@@ -1,5 +1,7 @@
 import base64 from 'base-64';
-import {ValidationResponse, Validator} from '@packaged/validate';
+import {DataSetValidator, ValidationResponse, Validator} from '@packaged/validate';
+import {ConfirmationValidator} from '@packaged/validate/js/validators/ConfirmationValidator.js';
+import {WeakMappedSet} from './WeakMappedSet.js';
 
 function _getEleValue(ele)
 {
@@ -105,6 +107,7 @@ export function clearErrors(form, handlerName)
   if(errContainer)
   {
     errContainer.innerHTML = '';
+    errContainer.classList.add('p-form__errors--hidden');
   }
 }
 
@@ -128,18 +131,19 @@ export function addErrors(form, handlerName, errors = [])
 
   _updateValidationState(form, handlerName, ValidationResponse.error(errors));
   const errUl = errContainer.querySelector(':scope > ul') || document.createElement('ul');
-  errors.forEach(
-    (err) =>
-    {
-      const errEle = document.createElement('li');
-      errEle.innerText = err;
-      errUl.append(errEle);
-    }
-  );
+  errors.forEach((err) =>
+                 {
+                   const errEle = document.createElement('li');
+                   errEle.innerText = err;
+                   errUl.append(errEle);
+                 });
   errContainer.append(errUl);
+  errContainer.classList.remove('p-form__errors--hidden');
 }
 
-export function validateHandler(form, handlerName, errorOnPotentiallyValid = false)
+const _reverseConfirmations = new WeakMappedSet();
+
+export function validateHandler(form, handlerName, errorOnPotentiallyValid = false, _processedMap = new WeakMap)
 {
   const fieldValue = _getHandlerValue(form, handlerName);
   const handlerScope = _getHandlerScope(form, handlerName);
@@ -148,14 +152,34 @@ export function validateHandler(form, handlerName, errorOnPotentiallyValid = fal
   {
     return result;
   }
+  if(_processedMap.has(handlerScope))
+  {
+    return _processedMap.get(handlerScope);
+  }
+
+  const validators = _getValidators(handlerScope);
 
   try
   {
-    const validators = JSON.parse(base64.decode(handlerScope.getAttribute('validation')));
+    const formData = new FormData(form);
+    const data = {};
+    for(let [key, val] of formData.entries())
+    {
+      data[key] = val;
+    }
+
     validators.forEach(
-      (validatorObj) =>
+      (validator) =>
       {
-        const validator = Validator.fromJsonObject(validatorObj);
+        if(validator instanceof DataSetValidator)
+        {
+          validator.setData(data);
+        }
+        if(validator instanceof ConfirmationValidator)
+        {
+          const fld = _getHandlerScope(form, validator._field);
+          _reverseConfirmations.add(fld, handlerName);
+        }
         result.combine(validator.validate(fieldValue));
       }
     );
@@ -164,7 +188,27 @@ export function validateHandler(form, handlerName, errorOnPotentiallyValid = fal
   {
   }
 
+  _processedMap.set(handlerScope, result);
+
+  const confirms = _reverseConfirmations.get(handlerScope);
+  if(confirms)
+  {
+    confirms.forEach(
+      (c) =>
+      {
+        validateHandler(form, c, true, _processedMap);
+      }
+    );
+  }
+
   _updateValidationState(form, handlerName, result, errorOnPotentiallyValid);
+
+  clearErrors(form, handlerName);
+  if(!result.potentiallyValid || errorOnPotentiallyValid)
+  {
+    addErrors(form, handlerName, result.errors);
+  }
+
   return result;
 }
 
@@ -175,21 +219,51 @@ export function validateHandler(form, handlerName, errorOnPotentiallyValid = fal
 export function validateForm(form)
 {
   const fullResult = new Map();
-  if(!form instanceof HTMLFormElement)
+  if(!(form instanceof HTMLFormElement))
   {
     console.error('not a form element');
     return fullResult;
   }
 
+  const _processedMap = new WeakMap;
   const fields = form.querySelectorAll('.p-form__field[validation]');
   fields.forEach(
     (container) =>
     {
       const handlerName = container.getAttribute('handler-name');
-      const result = validateHandler(form, handlerName, true);
+      const result = validateHandler(form, handlerName, true, _processedMap);
       fullResult.set(handlerName, result);
     }
   );
 
   return fullResult;
+}
+
+const _validatorsMap = new WeakMap();
+
+function _getValidators(handlerScope)
+{
+  if(!_validatorsMap.has(handlerScope))
+  {
+    const validationString = handlerScope.getAttribute('validation');
+    if(validationString)
+    {
+      const validatorsObj = JSON.parse(base64.decode(validationString));
+      const validators = validatorsObj.map(
+        (validatorObj) =>
+        {
+          try
+          {
+            return Validator.fromJsonObject(validatorObj);
+          }
+          catch(e)
+          {
+            return null;
+          }
+        }
+      );
+      _validatorsMap.set(handlerScope, validators.filter(v => v instanceof Validator));
+    }
+  }
+  return _validatorsMap.get(handlerScope);
 }

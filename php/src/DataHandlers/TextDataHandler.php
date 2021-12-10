@@ -8,6 +8,19 @@ use Packaged\Ui\Html\HtmlElement;
 
 class TextDataHandler extends AbstractDataHandler
 {
+  protected $_autocomplete = '';
+
+  public function getAutocomplete(): string
+  {
+    return $this->_autocomplete;
+  }
+
+  public function setAutocomplete(string $autocomplete): self
+  {
+    $this->_autocomplete = $autocomplete;
+    return $this;
+  }
+
   public function formatValue($value)
   {
     Strings::stringable($value);
@@ -30,6 +43,13 @@ class TextDataHandler extends AbstractDataHandler
         'placeholder' => $this->getPlaceholder(),
       ]
     );
+
+    $autocomplete = $this->getAutocomplete();
+    if(!empty($autocomplete))
+    {
+      $ele->setAttribute('autocomplete', $autocomplete);
+    }
+
     return $ele;
   }
 
