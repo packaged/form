@@ -14,7 +14,9 @@ use Packaged\Form\DataHandlers\TextDataHandler;
 use Packaged\Form\Form\Form;
 use Packaged\Helpers\Arrays;
 use Packaged\SafeHtml\SafeHtml;
+use Packaged\Validate\Validators\ConfirmationValidator;
 use Packaged\Validate\Validators\EqualValidator;
+use Packaged\Validate\Validators\RegexValidator;
 use Packaged\Validate\Validators\RequiredValidator;
 use Packaged\Validate\Validators\StringValidator;
 
@@ -38,6 +40,10 @@ class DemoForm extends Form
    * @var SecureTextDataHandler
    */
   public $password;
+  /**
+   * @var SecureTextDataHandler
+   */
+  public $confirmPassword;
   /**
    * @var HiddenDataHandler
    */
@@ -67,14 +73,20 @@ class DemoForm extends Form
   protected function _initDataHandlers()
   {
     $this->name = TextDataHandler::i()->addValidator(new StringValidator(2, 20));
-    $this->email = EmailDataHandler::i();
+    $this->email = EmailDataHandler::i()
+      ->setAutocomplete('email');
     $this->selection = EnumDataHandler::i(Arrays::fuse(['test1', 'test2', 'test3']))
       ->setDefaultValue($this->selection)
       ->styleSplit()
       ->addValidator(new EqualValidator('test3'));
 
     $this->greedySelect = MultiValueEnumDataHandler::i(Arrays::fuse(['apple', 'orange', 'pear']))->styleSplit();
-    $this->password = SecureTextDataHandler::i()->setGuidance("(Min. 8 characters, 1 number, case-sensitive)");
+    $this->password = SecureTextDataHandler::i()->setGuidance("(Min. 8 characters, 1 number, case-sensitive)")
+      ->setAutocomplete('new-password')
+      ->addValidator(new StringValidator(8))
+      ->addValidator(new RegexValidator('/\d+/', 'must contain one number'));
+    $this->confirmPassword = SecureTextDataHandler::i()
+      ->setAutocomplete('new-password');
     $this->secret = HiddenDataHandler::i()->setValue('Form displayed at ' . date("Y-m-d H:i:s"));
     $this->agree = BooleanDataHandler::i()
       ->setGuidance(new SafeHtml('<a href="#">Terms & Conditions</a>'))
@@ -88,6 +100,12 @@ class DemoForm extends Form
       ->setGuidance("Required")
       ->addValidator(new RequiredValidator());
     //$this->setHandlerDecorator(new InputOnlyDataHandlerDecorator(), 'agree');
+  }
+
+  protected function _configureDataHandlers()
+  {
+    parent::_configureDataHandlers();
+    $this->confirmPassword->addValidator(new ConfirmationValidator($this->password->getName()));
   }
 }
 

@@ -285,12 +285,9 @@ abstract class AbstractDataHandler implements DataHandler
           {
             throw new RuntimeException('no form provided to dataset validator');
           }
-          $validatorErrors = $validator->validate($data);
+          $validator->setData($data);
         }
-        else
-        {
-          $validatorErrors = $validator->validate($value);
-        }
+        $validatorErrors = $validator->validate($value);
 
         $errors = array_merge($errors, $validatorErrors);
       }
