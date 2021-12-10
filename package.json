@@ -10,7 +10,7 @@
     "index.js"
   ],
   "dependencies": {
-    "@packaged/validate": "^2.7.1",
+    "@packaged/validate": "^3.0.2",
     "base-64": "^1.0.0"
   },
   "devDependencies": {
@@ -27,6 +27,6 @@
     "rollup-plugin-terser": "^7.0.2"
   },
   "scripts": {
-    "build": "rollup -c rollup.config.js -w"
+    "build": "rollup -c rollup.config.js"
   }
 }
