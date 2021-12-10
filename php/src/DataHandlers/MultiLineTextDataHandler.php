@@ -21,15 +21,7 @@ class MultiLineTextDataHandler extends TextDataHandler
 
   protected function _generateInput(): HtmlElement
   {
-    $ele = $this->_createBaseElement();
-
-    $ele->addAttributes(
-      [
-        'name'        => $this->getName(),
-        'id'          => $this->getId(),
-        'placeholder' => $this->getPlaceholder(),
-      ]
-    );
+    $ele = parent::_generateInput();
 
     if($ele instanceof Textarea)
     {
