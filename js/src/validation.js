@@ -107,7 +107,6 @@ export function clearErrors(form, handlerName)
   if(errContainer)
   {
     errContainer.innerHTML = '';
-    errContainer.classList.add('p-form__errors--hidden');
   }
 }
 
@@ -138,7 +137,6 @@ export function addErrors(form, handlerName, errors = [])
                    errUl.append(errEle);
                  });
   errContainer.append(errUl);
-  errContainer.classList.remove('p-form__errors--hidden');
 }
 
 const _reverseConfirmations = new WeakMappedSet();

@@ -65,11 +65,7 @@ class DefaultDataHandlerDecorator extends AbstractDecorator implements DataHandl
     $container = Div::create()->addClass($this->bem()->getElementName('errors'));
 
     $errorMessages = $this->getErrorMessages();
-    if(empty($errorMessages))
-    {
-      $container->addClass($this->bem()->getModifier('hidden', 'errors'));
-    }
-    else
+    if(!empty($errorMessages))
     {
       $container->appendContent(UnorderedList::create()->setContent(ListItem::collection($errorMessages)));
     }
