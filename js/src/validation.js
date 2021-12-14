@@ -3,6 +3,12 @@ import {DataSetValidator, ValidationResponse, Validator} from '@packaged/validat
 import {ConfirmationValidator} from '@packaged/validate/js/validators/ConfirmationValidator.js';
 import {WeakMappedSet} from './WeakMappedSet.js';
 
+/**
+ * @type {WeakMap<HTMLElement, ValidationResponse>}
+ * @private
+ */
+const _errorMap = new WeakMap();
+
 function _getEleValue(ele)
 {
   if((!(ele.type === 'checkbox' || ele.type === 'radio')) || ele instanceof HTMLSelectElement || ele.checked)
@@ -34,28 +40,27 @@ function _getHandlerValue(form, handlerName)
   else if(inputs.length > 1)
   {
     fieldValue = [];
-    inputs.forEach(
-      ele =>
-      {
-        const eleVal = _getEleValue(ele);
-        if(eleVal === null)
-        {
-          return;
-        }
-        if(ele.getAttribute('name').substr(-1) === ']')
-        {
-          if(!fieldValue || fieldValue.constructor.name !== 'Array')
-          {
-            fieldValue = [];
-          }
-          fieldValue.push(eleVal);
-        }
-        else
-        {
-          fieldValue = eleVal;
-        }
-      }
-    );
+    inputs.forEach(ele =>
+                   {
+                     const eleVal = _getEleValue(ele);
+                     if(eleVal === null)
+                     {
+                       return;
+                     }
+                     if(ele.getAttribute('name')
+                           .substr(-1) === ']')
+                     {
+                       if(!fieldValue || fieldValue.constructor.name !== 'Array')
+                       {
+                         fieldValue = [];
+                       }
+                       fieldValue.push(eleVal);
+                     }
+                     else
+                     {
+                       fieldValue = eleVal;
+                     }
+                   });
   }
   return fieldValue;
 }
@@ -103,6 +108,8 @@ export function clearErrors(form, handlerName)
   }
   handlerScope.removeAttribute('validation-state');
 
+  _errorMap.delete(handlerScope);
+
   const errContainer = handlerScope.querySelector(`.p-form__errors`);
   if(errContainer)
   {
@@ -110,33 +117,46 @@ export function clearErrors(form, handlerName)
   }
 }
 
+export function getErrors(form, handlerName)
+{
+  const handlerScope = _getHandlerScope(form, handlerName);
+  return _errorMap.get(handlerScope);
+}
+
 /**
  * @param {HTMLFormElement} form
  * @param {String} handlerName
- * @param {String[]} errors
+ * @param {ValidationResponse} validationResponse
+ * @param {Boolean} errorOnPotentiallyValid
  */
-export function addErrors(form, handlerName, errors = [])
+export function addErrors(form, handlerName, validationResponse, errorOnPotentiallyValid = false)
 {
-  if(errors.length <= 0)
+  if(!validationResponse)
   {
     return;
   }
-  const errContainer = form.querySelector(`.p-form__field[handler-name="${handlerName}"] .p-form__errors`);
+  if(validationResponse.errors <= 0)
+  {
+    return;
+  }
+  const handlerScope = _getHandlerScope(form, handlerName);
+  const errContainer = handlerScope.querySelector(`.p-form__errors`);
   if(!errContainer)
   {
-    console.error('validation error:', `"${handlerName}"`, errors);
+    console.error('validation error:', `"${handlerName}"`, validationResponse);
     return;
   }
 
-  _updateValidationState(form, handlerName, ValidationResponse.error(errors));
+  _updateValidationState(form, handlerName, validationResponse, errorOnPotentiallyValid);
   const errUl = errContainer.querySelector(':scope > ul') || document.createElement('ul');
-  errors.forEach((err) =>
-                 {
-                   const errEle = document.createElement('li');
-                   errEle.innerText = err;
-                   errUl.append(errEle);
-                 });
+  validationResponse.errors.forEach((err) =>
+                                    {
+                                      const errEle = document.createElement('li');
+                                      errEle.innerText = err;
+                                      errUl.append(errEle);
+                                    });
   errContainer.append(errUl);
+  _errorMap.set(handlerScope, validationResponse);
 }
 
 const _reverseConfirmations = new WeakMappedSet();
@@ -166,21 +186,19 @@ export function validateHandler(form, handlerName, errorOnPotentiallyValid = fal
       data[key] = val;
     }
 
-    validators.forEach(
-      (validator) =>
-      {
-        if(validator instanceof DataSetValidator)
-        {
-          validator.setData(data);
-        }
-        if(validator instanceof ConfirmationValidator)
-        {
-          const fld = _getHandlerScope(form, validator._field);
-          _reverseConfirmations.add(fld, handlerName);
-        }
-        result.combine(validator.validate(fieldValue));
-      }
-    );
+    validators.forEach((validator) =>
+                       {
+                         if(validator instanceof DataSetValidator)
+                         {
+                           validator.setData(data);
+                         }
+                         if(validator instanceof ConfirmationValidator)
+                         {
+                           const fld = _getHandlerScope(form, validator._field);
+                           _reverseConfirmations.add(fld, handlerName);
+                         }
+                         result.combine(validator.validate(fieldValue));
+                       });
   }
   catch(e)
   {
@@ -191,20 +209,16 @@ export function validateHandler(form, handlerName, errorOnPotentiallyValid = fal
   const confirms = _reverseConfirmations.get(handlerScope);
   if(confirms)
   {
-    confirms.forEach(
-      (c) =>
-      {
-        validateHandler(form, c, true, _processedMap);
-      }
-    );
+    confirms.forEach((c) =>
+                     {
+                       validateHandler(form, c, true, _processedMap);
+                     });
   }
 
-  _updateValidationState(form, handlerName, result, errorOnPotentiallyValid);
-
   clearErrors(form, handlerName);
-  if(!result.potentiallyValid || errorOnPotentiallyValid)
+  if(result.errors && (!result.potentiallyValid || errorOnPotentiallyValid))
   {
-    addErrors(form, handlerName, result.errors);
+    addErrors(form, handlerName, result, errorOnPotentiallyValid);
   }
 
   return result;
@@ -225,14 +239,12 @@ export function validateForm(form)
 
   const _processedMap = new WeakMap;
   const fields = form.querySelectorAll('.p-form__field[validation]');
-  fields.forEach(
-    (container) =>
-    {
-      const handlerName = container.getAttribute('handler-name');
-      const result = validateHandler(form, handlerName, true, _processedMap);
-      fullResult.set(handlerName, result);
-    }
-  );
+  fields.forEach((container) =>
+                 {
+                   const handlerName = container.getAttribute('handler-name');
+                   const result = validateHandler(form, handlerName, true, _processedMap);
+                   fullResult.set(handlerName, result);
+                 });
 
   return fullResult;
 }
@@ -247,19 +259,17 @@ function _getValidators(handlerScope)
     if(validationString)
     {
       const validatorsObj = JSON.parse(base64.decode(validationString));
-      const validators = validatorsObj.map(
-        (validatorObj) =>
-        {
-          try
-          {
-            return Validator.fromJsonObject(validatorObj);
-          }
-          catch(e)
-          {
-            return null;
-          }
-        }
-      );
+      const validators = validatorsObj.map((validatorObj) =>
+                                           {
+                                             try
+                                             {
+                                               return Validator.fromJsonObject(validatorObj);
+                                             }
+                                             catch(e)
+                                             {
+                                               return null;
+                                             }
+                                           });
       _validatorsMap.set(handlerScope, validators.filter(v => v instanceof Validator));
     }
   }
