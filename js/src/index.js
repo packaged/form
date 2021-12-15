@@ -24,7 +24,6 @@ export function init(rootElement = document)
       if(hasErrors)
       {
         e.preventDefault();
-        e.stopImmediatePropagation();
       }
     },
   );
