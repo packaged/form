@@ -164,16 +164,16 @@ export function validateHandler(form, handlerName, errorOnPotentiallyValid = fal
 {
   const fieldValue = _getHandlerValue(form, handlerName);
   const handlerScope = _getHandlerScope(form, handlerName);
-  const result = ValidationResponse.success();
   if(!handlerScope)
   {
-    return result;
+    return ValidationResponse.error(['handler not found']);
   }
   if(_processedMap.has(handlerScope))
   {
     return _processedMap.get(handlerScope);
   }
 
+  const result = ValidationResponse.success();
   const validators = _getValidators(handlerScope);
 
   try
@@ -229,11 +229,11 @@ export function validateHandler(form, handlerName, errorOnPotentiallyValid = fal
 
 /**
  * @param {HTMLFormElement} form
- * @return {Map<String,ValidationResponse>}
+ * @return {ValidationResults}
  */
 export function validateForm(form)
 {
-  const fullResult = new Map();
+  const fullResult = new ValidationResults();
   if(!(form instanceof HTMLFormElement))
   {
     console.error('not a form element');
@@ -246,7 +246,7 @@ export function validateForm(form)
   {
     const handlerName = container.getAttribute('handler-name');
     const result = validateHandler(form, handlerName, true, _processedMap);
-    fullResult.set(handlerName, result);
+    fullResult.append(handlerName, result);
   });
 
   form.dispatchEvent(new CustomEvent('form-validation',
@@ -280,4 +280,41 @@ function _getValidators(handlerScope)
     }
   }
   return _validatorsMap.get(handlerScope);
+}
+
+export class ValidationResults
+{
+  constructor()
+  {
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this._isValid = false;
+    /**
+     * @type {Map<String, ValidationResponse>}
+     * @private
+     */
+    this._results = new Map();
+  }
+
+  get isValid()
+  {
+    return this._isValid;
+  }
+
+  get results()
+  {
+    return this._results;
+  }
+
+  /**
+   * @param {String} key
+   * @param {ValidationResponse} result
+   */
+  append(key, result)
+  {
+    this._results.set(key, result);
+    this._isValid = this._isValid && result.errors === 0;
+  }
 }

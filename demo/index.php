@@ -122,7 +122,7 @@ if(!empty($data))
 <head>
   <title>Form Demo</title>
   <link type="text/css" rel="stylesheet" href="../js/dist/form.min.css"/>
-  <script type="module" src="../js/dist/form.min.js"></script>
+  <script src="../js/dist/form.min.js"></script>
   <style>
     body {
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -199,6 +199,10 @@ if(!empty($data))
   document.addEventListener('form-validation', function (e)
   {
     console.log('form', e.detail);
+  });
+  document.addEventListener('submit', function (e)
+  {
+    console.log('submit', e.detail);
   });
 </script>
 </body>

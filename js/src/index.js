@@ -12,33 +12,30 @@ export function init(rootElement = document)
   }
   _init.add(rootElement);
 
-  rootElement.addEventListener(
-    'submit', e =>
+  rootElement.addEventListener('submit', e =>
+  {
+    /**
+     * @type {HTMLFormElement}
+     */
+    const form = e.path && e.path[0] || e.target;
+    const results = validateForm(form);
+    e.detail = e.detail || {};
+    e.detail['@packaged/form'] = {validation: results};
+    if(!results.isValid)
     {
-      /**
-       * @type {HTMLFormElement}
-       */
-      const form = e.path && e.path[0] || e.target;
-      const results = validateForm(form);
-      const hasErrors = !Array.from(results.values()).every(r => r.errors.length === 0);
-      if(hasErrors)
-      {
-        e.preventDefault();
-      }
-    },
-  );
-
-  rootElement.addEventListener(
-    'reset', e =>
-    {
-      /**
-       * @type {HTMLFormElement}
-       */
-      const form = e.path && e.path[0] || e.target;
-      form.querySelectorAll('.p-form__field[handler-name]')
-          .forEach((ele) => clearErrors(form, ele.getAttribute('handler-name')));
+      e.preventDefault();
     }
-  );
+  });
+
+  rootElement.addEventListener('reset', e =>
+  {
+    /**
+     * @type {HTMLFormElement}
+     */
+    const form = e.path && e.path[0] || e.target;
+    form.querySelectorAll('.p-form__field[handler-name]')
+        .forEach((ele) => clearErrors(form, ele.getAttribute('handler-name')));
+  });
 
   rootElement.addEventListener('input', e =>
   {
