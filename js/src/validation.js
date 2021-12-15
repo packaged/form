@@ -139,6 +139,8 @@ export function addErrors(form, handlerName, validationResponse, errorOnPotentia
   {
     return;
   }
+  _updateValidationState(form, handlerName, validationResponse, errorOnPotentiallyValid);
+
   const handlerScope = _getHandlerScope(form, handlerName);
   const errContainer = handlerScope.querySelector(`.p-form__errors`);
   if(!errContainer)
@@ -146,7 +148,6 @@ export function addErrors(form, handlerName, validationResponse, errorOnPotentia
     return;
   }
 
-  _updateValidationState(form, handlerName, validationResponse, errorOnPotentiallyValid);
   const errUl = errContainer.querySelector(':scope > ul') || document.createElement('ul');
   validationResponse.errors.forEach((err) =>
   {
