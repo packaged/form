@@ -143,7 +143,6 @@ export function addErrors(form, handlerName, validationResponse, errorOnPotentia
   const errContainer = handlerScope.querySelector(`.p-form__errors`);
   if(!errContainer)
   {
-    console.error('validation error:', `"${handlerName}"`, validationResponse);
     return;
   }
 
@@ -250,8 +249,7 @@ export function validateForm(form)
     fullResult.set(handlerName, result);
   });
 
-  form.dispatchEvent(new CustomEvent(
-    'form-validation',
+  form.dispatchEvent(new CustomEvent('form-validation',
     {detail: {result: fullResult}, bubbles: true, cancellable: false}
   ));
   return fullResult;
