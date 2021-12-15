@@ -221,6 +221,10 @@ export function validateHandler(form, handlerName, errorOnPotentiallyValid = fal
     addErrors(form, handlerName, result, errorOnPotentiallyValid);
   }
 
+  form.dispatchEvent(new CustomEvent('form-handler-validation',
+    {detail: {handlerName, result}, bubbles: true, cancellable: false}
+  ));
+
   return result;
 }
 
@@ -246,6 +250,10 @@ export function validateForm(form)
     fullResult.set(handlerName, result);
   });
 
+  form.dispatchEvent(new CustomEvent(
+    'form-validation',
+    {detail: {result: fullResult}, bubbles: true, cancellable: false}
+  ));
   return fullResult;
 }
 

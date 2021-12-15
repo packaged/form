@@ -190,5 +190,16 @@ if(!empty($data))
   </div>
   <br/>
 <?php endif; ?>
+
+<script>
+  document.addEventListener('form-handler-validation', function (e)
+  {
+    console.log('handler', e.detail);
+  });
+  document.addEventListener('form-validation', function (e)
+  {
+    console.log('form', e.detail);
+  });
+</script>
 </body>
 </html>
