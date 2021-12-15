@@ -290,7 +290,7 @@ export class ValidationResults
      * @type {boolean}
      * @private
      */
-    this._isValid = false;
+    this._isValid = true;
     /**
      * @type {Map<String, ValidationResponse>}
      * @private
@@ -315,6 +315,6 @@ export class ValidationResults
   append(key, result)
   {
     this._results.set(key, result);
-    this._isValid = this._isValid && result.errors === 0;
+    this._isValid = this._isValid && result.errors.length === 0;
   }
 }
