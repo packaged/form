@@ -16,6 +16,7 @@ use Packaged\Helpers\Arrays;
 use Packaged\SafeHtml\SafeHtml;
 use Packaged\Validate\Validators\ConfirmationValidator;
 use Packaged\Validate\Validators\EqualValidator;
+use Packaged\Validate\Validators\FileSizeValidator;
 use Packaged\Validate\Validators\RegexValidator;
 use Packaged\Validate\Validators\RequiredValidator;
 use Packaged\Validate\Validators\StringValidator;
@@ -94,7 +95,10 @@ class DemoForm extends Form
       ->addValidator(new RequiredValidator());
     $this->youCantTouchThis = ReadOnlyDataHandler::i()->setValue('Dare You');
     $this->age = IntegerDataHandler::i()->setLabel('How old are you?');
-    $this->profilePicture = FileDataHandler::i()->setLabel("Profile Picture")->setGuidance('120px X 120px png or jpg');
+    $this->profilePicture = FileDataHandler::i()
+      ->addValidator(new FileSizeValidator(1))
+      ->setLabel("Profile Picture")
+      ->setGuidance('Max Size 1mb');
     $this->comments = MultiLineTextDataHandler::i()
       ->setLabel("Any Comments?")
       ->setGuidance("Required")
@@ -113,8 +117,7 @@ $data = array_merge($_POST, $_FILES);
 $form = new DemoForm();
 if(!empty($data))
 {
-  $form->hydrate($data);
-  $form->validate();
+  $errors = $form->hydrate($data);
 }
 
 ?>
@@ -151,6 +154,24 @@ if(!empty($data))
 <h2>Example Form</h2>
 <?php echo $form->render() ?>
 
+<?php if(!empty($errors)): ?>
+  <div>
+    <h2>ERROR Data</h2>
+    <table>
+      <?php foreach($errors as $k => $v): ?>
+        <tr>
+          <th><?= $k; ?></th>
+          <td>
+            <?php foreach($v as $o): ?>
+              <?= $o->getMessage() ?>
+            <?php endforeach; ?>
+          </td>
+        </tr>
+      <?php endforeach; ?>
+    </table>
+  </div>
+<?php endif; ?>
+
 <?php if(!empty($data)): ?>
   <div style="display: flex">
     <div><h2>POST Data</h2>
@@ -164,6 +185,7 @@ if(!empty($data))
       </table>
     </div>
     <div><h2>Form Data</h2>
+      <?= $form->selection->getValue() ?>
       <table>
         <?php foreach($form->getFormData() as $k => $v): ?>
           <tr>
