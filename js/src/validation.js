@@ -11,10 +11,16 @@ const _errorMap = new WeakMap();
 
 function _getEleValue(ele)
 {
-  if((!(ele.type === 'checkbox' || ele.type === 'radio')) || ele instanceof HTMLSelectElement || ele.checked)
+  if((!(ele.type === 'checkbox' || ele.type === 'radio' || ele.type === 'file')) || ele instanceof HTMLSelectElement || ele.checked)
   {
     return ele.value;
   }
+
+  if(ele.type === 'file' && ele.files[0])
+  {
+    return ele.files[0];
+  }
+
   return null;
 }
 
@@ -48,7 +54,7 @@ function _getHandlerValue(form, handlerName)
         return;
       }
       if(ele.getAttribute('name')
-            .substr(-1) === ']')
+        .substr(-1) === ']')
       {
         if(!fieldValue || fieldValue.constructor.name !== 'Array')
         {
@@ -221,7 +227,8 @@ export function validateHandler(form, handlerName, errorOnPotentiallyValid = fal
     addErrors(form, handlerName, result, errorOnPotentiallyValid);
   }
 
-  form.dispatchEvent(new CustomEvent('form-handler-validation',
+  form.dispatchEvent(new CustomEvent(
+    'form-handler-validation',
     {detail: {handlerName, result}, bubbles: true, cancellable: false}
   ));
 
@@ -250,7 +257,8 @@ export function validateForm(form)
     fullResult.append(handlerName, result);
   });
 
-  form.dispatchEvent(new CustomEvent('form-validation',
+  form.dispatchEvent(new CustomEvent(
+    'form-validation',
     {detail: {result: fullResult}, bubbles: true, cancellable: false}
   ));
   return fullResult;
