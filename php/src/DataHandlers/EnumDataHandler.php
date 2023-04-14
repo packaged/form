@@ -98,10 +98,12 @@ class EnumDataHandler extends AbstractDataHandler
 
   protected function _generateInput(): HtmlElement
   {
+    $isAssocArray = Arrays::isAssoc($this->getOptions());
+    
     if($this->_inputStyle === self::INPUT_STYLE_SPLIT)
     {
       $ele = new MultiInputContainer();
-      if(Arrays::isAssoc($this->getOptions()))
+      if($isAssocArray)
       {
         foreach($this->getOptions() as $optK => $optV)
         {
@@ -120,10 +122,11 @@ class EnumDataHandler extends AbstractDataHandler
     }
 
     $options = Option::collection($this->getOptions());
+
     /** @var Option $option */
     foreach($options as $option)
     {
-      if(Arrays::isAssoc($this->getOptions()))
+      if($isAssocArray)
       {
         if($this->_isSelectedOption($option->getAttribute('value')))
         {
