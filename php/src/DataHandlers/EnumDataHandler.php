@@ -8,6 +8,7 @@ use Packaged\Glimpse\Tags\Form\Input;
 use Packaged\Glimpse\Tags\Form\Label;
 use Packaged\Glimpse\Tags\Form\Option;
 use Packaged\Glimpse\Tags\Form\Select;
+use Packaged\Helpers\Arrays;
 use Packaged\Helpers\Strings;
 use Packaged\Helpers\ValueAs;
 use Packaged\Ui\Html\HtmlElement;
@@ -15,7 +16,7 @@ use Packaged\Ui\Html\HtmlElement;
 class EnumDataHandler extends AbstractDataHandler
 {
   const INPUT_STYLE_COMBINED = 'single';
-  const INPUT_STYLE_SPLIT    = 'split';
+  const INPUT_STYLE_SPLIT = 'split';
 
   protected $_options = [];
   protected $_inputStyle = self::INPUT_STYLE_COMBINED;
@@ -100,25 +101,41 @@ class EnumDataHandler extends AbstractDataHandler
     if($this->_inputStyle === self::INPUT_STYLE_SPLIT)
     {
       $ele = new MultiInputContainer();
-      foreach($this->getOptions() as $optK => $optV)
+      if(Arrays::isAssoc($this->getOptions()))
       {
-        $ele->addInput($this->_generateSplitInput($optK, $optV, $this->_isSelectedOption($optK)));
+        foreach($this->getOptions() as $optK => $optV)
+        {
+          $ele->addInput($this->_generateSplitInput($optK, $optV, $this->_isSelectedOption($optK)));
+        }
       }
+      else
+      {
+        foreach($this->getOptions() as $optV)
+        {
+          $ele->addInput($this->_generateSplitInput($optV, $optV, $this->_isSelectedOption($optV)));
+        }
+      }
+
       return $ele;
     }
 
-    $options = [];
-    foreach($this->getOptions() as $optK => $optV)
+    $options = Option::collection($this->getOptions());
+    /** @var Option $option */
+    foreach($options as $option)
     {
-      $options[] = Option::create($optV)->addAttributes(
-        array_filter(
-          [
-            'value'    => $optK,
-            'selected' => $this->_isSelectedOption($optK),
-          ]
-        )
-      );
+      if(Arrays::isAssoc($this->getOptions()))
+      {
+        if($this->_isSelectedOption($option->getAttribute('value')))
+        {
+          $option->setAttribute('selected', true);
+        }
+      }
+      else if($this->_isSelectedOption($option->getContent(false)))
+      {
+        $option->setAttribute('selected', true);
+      }
     }
+
     $ele = Select::create($options);
     $ele->addAttributes(
       [

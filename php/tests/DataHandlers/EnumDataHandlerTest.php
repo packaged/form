@@ -114,4 +114,79 @@ class EnumDataHandlerTest extends TestCase
       $h->getInput()->render()
     );
   }
+
+  public function testNonAssocArray()
+  {
+    $h = new EnumDataHandler();
+    $h->setOptions(['1', '2', '3', '4', '5']);
+    $h->setValue('1');
+
+    self::assertEquals(
+      '<select><option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>',
+      $h->getInput()->render()
+    );
+  }
+
+  public function testAssocArray()
+  {
+    $h = new EnumDataHandler();
+    $h->setOptions(['1' => 'Banana', '2' => 'Apple']);
+    $h->setValue('2');
+
+    self::assertEquals(
+      '<select><option value="1">Banana</option><option value="2" selected>Apple</option></select>',
+      $h->getInput()->render()
+    );
+  }
+
+  public function testAssocArray2()
+  {
+    $h = new EnumDataHandler();
+    $h->setOptions(['Banana' => 'Banana', 'Apple' => 'Apple']);
+    $h->setValue('Apple');
+
+    self::assertEquals(
+      '<select><option value="Banana">Banana</option><option value="Apple" selected>Apple</option></select>',
+      $h->getInput()->render()
+    );
+  }
+
+  public function testNonAssocArraySplit()
+  {
+    $h = new EnumDataHandler();
+    $h->setOptions(['1', '2', '3']);
+    $h->setValue('1');
+    $h->styleSplit();
+
+    self::assertMatchesRegularExpression(
+      '~<div class="p-form__labeled-input"><input type="radio" id="(.+)" value="1" checked /><label for="\1">1</label></div><div class="p-form__labeled-input"><input type="radio" id="(.+)" value="2" /><label for="\2">2</label></div><div class="p-form__labeled-input"><input type="radio" id="(.+)" value="3" /><label for="\3">3</label></div>~',
+      $h->getInput()->render()
+    );
+  }
+
+  public function testAssocArraySplit()
+  {
+    $h = new EnumDataHandler();
+    $h->setOptions(['1' => 'Banana', '2' => 'Apple']);
+    $h->setValue('2');
+    $h->styleSplit();
+
+    self::assertMatchesRegularExpression(
+      '~<div class="p-form__labeled-input"><input type="radio" id="(.+)" value="1" /><label for="\1">Banana</label></div><div class="p-form__labeled-input"><input type="radio" id="(.+)" value="2" checked /><label for="\2">Apple</label></div>~',
+      $h->getInput()->render()
+    );
+  }
+
+  public function testAssocArraySplit2()
+  {
+    $h = new EnumDataHandler();
+    $h->setOptions(['Banana' => 'Banana', 'Apple' => 'Apple']);
+    $h->setValue('Apple');
+    $h->styleSplit();
+
+    self::assertMatchesRegularExpression(
+      '~<div class="p-form__labeled-input"><input type="radio" id="(.+)" value="Banana" /><label for="\1">Banana</label></div><div class="p-form__labeled-input"><input type="radio" id="(.+)" value="Apple" checked /><label for="\2">Apple</label></div>~',
+      $h->getInput()->render()
+    );
+  }
 }
