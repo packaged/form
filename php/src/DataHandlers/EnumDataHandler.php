@@ -9,6 +9,7 @@ use Packaged\Glimpse\Tags\Form\Label;
 use Packaged\Glimpse\Tags\Form\Option;
 use Packaged\Glimpse\Tags\Form\Select;
 use Packaged\Helpers\Strings;
+use Packaged\Helpers\ValueAs;
 use Packaged\Ui\Html\HtmlElement;
 
 class EnumDataHandler extends AbstractDataHandler
@@ -91,7 +92,7 @@ class EnumDataHandler extends AbstractDataHandler
 
   protected function _isSelectedOption($option): bool
   {
-    return $option === $this->getValue();
+    return ValueAs::string($option) === $this->getValue();
   }
 
   protected function _generateInput(): HtmlElement
