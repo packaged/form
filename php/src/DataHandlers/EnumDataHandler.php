@@ -91,7 +91,7 @@ class EnumDataHandler extends AbstractDataHandler
 
   protected function _isSelectedOption($option): bool
   {
-    return $option == $this->getValue();
+    return $option === $this->getValue();
   }
 
   protected function _generateInput(): HtmlElement
