@@ -71,6 +71,9 @@ class DemoForm extends Form
   /** @var \Packaged\Form\DataHandlers\MultiLineTextDataHandler */
   public $comments;
 
+  /** @var EnumDataHandler */
+  public $opions;
+
   protected function _initDataHandlers()
   {
     $this->name = TextDataHandler::i()->addValidator(new StringValidator(2, 20));
@@ -104,12 +107,15 @@ class DemoForm extends Form
       ->setGuidance("Required")
       ->addValidator(new RequiredValidator());
     //$this->setHandlerDecorator(new InputOnlyDataHandlerDecorator(), 'agree');
+
+    $this->opions = EnumDataHandler::i();
   }
 
   protected function _configureDataHandlers()
   {
     parent::_configureDataHandlers();
     $this->confirmPassword->addValidator(new ConfirmationValidator($this->password->getName()));
+    $this->opions->setOptions(['test1' => 'Test 1', 'test2' => 'Test 2', 'test3' => 'Test 3']);
   }
 }
 
