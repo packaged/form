@@ -2,6 +2,7 @@
 namespace Packaged\Form\Csrf;
 
 use Packaged\Form\DataHandlers\HiddenDataHandler;
+use Packaged\Ui\Html\HtmlElement;
 
 class CsrfDataHandler extends HiddenDataHandler
 {
@@ -85,5 +86,31 @@ class CsrfDataHandler extends HiddenDataHandler
   protected function _setupValidators()
   {
     $this->addValidator(new CsrfValidator($this->_generatePassword(), $this->_expiryMins));
+  }
+
+  public function getValue($default = null, $withDefault = false, $formatValue = true)
+  {
+    return parent::getValue($default, $withDefault, $formatValue);
+  }
+
+  protected function _generateInput(): HtmlElement
+  {
+    $ele = $this->_createBaseElement();
+    $ele->addAttributes(
+      [
+        'name'        => $this->getName(),
+        'id'          => $this->getId(),
+        'value'       => $this->formatValue($this->getValue(null, true)),
+        'placeholder' => $this->getPlaceholder(),
+      ]
+    );
+
+    $autocomplete = $this->getAutocomplete();
+    if(!empty($autocomplete))
+    {
+      $ele->setAttribute('autocomplete', $autocomplete);
+    }
+
+    return $ele;
   }
 }

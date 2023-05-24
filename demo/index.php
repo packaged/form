@@ -1,5 +1,6 @@
 <?php
 
+use Packaged\Form\Csrf\CsrfForm;
 use Packaged\Form\DataHandlers\BooleanDataHandler;
 use Packaged\Form\DataHandlers\EmailDataHandler;
 use Packaged\Form\DataHandlers\EnumDataHandler;
@@ -11,7 +12,6 @@ use Packaged\Form\DataHandlers\MultiValueEnumDataHandler;
 use Packaged\Form\DataHandlers\ReadOnlyDataHandler;
 use Packaged\Form\DataHandlers\SecureTextDataHandler;
 use Packaged\Form\DataHandlers\TextDataHandler;
-use Packaged\Form\Form\Form;
 use Packaged\Helpers\Arrays;
 use Packaged\SafeHtml\SafeHtml;
 use Packaged\Validate\Validators\ConfirmationValidator;
@@ -23,7 +23,7 @@ use Packaged\Validate\Validators\StringValidator;
 
 require('../vendor/autoload.php');
 
-class DemoForm extends Form
+class DemoForm extends CsrfForm
 {
   /**
    * @var TextDataHandler
@@ -76,6 +76,8 @@ class DemoForm extends Form
 
   protected function _initDataHandlers()
   {
+    parent::_initDataHandlers();
+
     $this->name = TextDataHandler::i()->addValidator(new StringValidator(2, 20));
     $this->email = EmailDataHandler::i()
       ->setAutocomplete('email');
@@ -120,7 +122,7 @@ class DemoForm extends Form
 }
 
 $data = array_merge($_POST, $_FILES);
-$form = new DemoForm();
+$form = new DemoForm('secret');
 if(!empty($data))
 {
   $errors = $form->hydrate($data);
