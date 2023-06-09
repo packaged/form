@@ -120,6 +120,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
       $handlerErrors = $handler->validateValue($handler->getValue(), $this->getFormData());
       if(!empty($handlerErrors))
       {
+        error_log('Form validation failed for ' . $name . ': ' . json_encode($handlerErrors));
         return false;
       }
     }
