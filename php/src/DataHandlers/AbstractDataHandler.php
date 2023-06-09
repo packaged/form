@@ -288,7 +288,7 @@ abstract class AbstractDataHandler implements DataHandler
           $validator->setData($data);
         }
         $validatorErrors = $validator->validate($value);
-
+        error_log('validator errors: ' . print_r($validatorErrors, true));
         $errors = array_merge($errors, $validatorErrors);
       }
     }
