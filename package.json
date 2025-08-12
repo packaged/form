@@ -10,7 +10,7 @@
     "index.js"
   ],
   "dependencies": {
-    "@packaged/validate": "^3.0.2",
+    "@packaged/validate": "^4.1.0",
     "base-64": "^1.0.0"
   },
   "devDependencies": {
