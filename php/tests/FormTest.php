@@ -39,7 +39,7 @@ class FormTest extends TestCase
 
     $form->number->setValue('abcd');
     $form->number->clearValidators();
-    $this->expectExceptionMessage('must be a number');
+    $this->expectExceptionMessage('Must be an integer');
     $form->assert();
   }
 
@@ -57,7 +57,7 @@ class FormTest extends TestCase
     self::assertCount(1, $result);
     self::assertArrayHasKey('number', $result);
     self::assertCount(1, $result['number']);
-    self::assertEquals('must be a number', $result['number'][0]->getMessage());
+    self::assertEquals('Must be an integer', $result['number'][0]->getMessage());
     self::assertEquals(null, $form->number->getValue());
 
     self::assertEquals('abc', $form->text->getValue());
