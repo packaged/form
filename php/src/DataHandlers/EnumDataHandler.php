@@ -21,7 +21,7 @@ class EnumDataHandler extends AbstractDataHandler
   protected $_options = [];
   protected $_inputStyle = self::INPUT_STYLE_COMBINED;
 
-  public function __construct(array $options = null)
+  public function __construct(?array $options = null)
   {
     if($options !== null)
     {
