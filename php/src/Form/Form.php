@@ -298,6 +298,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
 
   public function getHandlerDecorator($fieldName = null): DataHandlerDecorator
   {
+    $fieldName = $fieldName ?? '';
     if(!isset($this->_handlerDecorator[$fieldName]))
     {
       $this->_handlerDecorator[$fieldName] = clone $this->_defaultHandlerDecorator();
@@ -305,7 +306,7 @@ abstract class Form implements Renderable, ISafeHtmlProducer, IValidatable
     return $this->_handlerDecorator[$fieldName];
   }
 
-  public function setHandlerDecorator(DataHandlerDecorator $decorator, string $field = null)
+  public function setHandlerDecorator(DataHandlerDecorator $decorator, ?string $field = null)
   {
     if($field === null)
     {

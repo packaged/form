@@ -97,7 +97,7 @@ abstract class AbstractDataHandler implements DataHandler
    */
   public function getLabel()
   {
-    return $this->_label ?? Strings::titleize(Strings::splitOnCamelCase($this->getName()));
+    return $this->_label ?? Strings::titleize(Strings::splitOnCamelCase((string)$this->getName()));
   }
 
   /**
@@ -116,7 +116,7 @@ abstract class AbstractDataHandler implements DataHandler
    */
   public function getPlaceholder()
   {
-    return $this->_placeholder ?? Strings::titleize(Strings::splitOnCamelCase($this->getName()));
+    return $this->_placeholder ?? Strings::titleize(Strings::splitOnCamelCase((string)$this->getName()));
   }
 
   /**
